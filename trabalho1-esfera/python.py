@@ -7,7 +7,7 @@ class Vector:
         self.y = y
         self.z = z
     
-    def multiplica_vetor(self, v):
+    def dot(self, v):
         return self.x * v.x + self.y * v.y + self.z * v.z
     
     def sub(self, v):
@@ -25,12 +25,12 @@ class Sphere:
         self.raio = r
         self.color = color
     
-    def intersecao(self, observador, dr):
+    def intersecao(self, observador, d):
         co = observador.sub(self.centro)
 
-        a = dr.multiplica_vetor(dr)
-        b = 2 * co.multiplica_vetor(dr)
-        c = co.multiplica_vetor(co) - self.raio * self.raio 
+        a = d.dot(d)
+        b = 2 * co.dot(d)
+        c = co.dot(co) - self.raio * self.raio 
 
         delta = b * b - 4 * a * c
         if(delta < 0):
@@ -45,7 +45,7 @@ class Viewport:
     def __init__(self, w, h, d):
         self.width = w
         self.height = h
-        self.z = d
+        self.distance = d
 
 class Canvas:
     def __init__(self, w, h, vp, bg):
@@ -59,7 +59,7 @@ class Canvas:
     def canvasToViewport(self, x, y):
         return Vector(-self.viewport.width/2.0 + self.dx/2.0 + y*self.dx, 
                        self.viewport.height/2.0 - self.dy/2.0 - x * self.dy, 
-                       -self.viewport.z)
+                       -self.viewport.distance)
 
 
 class Scene:
@@ -68,20 +68,20 @@ class Scene:
         self.v_camera = v_camera
         self.canva = canva
 
-    def traceRay(self, dr, t_min, t_max):
+    def traceRay(self, d, t_min, t_max):
         closest_t = math.inf
 
         closest_sphere = None
 
-       
-        [t1, t2] = self.spheres.intersecao(self.v_camera, dr)
-        if((t1 >= t_min and t1 <= t_max) and t1 < closest_t):
-            closest_t = t1
-            closest_sphere = self.spheres
+        for sphere in self.spheres:
+            [t1, t2] = sphere.intersecao(self.v_camera, d)
+            if((t1 >= t_min and t1 <= t_max) and t1 < closest_t):
+                closest_t = t1
+                closest_sphere = sphere
 
-        if((t2 >= t_min and t2 <= t_max) and t2 < closest_t):
-            closest_t = t2
-            closest_sphere = self.spheres
+            if((t2 >= t_min and t2 <= t_max) and t2 < closest_t):
+                closest_t = t2
+                closest_sphere = sphere
             
         if(closest_sphere == None):
             return self.canva.bg_color
@@ -89,24 +89,24 @@ class Scene:
 
 
 
-vp = Viewport(2, 2, 3) # tela
+vp = Viewport(2.0, 2.0, 2.0) # tela
 canva = Canvas(500, 500, vp, Color(100, 100, 100))
 
-s_red = Sphere(Vector(0, 0, -(vp.z + 1)), 1, Color(255, 0, 0))
-s_blue = Sphere(Vector(2.2, 0, -(vp.z + 1)), 1, Color(0, 0, 255))
-s_green = Sphere(Vector(-2.2, 0, -(vp.z + 1)), 1, Color(0, 255, 0))
+s_red = Sphere(Vector(0, 0, -(vp.distance + 1)), 1, Color(255, 0, 0))
+s_blue = Sphere(Vector(1, 0, -(vp.distance + 1)), 1, Color(0, 0, 255))
+s_green = Sphere(Vector(-2.2, 0, -(vp.distance + 1)), 1, Color(0, 255, 0))
 
-spheres = s_red
+spheres = [s_red, s_green, s_blue]
 scene = Scene(spheres, Vector(0, 0, 0), canva)
 
 image = Image.new(mode="RGB", size=(canva.width, canva.height))
 pixels = image.load()
 
-for Cx in range(canva.width):
-    for Cy in range(canva.height):
-        dr = canva.canvasToViewport(Cx, Cy)
-        color = scene.traceRay(dr, 1.0, math.inf)
-        pixels[Cy, Cx] = (color.r, color.g, color.b)
+for x in range(canva.width):
+    for y in range(canva.height):
+        d = canva.canvasToViewport(x, y)
+        color = scene.traceRay(d, 1.0, math.inf)
+        pixels[y, x] = (color.r, color.g, color.b)
 
 image.save("out.png", format="png")
 image.show()
