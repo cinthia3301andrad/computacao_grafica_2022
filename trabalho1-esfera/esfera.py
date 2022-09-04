@@ -132,6 +132,7 @@ hJanela = 50
 dJanela = 100
 wc = 500 #matriz de pixel do CANVAS
 hc = 500
+
 rEsfera = 25 
 P_F = Ponto(0, 5, 0) #Posição da fonte pontual situada a 5 metros acima do olho do observador.
 
