@@ -28,9 +28,16 @@ def Produto_escalar(v_1, v_2):
 
 def Subtracao_vetores(v_1, v):
         return Vetor(v_1['x'] - v['x'], v_1['y'] - v['y'], v_1['z'] - v['z'])
+
+def Soma_vetores(v_1, v):
+        return Vetor(v_1['x'] + v['x'], v_1['y'] + v['y'], v_1['z'] + v['z'])
+
+def Equacao_raio(Eye, ti, dr):
+    return Vetor(Eye['x']+ti*dr['x'], Eye['y']+ti*dr['y'], Eye['z']+ti*dr['z'])
         
 def Intersecao(esfera, observador, D):
     w = Subtracao_vetores(observador, esfera['centro'])
+   
 
     a = Produto_escalar(D, D)
     b = 2 * Produto_escalar(w, D)
@@ -48,25 +55,52 @@ def Intersecao(esfera, observador, D):
 def Cena(objeto, v_partida_cameraa):
     return {'objeto': objeto, 'v_partida_cameraa': v_partida_cameraa}
 
-#cena recebe o raio e retorna a interseção
-def DecideCor(cena, canvas, objetos, D):
-    limite_t = math.inf
-    esfera_encontrada = None
+def Calcula_iluminacao(L, N):
+    Ieyed = 0.0
+    fd = Produto_escalar(N, L)
+    I_F = 0.7
+    #comprimentoN = math.sqrt(Produto_escalar(N, N))
+    #comprimentoL = math.sqrt(Produto_escalar(L, L))
+    if(fd > 0): 
+       Ieyed += I_F * fd
+    return Ieyed
+  
 
     
+
+#cena recebe o raio e retorna a interseção
+def DecideCor(cena, canvas, objetos, D, P_F):
+    t_proximo = math.inf
+    esfera_encontrada = None
+    cor_final = objetos[0]['cor']
+
     for objeto in objetos:
         [t1, t2] = Intersecao(objeto, cena['v_partida_cameraa'], D)
-        if( t1 < limite_t):
-            limite_t = t1
+        if( t1 < t_proximo):
+            t_proximo = t1
             esfera_encontrada = objeto
 
-        if( t2 < limite_t):
-            limite_t = t2
+        if( t2 < t_proximo):
+            t_proximo = t2
             esfera_encontrada = objeto
-            
+        
+    if(esfera_encontrada != None):
+        P = Equacao_raio(cena['v_partida_cameraa'], t_proximo, D) #ponto de interseção do raio de direção D com a esfera no ponto t_proximo 
+        
+        N = Subtracao_vetores(P, esfera_encontrada['centro']) #vetor normal que sai no ponto P
+        N = Vetor(N['x']/esfera_encontrada['r'], N['y']/esfera_encontrada['r'], N['z']/esfera_encontrada['r']) #normalizando
+        
+        L = Subtracao_vetores(P_F , P ) #vetor unitario que sai do ponto P e vai em direção ao ponto de luz P_F
+        comprimentoL = math.sqrt(Produto_escalar(L, L))
+        L = Vetor(L['x']/comprimentoL, L['y']/comprimentoL, L['z']/comprimentoL) #normalizando
+        cor_final = Calcula_iluminacao(L, N)
+       
     if(esfera_encontrada == None):
         return canvas['cor_fundo']
-    return esfera_encontrada['cor']
+
+    return Cor(round(esfera_encontrada['cor']['r']*cor_final), 
+            round(esfera_encontrada['cor']['g']*cor_final), 
+            round(esfera_encontrada['cor']['b']*cor_final))
 
 
 wJanela = 50 #dimenções da janela, por onde o observador ver o mundo
@@ -76,10 +110,12 @@ wc = 500 #matriz de pixel do CANVAS
 hc = 500
 rEsfera = 25 
 
+P_F = Vetor(0, 5, 0) #Posição da fonte pontual situada a 5 metros acima do olho do observador.
+
 image = Image.new(mode="RGB", size=(wc, 500))
 pixels = image.load()
 
-janela = Janela( wJanela, hJanela, dJanela, wc, hc) 
+janela = Janela( wJanela, hJanela, dJanela, wc, hc)  
 canvas = Canvas(wc, hc, Cor(100, 100, 100))
 
 objeto_esfera1 = Esfera(Vetor(0, 0, -(janela['d'] + rEsfera)), rEsfera, Cor(255, 0, 0))
@@ -94,7 +130,8 @@ pixels = image.load()
 for x in range(canvas['wc']):
     for y in range(canvas['hc']):
         D = CanvasParaJanela(x, y, janela)
-        color = DecideCor(cena, canvas, objetos, D)
+        color = DecideCor(cena, canvas, objetos, D, P_F)
+   
         pixels[x, y] = (color['r'], color['g'], color['b'])
       
 image.save("esfera.png", format="png")
