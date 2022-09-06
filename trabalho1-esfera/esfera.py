@@ -2,16 +2,16 @@ import math
 
 from PIL import Image
 
-def Vetor( x, y, z):
+def Vetor(x, y, z):
     return {'x': x, 'y': y, 'z': z}
 
-def Ponto( x, y, z):
+def Ponto(x, y, z):
     return {'x': x, 'y': y, 'z': z}
     
 def Cor(r, g, b):
     return {'r': r, 'g': g, 'b': b}
 
-def Janela(wj, hj, d, colunas, linhas):
+def Janela(wj, hj, d, colunas, linhas): #d = distância entre a janela e a esfera
     return {'wj': wj, 'hj': hj, 'd': d, 'dx': wj/colunas, 'dy': hj/linhas}
 
 def Esfera(centro, r, cor):
@@ -23,6 +23,9 @@ def Canvas(wc, hc, cor_fundo):
         'hc': hc,
         'cor_fundo': cor_fundo,
     }
+
+def Cena(objetos):
+    return {'objetos': objetos}
      
 def CanvasParaJanela(c, l, janela): #retorna o vetor (Vx, Vy, Vz) que define a direção do raio, ou seja, que parte do meio do pixel atual
     return Vetor(-janela['wj']/2+janela['dx']/2+janela['dx']*c , janela['hj']/2-janela['dy']*l, -janela['d'])
@@ -39,14 +42,14 @@ def Subtracao_vetores(v_1, v):
 def Soma_vetores(v_1, v):
         return Vetor(v_1['x'] + v['x'], v_1['y'] + v['y'], v_1['z'] + v['z'])
 
-def Equacao_raio(Eye, ti, dr):
-    return Vetor(Eye['x']+ti*dr['x'], Eye['y']+ti*dr['y'], Eye['z']+ti*dr['z'])
+#def Equacao_raio(Eye, ti, dr):
+#    return Vetor(Eye['x']+ti*dr['x'], Eye['y']+ti*dr['y'], Eye['z']+ti*dr['z'])
 
 def Vetor_escalar(vetor, escalar):
     return Vetor(vetor['x']*escalar, vetor['y']*escalar, vetor['z']*escalar)
 
-def Intersecao(esfera, observador, D):
-    w = Subtracao_vetores(observador, esfera['centro'])
+def Intersecao(esfera, posicaoOlhoObservador, D): #D = centro do pixel atual
+    w = Subtracao_vetores(posicaoOlhoObservador, esfera['centro'])
    
 
     a = Produto_escalar(D, D)
@@ -62,14 +65,11 @@ def Intersecao(esfera, observador, D):
         
     return (t1, t2)
 
-def Cena(objetos, posicao_olho_observador):
-    return {'objetos': objetos, 'posicao_olho_observador': posicao_olho_observador}
-
-def Calcula_ponto_intersecao(O, t, D):
+def Calcula_ponto_intersecao(posicaoOlhoObservador, t, D): #D = centro do pixel atual
     return Ponto(
-        O['x']+t*D['x'], 
-        O['y']+t*D['y'], 
-        O['z']+t*D['z'], 
+        posicaoOlhoObservador['x']+t*D['x'], 
+        posicaoOlhoObservador['y']+t*D['y'], 
+        posicaoOlhoObservador['z']+t*D['z'], 
     )
 
 def Calcula_vetor_refletido(L, N):
@@ -78,16 +78,15 @@ def Calcula_vetor_refletido(L, N):
 
     return Subtracao_vetores(vetor_l_n, L)
 
-
 def Calcula_iluminacao( N, L, r_refletido,v_vetor):
-    intensidade_d = 0.0 
-    intensidade_e = 0.0
-    intensidade_a = 0.0
+    intensidade_d = 0.0 #difusa
+    intensidade_e = 0.0 #escalar
+    intensidade_a = 0.0 #ambiente
     m = 10
     fd = max(0, Produto_escalar(L, N))
     fe = pow(max(0, Produto_escalar(r_refletido, v_vetor)), m)
     I_F = Vetor(0.7, 0.7, 0.7)  # Intensidade da fonte pontual
-    I_A = Vetor(0.5, 0.5, 0.5) 
+    I_A = Vetor(0.5, 0.5, 0.5) # Intensidade da luz ambiente
     K = Vetor(0, 0.7, 0.7)  # Intensidade da fonte pontual
  
     intensidade_d = Vetor_escalar(Produto_arroba(I_F, K) , fd)   #luz difusa
@@ -99,12 +98,12 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor):
                 intensidade_d['z']+intensidade_e['z']+intensidade_a['z']) 
 
 #cena recebe  o raio e retorna a interseção
-def DecideCor(cena, canvas, D, P_F):
+def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel atual
     t_proximo = math.inf
     objeto_encontrado = None
     intensidade = 0.0
     for objeto in cena['objetos']:
-        [t1, t2] = Intersecao(objeto, cena['posicao_olho_observador'], D)
+        [t1, t2] = Intersecao(objeto, posicaoOlhoObservador, D)
         if( t1 < t_proximo):
             t_proximo = t1
             objeto_encontrado = objeto
@@ -113,9 +112,8 @@ def DecideCor(cena, canvas, D, P_F):
             t_proximo = t2
             objeto_encontrado = objeto
     if(objeto_encontrado != None):
-        P = Calcula_ponto_intersecao(cena['posicao_olho_observador'],t_proximo , D) #ponto que o raio atual incidiu
+        P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_proximo , D) #ponto que o raio atual incidiu
 
-    
         N = Subtracao_vetores(P, objeto_encontrado['centro'])
         N = Vetor(N['x']/objeto_encontrado['r'], N['y']/objeto_encontrado['r'], N['z']/objeto_encontrado['r']) #normalizando o vetor N
         #calculo do L
@@ -127,12 +125,11 @@ def DecideCor(cena, canvas, D, P_F):
         # comprimentoI = math.sqrt(Produto_escalar(I, I))
         # I = Vetor(I['x']/comprimentoI, I['y']/comprimentoI, I['z']/comprimentoI)
         
-        v_vetor = Subtracao_vetores(cena['posicao_olho_observador'], P)
+        v_vetor = Subtracao_vetores(posicaoOlhoObservador, P)
         comprimentoV = math.sqrt(Produto_escalar(v_vetor, v_vetor)) 
         v_vetor = Vetor(v_vetor['x']/comprimentoV, v_vetor['y']/comprimentoV, v_vetor['z']/comprimentoV)
         r_vetor_refletido = Calcula_vetor_refletido(L, N)
         intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor)
-    
 
     if(objeto_encontrado == None):
         return canvas['cor_fundo']
@@ -141,16 +138,16 @@ def DecideCor(cena, canvas, D, P_F):
                round(intensidade['y']*255),
               round(intensidade['z']*255))
 
-
 wJanela = 50 #dimenções da janela, por onde o observador ver o mundo
 hJanela = 50 
-dJanela = 100
+dJanela = 100 #distância entre a janela e a esfera
+
 wc = 500 #matriz de pixel do CANVAS
 hc = 500
 
 rEsfera = 25 
-P_F = Ponto(0, 0, 0) #Posição da fonte pontual situada a 5 metros acima do olho do observador.
-
+P_F = Ponto(0, 5, 0) #Posição da fonte pontual situada a 5 centimetros acima do olho do observador.
+posicaoOlhoObservador = Ponto(0,0,0)
 
 image = Image.new(mode="RGB", size=(wc, 500))
 pixels = image.load()
@@ -163,7 +160,7 @@ objeto_esfera1 = Esfera(Ponto(0, 0, -(janela['d'] + rEsfera)), rEsfera, Cor(255,
 
 objetos = [objeto_esfera1]
 
-cena = Cena(objetos, Ponto(0, 0, 0))
+cena = Cena(objetos)
 
 image = Image.new(mode="RGB", size=(canvas['wc'], canvas['hc']))
 pixels = image.load()
@@ -171,7 +168,7 @@ pixels = image.load()
 for x in range(canvas['wc']):
     for y in range(canvas['hc']):
         D = CanvasParaJanela(x, y, janela) #centro do pixel atual
-        color = DecideCor(cena, canvas, D, P_F)
+        color = DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F)
 
         pixels[x, y] = (color['r'], color['g'], color['b'])
       
