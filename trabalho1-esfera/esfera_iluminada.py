@@ -30,9 +30,6 @@ def CanvasParaJanela(c, l, janela): #retorna o vetor (Vx, Vy, Vz) que define a d
 def Produto_escalar(v_1, v_2):
         return v_1['x'] * v_2['x'] + v_1['y'] * v_2['y'] + v_1['z'] * v_2['z']
 
-def Produto_arroba(i, k):
-        return Vetor(i['x']*k['x'], i['y']*k['y'], i['z']*k['z'])
-
 def Subtracao_vetores(v_1, v):
         return Vetor(v_1['x'] - v['x'], v_1['y'] - v['y'], v_1['z'] - v['z'])
 
@@ -41,10 +38,7 @@ def Soma_vetores(v_1, v):
 
 def Equacao_raio(Eye, ti, dr):
     return Vetor(Eye['x']+ti*dr['x'], Eye['y']+ti*dr['y'], Eye['z']+ti*dr['z'])
-
-def Vetor_escalar(vetor, escalar):
-    return Vetor(vetor['x']*escalar, vetor['y']*escalar, vetor['z']*escalar)
-
+        
 def Intersecao(esfera, observador, D):
     w = Subtracao_vetores(observador, esfera['centro'])
    
@@ -77,26 +71,18 @@ def Calcula_vetor_refletido(L, N):
     vetor_l_n = Vetor(N['x']*escalar_l_n, N['y']*escalar_l_n, N['z']*escalar_l_n)
 
     return Subtracao_vetores(vetor_l_n, L)
-
-
 def Calcula_iluminacao( N, L, r_refletido,v_vetor):
     intensidade_d = 0.0 
     intensidade_e = 0.0
-    intensidade_a = 0.0
-    m = 10
     fd = max(0, Produto_escalar(L, N))
-    fe = pow(max(0, Produto_escalar(r_refletido, v_vetor)), m)
+    fe = max(0, Produto_escalar(r_refletido, v_vetor))
     I_F = Vetor(0.7, 0.7, 0.7)  # Intensidade da fonte pontual
-    I_A = Vetor(0.5, 0.5, 0.5) 
-    K = Vetor(0, 0.7, 0.7)  # Intensidade da fonte pontual
- 
-    intensidade_d = Vetor_escalar(Produto_arroba(I_F, K) , fd)   #luz difusa
-    intensidade_e = Vetor_escalar(Produto_arroba(I_F, K), fe) #luz especular
-    intensidade_a = Produto_arroba(I_A, K) #luz ambiente
-   
-    return Vetor(intensidade_d['x']+intensidade_e['x']+intensidade_a['x'], 
-                intensidade_d['y']+intensidade_e['y']+intensidade_a['y'], 
-                intensidade_d['z']+intensidade_e['z']+intensidade_a['z']) 
+    K = Vetor(0.3, 0.1, 0.9)  # Intensidade da fonte pontual
+
+    #luz difusa
+    intensidade_d = Produto_escalar(I_F, K) * fd
+    intensidade_e = Produto_escalar(I_F, K) * fe
+    return intensidade_d + intensidade_e
 
 #cena recebe  o raio e retorna a interseção
 def DecideCor(cena, canvas, D, P_F):
@@ -132,14 +118,13 @@ def DecideCor(cena, canvas, D, P_F):
         v_vetor = Vetor(v_vetor['x']/comprimentoV, v_vetor['y']/comprimentoV, v_vetor['z']/comprimentoV)
         r_vetor_refletido = Calcula_vetor_refletido(L, N)
         intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor)
-    
-
+ 
     if(objeto_encontrado == None):
         return canvas['cor_fundo']
     
-    return Cor(round(intensidade['x']*255),
-               round(intensidade['y']*255),
-              round(intensidade['z']*255))
+    return Cor(round(objeto_encontrado['cor']['r']*intensidade),
+                round(objeto_encontrado['cor']['g']*intensidade),
+               round( objeto_encontrado['cor']['b']*intensidade))
 
 
 wJanela = 50 #dimenções da janela, por onde o observador ver o mundo
@@ -149,8 +134,7 @@ wc = 500 #matriz de pixel do CANVAS
 hc = 500
 
 rEsfera = 25 
-P_F = Ponto(0, 0, 0) #Posição da fonte pontual situada a 5 metros acima do olho do observador.
-
+P_F = Ponto(0, 5, 0) #Posição da fonte pontual situada a 5 metros acima do olho do observador.
 
 image = Image.new(mode="RGB", size=(wc, 500))
 pixels = image.load()
@@ -158,10 +142,10 @@ pixels = image.load()
 janela = Janela( wJanela, hJanela, dJanela, wc, hc)  
 canvas = Canvas(wc, hc, Cor(100, 100, 100))
 
-objeto_esfera1 = Esfera(Ponto(0, 0, -(janela['d'] + rEsfera)), rEsfera, Cor(255, 0, 0))
-#objeto_esfera2 = Esfera(Ponto(10, 0, -(janela['d'] +rEsfera +20)), rEsfera, Cor(0, 255, 0))
+objeto_esfera1 = Esfera(Ponto(0, 0, -(janela['d'] + rEsfera+40)), rEsfera, Cor(255, 0, 0))
+objeto_esfera2 = Esfera(Ponto(10, 0, -(janela['d'] +rEsfera +20)), rEsfera, Cor(0, 255, 0))
 
-objetos = [objeto_esfera1]
+objetos = [objeto_esfera1,objeto_esfera2]
 
 cena = Cena(objetos, Ponto(0, 0, 0))
 
