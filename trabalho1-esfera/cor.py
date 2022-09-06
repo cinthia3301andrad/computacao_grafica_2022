@@ -35,9 +35,9 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor):
     m = 10
     fd = max(0, Produto_escalar(L, N))
     fe = pow(max(0, Produto_escalar(r_refletido, v_vetor)), m)
-    I_F = Vetor(0.7, 0.7, 0.7)  # Intensidade da fonte pontual
+    I_F = Vetor(0.7, 0.7, 0.7)  # Intensidade da fonte 
     I_A = Vetor(0.5, 0.5, 0.5) # Intensidade da luz ambiente
-    K = Vetor(0, 0.7, 0.7)  # Intensidade da fonte pontual
+    K = Vetor(0, 0.7, 0.7)  # Constante de opacidade do objeto. (quanto de vermelho o objt vai refletir, quanto de verde o objt vai refletir, quanto de azul o objt vai refletir)
  
     intensidade_d = Vetor_escalar(Produto_arroba(I_F, K) , fd)   #luz difusa
     intensidade_e = Vetor_escalar(Produto_arroba(I_F, K), fe) #luz especular
@@ -47,7 +47,7 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor):
                 intensidade_d['y']+intensidade_e['y']+intensidade_a['y'], 
                 intensidade_d['z']+intensidade_e['z']+intensidade_a['z']) 
 
-# cena recebe  o raio e retorna a interseção
+# cena recebe  o raio e retorna a cor do objeto mais próximo
 def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel atual
     t_proximo = math.inf
     objeto_encontrado = None
