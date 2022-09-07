@@ -1,25 +1,11 @@
 import math
 
 from calc_vetores import Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido
+from intersecoes import IntersecaoEsfera
 
 def Cor(r, g, b):
     return {'r': r, 'g': g, 'b': b}
 
-def Intersecao(esfera, posicaoOlhoObservador, D): #D = centro do pixel atual
-    w = Subtracao_vetores(posicaoOlhoObservador, esfera['centro'])
-   
-    a = Produto_escalar(D, D)
-    b = 2 * Produto_escalar(w, D)
-    c = Produto_escalar(w, w) - esfera['r'] * esfera['r'] 
-
-    delta = b * b - 4 * a * c
-    if(delta < 0):
-        return math.inf, math.inf
-
-    t1 = (-b + math.sqrt(delta)) / (2 * a)
-    t2 = (-b - math.sqrt(delta)) / (2 * a)
-        
-    return (t1, t2)
 
 def Calcula_ponto_intersecao(posicaoOlhoObservador, t, D): #D = centro do pixel atual
     return Ponto(
@@ -53,7 +39,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
     objeto_encontrado = None
     intensidade = 0.0
     for objeto in cena['objetos']:
-        [t1, t2] = Intersecao(objeto, posicaoOlhoObservador, D)
+        [t1, t2] = IntersecaoEsfera(objeto, posicaoOlhoObservador, D)
         if( t1 < t_proximo):
             t_proximo = t1
             objeto_encontrado = objeto
