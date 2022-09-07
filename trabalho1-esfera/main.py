@@ -13,7 +13,7 @@ P_F = Ponto(0, 5, 0) #Posição da fonte pontual situada a 5 centimetros acima d
 image = Image.new(mode="RGB", size=(wc, 500))
 pixels = image.load()
 
-dJanela = 100 #distância entre a janela e a esfera
+dJanela = 100 #distância entre a janela e o olho observador
 
 canvas = Canvas(Cor(100, 100, 100))
 janela = Janela(dJanela, canvas['wc'], canvas['hc'])  
