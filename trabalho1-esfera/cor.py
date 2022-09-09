@@ -1,11 +1,10 @@
 import math
 
-from calc_vetores import Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido
+from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido
 from intersecoes import IntersecaoEsfera, IntersecaoPlano
 
 def Cor(r, g, b):
     return {'r': r, 'g': g, 'b': b}
-
 
 def Calcula_ponto_intersecao(posicaoOlhoObservador, t, D): #D = centro do pixel atual
     return Ponto(
@@ -18,23 +17,25 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, temSombra 
     intensidade_d = 0.0 #difusa
     intensidade_e = 0.0 #escalar
     intensidade_a = 0.0 #ambiente
-    m = 10
+    m = objeto_encontrado['m']
     fd = max(0, Produto_escalar(L, N))
     fe = pow(max(0, Produto_escalar(r_refletido, v_vetor)), m)
     I_F = Vetor(0.7, 0.7, 0.7)  # Intensidade da fonte 
-    I_A = Vetor(0.5, 0.5, 0.5) # Intensidade da luz ambiente
-    K = objeto_encontrado['K']  # Constante de opacidade do objeto. (quanto de vermelho o objt vai refletir, quanto de verde o objt vai refletir, quanto de azul o objt vai refletir)
+    I_A = Vetor(0.3, 0.3, 0.3) # Intensidade da luz ambiente
+    
+    K_e = objeto_encontrado['K_e'] #Opacidade do objeto. (quanto de vermelho o objt vai refletir, quanto de verde o objt vai refletir, quanto de azul o objt vai refletir)
+    K_d = objeto_encontrado['K_d']
+    K_a = objeto_encontrado['K_a']
+    
+    
+    intensidade_d = Vetor_escalar(Produto_arroba(I_F,  K_d) , fd)   #luz difusa
+    intensidade_e = Vetor_escalar(Produto_arroba(I_F, K_e), fe) #luz especular
+    intensidade_a = Produto_arroba(I_A, K_a) #luz ambiente
 
-    
-    
-    intensidade_d = Vetor_escalar(Produto_arroba(I_F, K) , fd)   #luz difusa
-    intensidade_e = Vetor_escalar(Produto_arroba(I_F, K), fe) #luz especular
-    intensidade_a = Produto_arroba(I_A, K) #luz ambiente
     if(temSombra):
-
         return Vetor(intensidade_a['x'], 
                 intensidade_a['y'], 
-                intensidade_a['z']) 
+                intensidade_a['z'])  
     return Vetor(intensidade_d['x']+intensidade_e['x']+intensidade_a['x'], 
                 intensidade_d['y']+intensidade_e['y']+intensidade_a['y'], 
                 intensidade_d['z']+intensidade_e['z']+intensidade_a['z']) 
@@ -60,8 +61,8 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
                 t_proximo = t_p
                 objeto_encontrado = objeto
 
+    t_proximo = t_proximo - 0.00000000000001
     return [t_proximo, objeto_encontrado]
-
     
 # cena recebe  o raio e retorna a cor do objeto mais próximo
 def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel atual
@@ -84,6 +85,8 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         v_vetor = Vetor(v_vetor['x']/comprimentoV, v_vetor['y']/comprimentoV, v_vetor['z']/comprimentoV)
         r_vetor_refletido = Calcula_vetor_refletido(L, N)
         intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
+        
+    
 
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'plano'):
         P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_proximo , D) #ponto que o raio atual incidiu
@@ -94,11 +97,18 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         comprimentoV = math.sqrt(Produto_escalar(D, D)) 
         v_vetor = Vetor(-D['x']/comprimentoV, -D['y']/comprimentoV, -D['z']/comprimentoV)
         r_vetor_refletido = Calcula_vetor_refletido(L, N)
-        [s, _] = Intersecao_objeto_proximo(P, P_F, cena)
-        if(s < comprimentoPf_pi):
+
+        tam_pf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
+        pf_pi = Vetor(pf_pi['x']/tam_pf_pi, pf_pi['y']/tam_pf_pi, pf_pi['z']/tam_pf_pi) #normalizando o vetor 
+
+        [s, _] = Intersecao_objeto_proximo(P, pf_pi, cena)  
+        inf = math.inf
         
+        #print("S= ", s , "comprimentoPf_pi= ",comprimentoPf_pi)
+        if(s!= inf and s < comprimentoPf_pi):   
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, True)
-        intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
+        else:
+            intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
 
       
     if(objeto_encontrado == None):

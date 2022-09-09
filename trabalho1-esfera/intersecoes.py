@@ -15,7 +15,6 @@ def IntersecaoEsfera(esfera, posicaoOlhoObservador, D): #D = centro do pixel atu
 
     t1 = (-b + math.sqrt(delta)) / (2 * a)
     t2 = (-b - math.sqrt(delta)) / (2 * a)
-        
     return (t1, t2)
 
 def IntersecaoPlano(plano, posicaoOlhoObservador, D):

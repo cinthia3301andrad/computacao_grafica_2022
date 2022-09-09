@@ -2,8 +2,19 @@ from calc_vetores import Subtracao_vetores, Vetor
 
 tipo = 'esfera'
 
-def Esfera(centro, r, cor, K):
-    return {'tipo': tipo ,'centro': centro, 'r': r, 'cor': cor, 'K': K}
+def Esfera(centro, r, cor, K_e,K_d,K_a, m):
+    return {
+        'tipo': tipo ,
+        'centro': centro, 
+        'r': r, 
+        'cor': cor, 
+        'K_e': K_e,
+        'K_d': K_d,
+        'K_a': K_a,
+        'm': m
+    }
+
+
 
 #calculo do N 
 def calcN(P, objeto_encontrado):

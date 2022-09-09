@@ -13,8 +13,8 @@ def Produto_arroba(i, k):
 def Subtracao_vetores(v_1, v):
     return Vetor(v_1['x'] - v['x'], v_1['y'] - v['y'], v_1['z'] - v['z'])
 
-#def Soma_vetores(v_1, v):
-#    return Vetor(v_1['x'] + v['x'], v_1['y'] + v['y'], v_1['z'] + v['z'])
+def Soma_vetores(v_1, v):
+    return Vetor(v_1['x'] + v['x'], v_1['y'] + v['y'], v_1['z'] + v['z'])
 
 #def Equacao_raio(Eye, ti, dr):
 #    return Vetor(Eye['x']+ti*dr['x'], Eye['y']+ti*dr['y'], Eye['z']+ti*dr['z'])
