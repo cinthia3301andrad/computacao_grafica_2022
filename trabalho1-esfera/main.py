@@ -50,6 +50,9 @@ pixels = image.load()
 for x in range(canvas['wc']):
     for y in range(canvas['hc']):
         D = CanvasParaJanela(x, y, janela) #centro do pixel atual
+        comprimentoD = math.sqrt(Produto_escalar(D, D))
+        D = Vetor(D['x']/comprimentoD, D['y']/comprimentoD, D['z']/comprimentoD)#normalizar d
+        
         color = DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F)
 
         pixels[x, y] = (color['r'], color['g'], color['b'])

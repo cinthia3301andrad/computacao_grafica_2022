@@ -13,9 +13,6 @@ def Esfera(centro, r, cor, K_e,K_d,K_a, m):
         'K_a': K_a,
         'm': m
     }
-
-
-
 #calculo do N 
 def calcN(P, objeto_encontrado):
     N = Subtracao_vetores(P, objeto_encontrado['centro'])
