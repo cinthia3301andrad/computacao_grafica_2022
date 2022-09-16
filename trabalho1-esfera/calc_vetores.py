@@ -30,3 +30,43 @@ def Calcula_vetor_refletido(L, N):
     vetor_l_n = Vetor(N['x']*escalar_l_n, N['y']*escalar_l_n, N['z']*escalar_l_n)
 
     return Subtracao_vetores(vetor_l_n, L)
+
+
+def calcula_M_cilindro(d):
+    M = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    I = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    M[0][0] = d['x'] * d['x']
+    M[0][1] = d['x'] * d['y']
+    M[0][2] = d['x'] * d['z']
+
+    M[1][0] = d['y'] * d['x']
+    M[1][1] = d['y'] * d['y']
+    M[1][2] = d['y'] * d['z']
+
+    M[2][0] = d['z'] * d['x']
+    M[2][1] = d['z'] * d['y']
+    M[2][2] = d['z'] * d['z']
+
+    M[0][0] = I[0][0] - M[0][0]
+    M[0][1] = I[0][1] - M[0][1]
+    M[0][2] = I[0][2] - M[0][2]
+
+    M[1][0] = I[1][0] - M[1][0]
+    M[1][1] = I[1][1] - M[1][1]
+    M[1][2] =I[1][2] - M[1][2]
+
+    M[2][0] = I[2][0] - M[2][0]
+    M[2][1] = I[2][1] - M[2][1]
+    M[2][2] = I[2][2] - M[2][2]
+
+    
+    return M
+
+def mult_matriz_vetor(M, vetor):
+    calc = Vetor(
+        M[0][0]*vetor['x'] + M[0][1]*vetor['y'] +M[0][2]*vetor['z'],
+        M[1][0]*vetor['x'] + M[1][1]*vetor['y'] +M[1][2]*vetor['z'],
+        M[2][0]*vetor['x'] + M[2][1]*vetor['y'] +M[2][2]*vetor['z'],
+    )
+
+    return calc

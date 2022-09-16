@@ -1,6 +1,9 @@
 
 from PIL import Image
 
+
+from cilindro import *
+import math  
 from calc_vetores import *
 from janela import *
 from canvas import *
@@ -25,6 +28,19 @@ K_e_esfera = Vetor(0.7, 0.2, 0.2)
 objeto_esfera1 = Esfera(Ponto(0, 0, -100), rEsfera, Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
 #objeto_esfera2 = Esfera(Ponto(10, 0, -(janela['d'] +rEsfera +20)), rEsfera, Cor(0, 255, 0))
 
+rCilindro= rEsfera/3
+m_cilindro= 10
+h_cilindro = 3*rEsfera
+centro_cilindro = Ponto(0, 0, -100)
+d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+K_d_cilindro= Vetor(0.2, 0.3, 0.8)
+K_a_cilindro= Vetor(0.2, 0.3, 0.8)
+K_e_cilindro= Vetor(0.2, 0.3, 0.8)
+objeto_cilindro1 = Cilindro(centro_cilindro, 
+                      rCilindro, h_cilindro, d_cil,
+                      Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
+
+
 P_pi = Ponto(0, -rEsfera, 0) #ponto conhecido
 n_bar = Vetor(0, 1, 0) #vetor normal
 K_d_chao = Vetor (0.2, 0.7, 0.2)
@@ -40,7 +56,7 @@ m_plano_fundo = 1
 plano_fundo = Plano(Ponto(0, 0, -200), Vetor(0, 0, 1) , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo)
 
 
-objetos = [objeto_esfera1,plano_chao, plano_fundo]
+objetos = [ objeto_cilindro1]
 
 cena = Cena(objetos)
 

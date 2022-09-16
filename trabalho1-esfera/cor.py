@@ -1,7 +1,7 @@
 import math
 
-from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido
-from intersecoes import IntersecaoEsfera, IntersecaoPlano
+from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido, calcula_M_cilindro, mult_matriz_vetor
+from intersecoes import IntersecaoCilindro, IntersecaoEsfera, IntersecaoPlano
 
 def Cor(r, g, b):
     return {'r': r, 'g': g, 'b': b}
@@ -44,7 +44,7 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, temSombra 
 def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
     t_proximo = math.inf
     objeto_encontrado = None
-    
+    t_proximo_cilindro = math.inf
     for objeto in cena['objetos']:
         if(objeto['tipo'] == 'esfera'):
             [t1, t2] = IntersecaoEsfera(objeto, posicaoOlhoObservador, D)
@@ -60,7 +60,23 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
             if( t_p != None and t_p < t_proximo  ):
                 t_proximo = t_p
                 objeto_encontrado = objeto
+        if(objeto['tipo'] == 'cilindro'):
+            
+            [t1, t2]  =  IntersecaoCilindro(objeto, posicaoOlhoObservador, D)
+            print('entrou para encontrar o cilindro', t1, t2)
+            if( t1 < t_proximo):
+                t_proximo_cilindro = t1
+               
 
+            if( t2 < t_proximo):
+                t_proximo_cilindro = t2
+                
+            P = Calcula_ponto_intersecao(posicaoOlhoObservador, t_proximo_cilindro , D)
+            comprimentoP_Cb = math.sqrt(Produto_escalar(P, objeto['centro'])) 
+            #raio/plano da base
+            if(comprimentoP_Cb <= objeto['r']):
+                t_proximo = t_proximo_cilindro
+                objeto_encontrado = objeto
     t_proximo = t_proximo 
     return [t_proximo, objeto_encontrado]
     
@@ -71,7 +87,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
     intensidade = 0.0
 
     [t_proximo, objeto_encontrado] =  Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena)
-    
+
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'esfera'):
         t_corrigido = t_proximo - 0.1
         P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_corrigido , D) #ponto que o raio atual incidiu
@@ -121,6 +137,17 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         else:
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
 
+    if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cilindro'):
+     
+        P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_corrigido , D) #ponto que o raio atual incidiu
+        M = calcula_M_cilindro(objeto_encontrado['direcao'])
+        P_Cb = Subtracao_vetores(P - objeto_encontrado['centro'])
+        L = Calc_L(P_F, P)
+        N = mult_matriz_vetor(M, P_Cb)  
+        r_vetor_refletido = Calcula_vetor_refletido(L, N)
+        comprimentoV = math.sqrt(Produto_escalar(D, D)) 
+        v_vetor = Vetor(-D['x']/comprimentoV, -D['y']/comprimentoV, -D['z']/comprimentoV)
+        intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
     if(objeto_encontrado == None):
         return canvas['cor_fundo']
     
