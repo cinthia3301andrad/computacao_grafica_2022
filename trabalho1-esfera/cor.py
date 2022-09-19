@@ -73,10 +73,12 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
                 
             P = Calcula_ponto_intersecao(posicaoOlhoObservador, t_proximo_cilindro , D)
             comprimentoP_Cb = math.sqrt(Produto_escalar(P, objeto['centro'])) 
+            print(comprimentoP_Cb, "COMPRIMENTO DO VETOR ATE O PONTO P")
             #raio/plano da base
             if(comprimentoP_Cb <= objeto['r']):
                 t_proximo = t_proximo_cilindro
                 objeto_encontrado = objeto
+                print('AQUI O PONTO NO CILINDRO',t_proximo)
     t_proximo = t_proximo 
     return [t_proximo, objeto_encontrado]
     
@@ -148,6 +150,11 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         comprimentoV = math.sqrt(Produto_escalar(D, D)) 
         v_vetor = Vetor(-D['x']/comprimentoV, -D['y']/comprimentoV, -D['z']/comprimentoV)
         intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
+
+
+
+        print("estou indo para a sombra?")
+    
     if(objeto_encontrado == None):
         return canvas['cor_fundo']
     
