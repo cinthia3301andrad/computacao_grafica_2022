@@ -42,6 +42,7 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, temSombra 
 
 
 def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
+    hit= 0 
     t_proximo = math.inf
     objeto_encontrado = None
     t_proximo_cilindro = math.inf
@@ -55,26 +56,32 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
             if( t2 < t_proximo):
                 t_proximo = t2
                 objeto_encontrado = objeto
+
         if(objeto['tipo'] == 'plano'):
             t_p =  IntersecaoPlano(objeto, posicaoOlhoObservador, D)
             if( t_p != None and t_p < t_proximo  ):
                 t_proximo = t_p
                 objeto_encontrado = objeto
+
+
         if(objeto['tipo'] == 'cilindro'):
+            t_cilindro = math.inf
+            t_base     = math.inf
+            t_topo     = math.inf
             
-            t_proximo_cilindro  =  IntersecaoCilindro(objeto, posicaoOlhoObservador, D)
-         
-        
-            P = Calcula_ponto_intersecao(posicaoOlhoObservador, t_proximo_cilindro , D)
-            projecao = Produto_escalar(Subtracao_vetores( P,objeto['centro'] ), objeto['direcao']) 
-            if(projecao < 0 and projecao > objeto['altura']):
-                t_proximo_cilindro =  None
+            t1  =  IntersecaoCilindro(objeto, posicaoOlhoObservador, D)
+            if( t1 < t_cilindro):
+                t_cilindro = t1
+                P = Calcula_ponto_intersecao(posicaoOlhoObservador, t_cilindro , D)
+                projecao = Produto_escalar(Subtracao_vetores( P,objeto['centro'] ), objeto['direcao']) 
+                if(projecao < 0 or projecao > objeto['altura']):
+                      t_cilindro = math.inf
         
 
             plano_base = PlanoBase(objeto['centro'], 
                     Vetor(-objeto['direcao']['x'], -objeto['direcao']['y'],-objeto['direcao']['z'])) 
             t_base =  IntersecaoPlano(plano_base, posicaoOlhoObservador, D)
-            print('t_base', t_base, 't base', t_base)
+            #print('t_base', t_base, 't base', t_base)
             if(t_base !=None):
                 P_base = Calcula_ponto_intersecao(posicaoOlhoObservador, t_base , D)
                 P_Cb = Subtracao_vetores(P_base, objeto['centro'])
@@ -82,44 +89,43 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
                 comprimentoP_Cb = math.sqrt(Produto_escalar(P_Cb, P_Cb)) 
 
                 if(comprimentoP_Cb > objeto['r'] ): #t base invalido
-                    t_base = None
+                    t_base = math.inf
 
-            plano_topo = PlanoBase(Soma_vetores(objeto['centro'], Vetor_escalar(objeto['direcao'], objeto['altura'])), objeto['direcao']) 
+            centroTopo = Soma_vetores(objeto['centro'], Vetor_escalar(objeto['direcao'], objeto['altura']))
+            plano_topo = PlanoBase(centroTopo, objeto['direcao']) 
             t_topo =  IntersecaoPlano(plano_topo, posicaoOlhoObservador, D)
                
             if(t_topo !=None):
                 P_topo = Calcula_ponto_intersecao(posicaoOlhoObservador, t_topo , D)
                     
             
-                P_Cb_topo = Subtracao_vetores(P_topo, objeto['centro'])
+                P_Cb_topo = Subtracao_vetores(P_topo, centroTopo)
         
                 comprimentoP_Cb_topo = math.sqrt(Produto_escalar(P_Cb_topo, P_Cb_topo)) 
 
                 if(comprimentoP_Cb_topo > objeto['r'] ): #t base invalido
-                    t_topo = None
+                    t_topo = math.inf
                 
-            if( t_base != None):
-                if(t_topo != None):
-                    if(t_topo < t_base):
-                        t_proximo = t_topo
-                    else:
-                        t_proximo = t_base
-                else:
-                    t_proximo = t_base 
-            else:
-                if(t_topo != None):
-                    t_proximo = t_topo
-       
-    t_proximo = t_proximo
-    return [t_proximo, objeto_encontrado]
+            #validações na base e do topo
+            t_min_cilindro = min(t_cilindro, t_base, t_topo)
+            if(t_min_cilindro < math.inf):
+                if(t_min_cilindro == t_cilindro): hit=0
+                if(t_min_cilindro == t_base): hit=1
+                if(t_min_cilindro == t_topo): hit=2
+                t_proximo = t_min_cilindro
+                objeto_encontrado = objeto
+    return [t_proximo, objeto_encontrado, hit]       
+                
     
 # cena recebe  o raio e retorna a cor do objeto mais próximo
 def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel atual
     t_proximo = math.inf
     objeto_encontrado = None
+    hit=0 
     intensidade = 0.0
+    
 
-    [t_proximo, objeto_encontrado] =  Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena)
+    [t_proximo, objeto_encontrado, hit] =  Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena)
 
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'esfera'):
         t_corrigido = t_proximo - 0.1
@@ -171,12 +177,24 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
 
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cilindro'):
-        return objeto_encontrado['cor']
+        #return objeto_encontrado['cor']
+        t_corrigido = t_proximo - 0.1
         P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_corrigido , D) #ponto que o raio atual incidiu
-        M = calcula_M_cilindro(objeto_encontrado['direcao'])
-        P_Cb = Subtracao_vetores(P - objeto_encontrado['centro'])
+        if(hit == 0):
+            M = calcula_M_cilindro(objeto_encontrado['direcao'])
+            P_Cb = Subtracao_vetores(P, objeto_encontrado['centro'])
+            N = mult_matriz_vetor(M, P_Cb)  
+            N = Vetor(N['x']/objeto_encontrado['r'], N['y']/objeto_encontrado['r'], N['z']/objeto_encontrado['r']) #normalizando o vetor N
+        else:
+            if(hit == 1):
+                N = Vetor(-objeto_encontrado['direcao']['x'], -objeto_encontrado['direcao']['y'],-objeto_encontrado['direcao']['z'])
+                N_comp = math.sqrt(Produto_escalar(N, N))
+                N = Vetor(N['x']/N_comp, N['y']/N_comp, N['z']/N_comp) #normalizando o vetor N
+            else:
+                N =  objeto_encontrado['direcao']
+                N_comp = math.sqrt(Produto_escalar(N, N))
+                N = Vetor(N['x']/N_comp, N['y']/N_comp, N['z']/N_comp) #normalizando o vetor N
         L = Calc_L(P_F, P)
-        N = mult_matriz_vetor(M, P_Cb)  
         r_vetor_refletido = Calcula_vetor_refletido(L, N)
         comprimentoV = math.sqrt(Produto_escalar(D, D)) 
         v_vetor = Vetor(-D['x']/comprimentoV, -D['y']/comprimentoV, -D['z']/comprimentoV)

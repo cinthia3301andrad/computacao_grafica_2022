@@ -24,10 +24,10 @@ def IntersecaoPlano(plano, posicaoOlhoObservador, D):
     denominador = Produto_escalar(D, plano['n_bar'])
     
     if(denominador == 0 ):
-        return None
+        return math.inf
     t_i = -numerador/denominador
     if(t_i < 0):
-        return None
+        return math.inf
     
     return t_i
     
