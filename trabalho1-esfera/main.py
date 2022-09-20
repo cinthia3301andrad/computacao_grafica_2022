@@ -22,16 +22,17 @@ janela = Janela(dJanela, canvas['wc'], canvas['hc'])
 
 rEsfera = 40 
 m_esfera = 10
+centro_esfera = Ponto(0, 0, -100)
 K_d_esfera = Vetor(0.7, 0.2, 0.2)
 K_a_esfera = Vetor(0.7, 0.2, 0.2)
 K_e_esfera = Vetor(0.7, 0.2, 0.2)
-objeto_esfera1 = Esfera(Ponto(0, 0, -100), rEsfera, Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
+objeto_esfera1 = Esfera(centro_esfera, rEsfera, Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
 #objeto_esfera2 = Esfera(Ponto(10, 0, -(janela['d'] +rEsfera +20)), rEsfera, Cor(0, 255, 0))
 
 rCilindro= rEsfera/3
 m_cilindro= 10
 h_cilindro = 3*rEsfera
-centro_cilindro = Ponto(0, 0, -100)
+centro_cilindro = centro_esfera
 d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
 K_d_cilindro= Vetor(0.2, 0.3, 0.8)
 K_a_cilindro= Vetor(0.2, 0.3, 0.8)

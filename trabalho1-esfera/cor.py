@@ -1,5 +1,5 @@
 import math
-
+from plano import *
 from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido, calcula_M_cilindro, mult_matriz_vetor
 from intersecoes import IntersecaoCilindro, IntersecaoEsfera, IntersecaoPlano
 
@@ -62,24 +62,55 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
                 objeto_encontrado = objeto
         if(objeto['tipo'] == 'cilindro'):
             
-            [t1, t2]  =  IntersecaoCilindro(objeto, posicaoOlhoObservador, D)
-            print('entrou para encontrar o cilindro', t1, t2)
-            if( t1 < t_proximo):
-                t_proximo_cilindro = t1
-               
-
-            if( t2 < t_proximo):
-                t_proximo_cilindro = t2
-                
+            t_proximo_cilindro  =  IntersecaoCilindro(objeto, posicaoOlhoObservador, D)
+         
+        
             P = Calcula_ponto_intersecao(posicaoOlhoObservador, t_proximo_cilindro , D)
-            comprimentoP_Cb = math.sqrt(Produto_escalar(P, objeto['centro'])) 
-            print(comprimentoP_Cb, "COMPRIMENTO DO VETOR ATE O PONTO P")
-            #raio/plano da base
-            if(comprimentoP_Cb <= objeto['r']):
-                t_proximo = t_proximo_cilindro
-                objeto_encontrado = objeto
-                print('AQUI O PONTO NO CILINDRO',t_proximo)
-    t_proximo = t_proximo 
+            projecao = Produto_escalar(Subtracao_vetores( P,objeto['centro'] ), objeto['direcao']) 
+            if(projecao < 0 and projecao > objeto['altura']):
+                t_proximo_cilindro =  None
+        
+
+            plano_base = PlanoBase(objeto['centro'], 
+                    Vetor(-objeto['direcao']['x'], -objeto['direcao']['y'],-objeto['direcao']['z'])) 
+            t_base =  IntersecaoPlano(plano_base, posicaoOlhoObservador, D)
+            print('t_base', t_base, 't base', t_base)
+            if(t_base !=None):
+                P_base = Calcula_ponto_intersecao(posicaoOlhoObservador, t_base , D)
+                P_Cb = Subtracao_vetores(P_base, objeto['centro'])
+        
+                comprimentoP_Cb = math.sqrt(Produto_escalar(P_Cb, P_Cb)) 
+
+                if(comprimentoP_Cb > objeto['r'] ): #t base invalido
+                    t_base = None
+
+            plano_topo = PlanoBase(Soma_vetores(objeto['centro'], Vetor_escalar(objeto['direcao'], objeto['altura'])), objeto['direcao']) 
+            t_topo =  IntersecaoPlano(plano_topo, posicaoOlhoObservador, D)
+               
+            if(t_topo !=None):
+                P_topo = Calcula_ponto_intersecao(posicaoOlhoObservador, t_topo , D)
+                    
+            
+                P_Cb_topo = Subtracao_vetores(P_topo, objeto['centro'])
+        
+                comprimentoP_Cb_topo = math.sqrt(Produto_escalar(P_Cb_topo, P_Cb_topo)) 
+
+                if(comprimentoP_Cb_topo > objeto['r'] ): #t base invalido
+                    t_topo = None
+                
+            if( t_base != None):
+                if(t_topo != None):
+                    if(t_topo < t_base):
+                        t_proximo = t_topo
+                    else:
+                        t_proximo = t_base
+                else:
+                    t_proximo = t_base 
+            else:
+                if(t_topo != None):
+                    t_proximo = t_topo
+       
+    t_proximo = t_proximo
     return [t_proximo, objeto_encontrado]
     
 # cena recebe  o raio e retorna a cor do objeto mais próximo
@@ -140,7 +171,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
 
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cilindro'):
-     
+        return objeto_encontrado['cor']
         P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_corrigido , D) #ponto que o raio atual incidiu
         M = calcula_M_cilindro(objeto_encontrado['direcao'])
         P_Cb = Subtracao_vetores(P - objeto_encontrado['centro'])

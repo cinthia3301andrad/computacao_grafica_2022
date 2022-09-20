@@ -49,16 +49,18 @@ def IntersecaoCilindro(cilindro, posicaoOlhoObservador, D): #D = centro do pixel
     a = Produto_escalar(w, w)
     b = 2*Produto_escalar(v, w)
     c = Produto_escalar(v, v) - cilindro['r'] * cilindro['r']
-
-    delta = b * b - a * c
-    print("delta",delta)
+    
+    delta = b * b - 4* a * c
+    #print("delta",delta)
     if(delta < 0):
-        return math.inf, math.inf
+        return math.inf
     
-    t1 = (-b + math.sqrt(delta)) / a
-    t2 = (-b - math.sqrt(delta)) / a
+    t1 = (-b + math.sqrt(delta)) / (2*a)
+    t2 = (-b - math.sqrt(delta)) / (2*a)
     
-    return (t1, t2)
+    if(t1 < t2):
+        return t1
+    return  t2
 
 
 
