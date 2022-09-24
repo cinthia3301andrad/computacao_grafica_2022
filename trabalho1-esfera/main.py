@@ -29,12 +29,12 @@ K_e_esfera = Vetor(0.7, 0.2, 0.2)
 objeto_esfera1 = Esfera(centro_esfera, rEsfera, Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
 #objeto_esfera2 = Esfera(Ponto(10, 0, -(janela['d'] +rEsfera +20)), rEsfera, Cor(0, 255, 0))
 
-rCilindro  = rEsfera
+rCilindro  = rEsfera/3
 m_cilindro = 10
-h_cilindro = 2*rEsfera
-centro_cilindro = Ponto(0, -rEsfera, -100)
-#d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-d_cil = Vetor(0, 1, 0)
+h_cilindro = 3*rEsfera
+centro_cilindro = Ponto(0, 0, -100)
+d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+#d_cil = Vetor(0, 1, 0)
 K_d_cilindro= Vetor(0.2, 0.3, 0.8)
 K_a_cilindro= Vetor(0.2, 0.3, 0.8)
 K_e_cilindro= Vetor(0.2, 0.3, 0.8)
