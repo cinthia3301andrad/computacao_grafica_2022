@@ -29,7 +29,7 @@ K_e_esfera = Vetor(0.7, 0.2, 0.2)
 objeto_esfera1 = Esfera(centro_esfera, rEsfera, Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
 #objeto_esfera2 = Esfera(Ponto(10, 0, -(janela['d'] +rEsfera +20)), rEsfera, Cor(0, 255, 0))
 
-rCilindro  = rEsfera
+rCilindro  = rEsfera/3
 m_cilindro = 10
 h_cilindro = 2*rEsfera
 centro_cilindro = Ponto(0, -rEsfera, -100)
