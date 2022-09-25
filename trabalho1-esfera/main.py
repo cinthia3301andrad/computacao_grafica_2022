@@ -33,8 +33,8 @@ rCilindro  = rEsfera
 m_cilindro = 10
 h_cilindro = 2*rEsfera
 centro_cilindro = Ponto(0, -rEsfera, -100)
-#d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-d_cil = Vetor(0, 1, 0)
+d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+#d_cil = Vetor(0, 1, 0)
 K_d_cilindro= Vetor(0.2, 0.3, 0.8)
 K_a_cilindro= Vetor(0.2, 0.3, 0.8)
 K_e_cilindro= Vetor(0.2, 0.3, 0.8)
@@ -58,7 +58,7 @@ m_plano_fundo = 1
 plano_fundo = Plano(Ponto(0, 0, -200), Vetor(0, 0, 1) , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo)
 
 
-objetos = [ objeto_cilindro1]
+objetos = [ plano_chao,plano_fundo, objeto_cilindro1, objeto_esfera1]
 #objetos = [ objeto_esfera1]
 
 cena = Cena(objetos)

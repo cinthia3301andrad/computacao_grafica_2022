@@ -81,7 +81,7 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
             plano_base = PlanoBase(objeto['centro'], 
                     Vetor(-objeto['direcao']['x'], -objeto['direcao']['y'],-objeto['direcao']['z'])) 
             t_base =  IntersecaoPlano(plano_base, posicaoOlhoObservador, D)
-            #print('t_base', t_base, 't base', t_base)
+       
             if(t_base !=None):
                 P_base = Calcula_ponto_intersecao(posicaoOlhoObservador, t_base , D)
                 P_Cb = Subtracao_vetores(P_base, objeto['centro'])
@@ -147,7 +147,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         tam_pf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
         pf_pi = Vetor(pf_pi['x']/tam_pf_pi, pf_pi['y']/tam_pf_pi, pf_pi['z']/tam_pf_pi) #normalizando o vetor 
 
-        [s, _] = Intersecao_objeto_proximo(P, L, cena)  
+        [s, _, _] = Intersecao_objeto_proximo(P, L, cena)  
         
         if(s > 0 and s < tam_pf_pi):   
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, True)
@@ -169,7 +169,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         tam_pf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
         pf_pi = Vetor(pf_pi['x']/tam_pf_pi, pf_pi['y']/tam_pf_pi, pf_pi['z']/tam_pf_pi) #normalizando o vetor 
 
-        [s, _] = Intersecao_objeto_proximo(P, pf_pi, cena)  
+        [s, _, _] = Intersecao_objeto_proximo(P, pf_pi, cena)  
        
         if(s > 0 and s < comprimentoPf_pi):   
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, True)
@@ -202,7 +202,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
 
 
 
-        print("estou indo para a sombra?")
+  
     
     if(objeto_encontrado == None):
         return canvas['cor_fundo']
