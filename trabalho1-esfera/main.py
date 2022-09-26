@@ -1,5 +1,6 @@
 
 from PIL import Image
+from cone import *
 
 
 from cilindro import *
@@ -31,17 +32,16 @@ objeto_esfera1 = Esfera(centro_esfera, rEsfera, Cor(255, 0, 0),K_d_esfera, K_d_e
 
 rCilindro  = rEsfera/3
 m_cilindro = 10
-h_cilindro = 2*rEsfera
-centro_cilindro = Ponto(0, -rEsfera, -100)
+h_cilindro = 3*rEsfera
+centro_cilindro = Ponto(0, 0, -100)
 d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-#d_cil = Vetor(0, 1, 0)
+#d_cil = Vetor(0, 1,0)
 K_d_cilindro= Vetor(0.2, 0.3, 0.8)
 K_a_cilindro= Vetor(0.2, 0.3, 0.8)
 K_e_cilindro= Vetor(0.2, 0.3, 0.8)
 objeto_cilindro1 = Cilindro(centro_cilindro, 
                       rCilindro, h_cilindro, d_cil,
-                      Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
-
+                      Cor(255, 0, 0),K_e_esfera, K_d_esfera, K_a_esfera, m_esfera)
 
 P_pi = Ponto(0, -rEsfera, 0) #ponto conhecido
 n_bar = Vetor(0, 1, 0) #vetor normal
@@ -57,8 +57,21 @@ K_e_fundo = Vetor(0.0, 0.0, 0.0)
 m_plano_fundo = 1
 plano_fundo = Plano(Ponto(0, 0, -200), Vetor(0, 0, 1) , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo)
 
+centro_cone = Ponto(0, 50, -100)
+rCone = 1.5*rEsfera
+hCone = rCone/3
+d_cone = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+K_d_chao = Vetor (0.8, 0.3, 0.2)
+K_a_chao = Vetor(0.8, 0.3, 0.2)
+K_e_chao = Vetor(0.8, 0.3, 0.2)
+m_cone = 10
 
-objetos = [ plano_chao,plano_fundo, objeto_cilindro1, objeto_esfera1]
+objeto_cone = Cone(centro_cone, 
+                    rCone, h_cilindro, d_cone,
+                    Cor(255, 0, 0),K_e_chao, K_d_chao, K_a_chao, m_cone)
+
+
+objetos = [objeto_cone]
 #objetos = [ objeto_esfera1]
 
 cena = Cena(objetos)

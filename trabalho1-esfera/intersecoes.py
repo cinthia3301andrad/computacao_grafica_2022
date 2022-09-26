@@ -1,6 +1,6 @@
 import math
 
-from calc_vetores import Subtracao_vetores, Produto_escalar, Vetor_escalar
+from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Vetor, Vetor_escalar
 
 def IntersecaoEsfera(esfera, posicaoOlhoObservador, D): #D = centro do pixel atual
     w = Subtracao_vetores(posicaoOlhoObservador, esfera['centro'])
@@ -61,6 +61,4 @@ def IntersecaoCilindro(cilindro, posicaoOlhoObservador, D): #D = centro do pixel
     if(t1 < t2):
         return t1
     return  t2
-
-
 
