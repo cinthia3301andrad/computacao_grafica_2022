@@ -38,7 +38,13 @@ def IntersecaoCone(cone, posicaoOlhoObservador, D):
     c = w_dc * w_dc - Produto_escalar(w,w) * cos2teta
 
     delta = b * b - 4* a * c
-  
+
+    if(a==0):
+        if(b==0):
+            return math.inf
+        t1 = -c / 2*b
+        return t1
+    
     if(delta < 0):
         return math.inf
     

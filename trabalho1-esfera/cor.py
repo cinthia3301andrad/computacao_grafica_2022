@@ -1,6 +1,6 @@
 import math
 from plano import *
-from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido, calcula_M_cilindro, mult_matriz_vetor
+from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido, calcula_M_cilindro, mult_matriz_vetor, produto_vetorial
 from intersecoes import IntersecaoCilindro,  IntersecaoEsfera, IntersecaoPlano
 
 def Cor(r, g, b):
@@ -122,11 +122,18 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
             if( t_p != None and t_p < t_cone ):
                 t_cone = t_p
                 P = Calcula_ponto_intersecao(posicaoOlhoObservador, t_cone , D)
-                projecao = Produto_escalar(Subtracao_vetores( P, objeto['v'] ), objeto['direcao']) 
+                projecao = Produto_escalar(Subtracao_vetores( objeto['v'] ,P), objeto['direcao']) 
+                
                 if(projecao < 0 or projecao > objeto['altura']):
                     t_cone = math.inf
-            t_proximo = t_cone
+                else:
+
+                    objeto_encontrado = objeto
+   
+                t_proximo = t_cone
+                
             
+    
     return [t_proximo, objeto_encontrado, hit]       
                 
     
@@ -139,7 +146,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
     
 
     [t_proximo, objeto_encontrado, hit] =  Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena)
-
+  
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'esfera'):
         t_corrigido = t_proximo - 0.1
         P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_corrigido , D) #ponto que o raio atual incidiu
@@ -214,6 +221,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
 
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cone'):
+     
         t_corrigido = t_proximo - 0.1
 
         P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_corrigido , D)
@@ -221,9 +229,11 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         L = Calc_L(P_F, P)
         sub_v_p = Subtracao_vetores(objeto_encontrado['v'], P)
 
-        N_barra = Produto_escalar(sub_v_p ,objeto_encontrado['direcao'] ) 
-        N = Vetor_escalar(sub_v_p, N_barra)
-
+        N_barra = produto_vetorial(sub_v_p, objeto_encontrado['direcao']) 
+        N = produto_vetorial(N_barra, sub_v_p)
+        comprimentoN = math.sqrt(Produto_escalar(N, N)) 
+        N = Vetor(N['x']/comprimentoN, N['y']/comprimentoN, N['z']/comprimentoN)
+   
         pf_pi = Subtracao_vetores(P_F, P)
         comprimentoPf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
         comprimentoV = math.sqrt(Produto_escalar(D, D)) 
@@ -233,7 +243,7 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         pf_pi = Vetor(pf_pi['x']/comprimentoPf_pi, pf_pi['y']/comprimentoPf_pi, pf_pi['z']/comprimentoPf_pi) #normalizando o vetor 
 
         [s, _, _] = Intersecao_objeto_proximo(P, pf_pi, cena)  
-       
+     
         if(s > 0 and s < comprimentoPf_pi):   
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, True)
         else:

@@ -1,3 +1,5 @@
+
+
 def Vetor(x, y, z):
     return {'x': x, 'y': y, 'z': z}
 
@@ -70,3 +72,18 @@ def mult_matriz_vetor(M, vetor):
     )
 
     return calc
+
+
+
+def produto_vetorial(vetor_A, vetor_B):
+    
+    x = vetor_A['y']*vetor_B['z'] - vetor_A['z']*vetor_B['y']
+    y = vetor_A['z']*vetor_B['x'] - vetor_A['x']*vetor_B['z']
+    z = vetor_A['x']*vetor_B['y'] - vetor_A['y']*vetor_B['x']
+    r = Vetor(
+        x, 
+        y,
+        z
+    )
+    return r
+   
