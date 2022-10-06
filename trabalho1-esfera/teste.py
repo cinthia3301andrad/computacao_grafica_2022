@@ -1,6 +1,21 @@
 import math
 from calc_vetores import *
 
+
+from PIL import Image
+from cone import *
+
+
+from cilindro import *
+import math  
+from calc_vetores import *
+from janela import *
+from canvas import *
+from cena import *
+from esfera import *
+from cor import *
+from plano import *
+
 tipo = 'cone'
 
 def Cone(centro, r, altura, direcao, cor, K_e,K_d,K_a, m, com_base = 1):
@@ -52,12 +67,43 @@ def IntersecaoCone(cone, posicaoOlhoObservador, D):
     t1 = (-b + math.sqrt(delta)) / (2*a)
     t2 = (-b - math.sqrt(delta)) / (2*a)
 
-    if(t1 > 0 and t2 > 0):
-        if(t1 < t2):
-            return t1
-        return  t2
+    print('t1', t1, 't2', t2)
 
-    if(t1 < 0 and t2 > 0):
-        return  t2
-    else:
-        return  t1
+  
+
+   
+    
+ 
+
+def main():
+
+    posicaoOlhoObservador = Ponto(0, 20, 40)
+    P_F = Ponto(0, 60 , -30) #Posição da fonte pontual situada a 5 centimetros acima do olho do observador.
+
+
+    D = Vetor(0, 0, -1)
+
+
+    centro_cone = Ponto(0, 0, 0)
+    rCone = 40
+    hCone = 40
+    #d_cone = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+    d_cone = Vetor(0, 1, 0)
+
+    K_d_chao = Vetor (0.8, 0.3, 0.2)
+    #K_a_chao = Vetor(0.8, 0.3, 0.2)
+    #K_e_chao = Vetor(0.8, 0.3, 0.2)
+
+    K_a_chao = Vetor(0, 0, 0)
+    K_e_chao = Vetor(0, 0, 0)
+
+    m_cone = 100
+
+    objeto_cone = Cone(centro_cone, 
+                        rCone, hCone, d_cone,
+                        Cor(255, 0, 0), K_e_chao, K_d_chao, K_a_chao, m_cone, 0)
+
+    objeto_cone['intersecao'](objeto_cone, posicaoOlhoObservador, D)
+
+   
+main()

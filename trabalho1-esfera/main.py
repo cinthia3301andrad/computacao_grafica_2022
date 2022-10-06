@@ -13,10 +13,18 @@ from esfera import *
 from cor import *
 from plano import *
 
-posicaoOlhoObservador = Ponto(0,0,0)
-P_F = Ponto(0, 60 , -30) #Posição da fonte pontual situada a 5 centimetros acima do olho do observador.
+def normalizaVetor(vetor):
+    l_vetor = math.sqrt(vetor['x']*vetor['x']+vetor['y']*vetor['y']+vetor['z']*vetor['z'])
+    vetor['x'] = vetor['x'] / l_vetor
+    vetor['y'] = vetor['y'] / l_vetor
+    vetor['z'] = vetor['z'] / l_vetor
 
-dJanela = 30 #distância entre a janela e o olho observador
+    return vetor
+
+posicaoOlhoObservador = Ponto(0,0,0)
+P_F = Ponto(0, 20 , 0) #Posição da fonte pontual situada a 5 centimetros acima do olho do observador.
+
+dJanela = 15 #distância entre a janela e o olho observador
 
 canvas = Canvas(Cor(100, 100, 100))
 janela = Janela(dJanela, canvas['wc'], canvas['hc'])  
@@ -57,18 +65,24 @@ K_e_fundo = Vetor(0.0, 0.0, 0.0)
 m_plano_fundo = 1
 plano_fundo = Plano(Ponto(0, 0, -200), Vetor(0, 0, 1) , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo)
 
-centro_cone = Ponto(0, 50, -100)
+centro_cone = Ponto(0, 0, -100)
 rCone = 1.5*rEsfera
-hCone = rCone/3
+hCone = 3*rCone
 d_cone = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+#d_cone = Vetor(0,1,0)
+
 K_d_chao = Vetor (0.8, 0.3, 0.2)
 K_a_chao = Vetor(0.8, 0.3, 0.2)
 K_e_chao = Vetor(0.8, 0.3, 0.2)
-m_cone = 10
+
+#K_a_chao = Vetor(0, 0, 0)
+#K_e_chao = Vetor(0, 0, 0)
+
+m_cone = 100
 
 objeto_cone = Cone(centro_cone, 
-                    rCone, h_cilindro, d_cone,
-                    Cor(255, 0, 0),K_e_chao, K_d_chao, K_a_chao, m_cone)
+                    rCone, hCone, d_cone,
+                    Cor(255, 0, 0), K_e_chao, K_d_chao, K_a_chao, m_cone, 1)
 
 
 objetos = [objeto_cone]

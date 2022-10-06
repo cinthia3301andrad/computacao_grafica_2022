@@ -19,6 +19,7 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, temSombra 
     intensidade_a = 0.0 #ambiente
     m = objeto_encontrado['m']
     fd = max(0, Produto_escalar(L, N))
+  
     fe = pow(max(0, Produto_escalar(r_refletido, v_vetor)), m)
     I_F = Vetor(0.7, 0.7, 0.7)  # Intensidade da fonte 
     I_A = Vetor(0.3, 0.3, 0.3) # Intensidade da luz ambiente
@@ -116,7 +117,9 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
                 objeto_encontrado = objeto
 
         if(objeto['tipo'] == 'cone'):
+            com_base = objeto['com_base']
             t_cone = math.inf
+            t_base = math.inf
             t_p = objeto['intersecao'](objeto, posicaoOlhoObservador, D) #IntersecaoCone()
             
             if( t_p != None and t_p < t_cone ):
@@ -131,7 +134,37 @@ def Intersecao_objeto_proximo(posicaoOlhoObservador, D, cena):
                     objeto_encontrado = objeto
    
                 t_proximo = t_cone
+            
+            plano_base = PlanoBase(objeto['centro'], 
+                    Vetor(-objeto['direcao']['x'], -objeto['direcao']['y'],-objeto['direcao']['z'])) 
+            t_base = IntersecaoPlano(plano_base, posicaoOlhoObservador, D)
+            
+            if(t_base != None):
+                P_base = Calcula_ponto_intersecao(posicaoOlhoObservador, t_base , D)
+                P_Cb = Subtracao_vetores(P_base, objeto['centro'])
+        
+                comprimentoP_Cb = math.sqrt(Produto_escalar(P_Cb, P_Cb)) 
+
+                if(comprimentoP_Cb > objeto['r']): #t base invalido
+                    t_base = math.inf
+                elif(com_base == 0):
+                 
+                    t_base = math.inf
+                    hit = 3 #nao tem base e entrou por dentro do corpo
+                    
                 
+
+            #validações na base 
+            t_min_cone = min(t_cone, t_base)
+            if(t_min_cone < math.inf):
+                if(t_min_cone == t_cone and com_base == 1): hit=0
+             
+                if(t_min_cone == t_base): hit=1
+                if(t_min_cone == t_cone and com_base == 0): hit=3
+            
+                t_proximo = t_min_cone
+                objeto_encontrado = objeto
+            
             
     
     return [t_proximo, objeto_encontrado, hit]       
@@ -225,14 +258,27 @@ def DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F): #D = centro do pixel
         t_corrigido = t_proximo - 0.1
 
         P = Calcula_ponto_intersecao(posicaoOlhoObservador,t_corrigido , D)
-
         L = Calc_L(P_F, P)
         sub_v_p = Subtracao_vetores(objeto_encontrado['v'], P)
 
-        N_barra = produto_vetorial(sub_v_p, objeto_encontrado['direcao']) 
-        N = produto_vetorial(N_barra, sub_v_p)
-        comprimentoN = math.sqrt(Produto_escalar(N, N)) 
-        N = Vetor(N['x']/comprimentoN, N['y']/comprimentoN, N['z']/comprimentoN)
+        if(hit == 0):#corpo do cone
+            N_barra = produto_vetorial(sub_v_p, objeto_encontrado['direcao']) 
+            N = produto_vetorial(N_barra, sub_v_p)
+            comprimentoN = math.sqrt(Produto_escalar(N, N)) 
+            N = Vetor(N['x']/comprimentoN, N['y']/comprimentoN, N['z']/comprimentoN)
+
+        elif(hit == 3):
+      
+            N_barra = produto_vetorial(sub_v_p, objeto_encontrado['direcao']) 
+            N = produto_vetorial(N_barra, sub_v_p)
+            comprimentoN = math.sqrt(Produto_escalar(N, N)) 
+            N = Vetor(-N['x']/comprimentoN, -N['y']/comprimentoN, -N['z']/comprimentoN)
+        else:#base do cone
+            N = Vetor(-objeto_encontrado['direcao']['x'], -objeto_encontrado['direcao']['y'],-objeto_encontrado['direcao']['z'])
+            N_comp = math.sqrt(Produto_escalar(N, N))
+            N = Vetor(N['x']/N_comp, N['y']/N_comp, N['z']/N_comp) #normalizando o vetor N
+          
+
    
         pf_pi = Subtracao_vetores(P_F, P)
         comprimentoPf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
