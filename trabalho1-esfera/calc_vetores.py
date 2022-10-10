@@ -1,4 +1,4 @@
-
+import math
 
 def Vetor(x, y, z):
     return {'x': x, 'y': y, 'z': z}
@@ -8,6 +8,14 @@ def Ponto(x, y, z):
 
 def Produto_escalar(v_1, v_2):
     return v_1['x'] * v_2['x'] + v_1['y'] * v_2['y'] + v_1['z'] * v_2['z']
+    
+def normalizaVetor(vetor):
+    #l_vetor = math.sqrt(vetor['x']*vetor['x']+vetor['y']*vetor['y']+vetor['z']*vetor['z'])
+    l_vetor = math.sqrt(Produto_escalar(vetor, vetor))
+    vetor['x'] = vetor['x'] / l_vetor
+    vetor['y'] = vetor['y'] / l_vetor
+    vetor['z'] = vetor['z'] / l_vetor
+    return vetor
 
 def Produto_arroba(i, k):
     return Vetor(i['x']*k['x'], i['y']*k['y'], i['z']*k['z'])
