@@ -67,7 +67,6 @@ def IntersecaoCone(cone, posicaoOlhoObservador, D):
     t1 = (-b + math.sqrt(delta)) / (2*a)
     t2 = (-b - math.sqrt(delta)) / (2*a)
 
-    print('t1', t1, 't2', t2)
 
   
 

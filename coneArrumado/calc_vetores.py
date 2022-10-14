@@ -6,6 +6,14 @@ def Vetor(x, y, z):
 def Ponto(x, y, z):
     return {'x': x, 'y': y, 'z': z}
 
+def Face(p1, p2, p3):
+    return {
+        'p1': p1, 
+        'p2': p2, 
+        'p3': p3, 
+        'normal': normalizaVetor(produto_vetorial(Subtracao_vetores(p2, p1), Subtracao_vetores(p3, p1)))
+    }
+
 def Produto_escalar(v_1, v_2):
     return v_1['x'] * v_2['x'] + v_1['y'] * v_2['y'] + v_1['z'] * v_2['z']
     

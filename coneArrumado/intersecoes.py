@@ -1,6 +1,6 @@
 import math
 
-from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Vetor, Vetor_escalar, normalizaVetor
+from calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Vetor, Vetor_escalar, normalizaVetor,produto_vetorial
 
 def IntersecaoEsfera(esfera, posicaoOlhoObservador, D): #D = centro do pixel atual
     w = Subtracao_vetores(posicaoOlhoObservador, esfera['centro'])
@@ -98,3 +98,55 @@ def IntersecaoCone(cone, Po, D): #D = centro do pixel atual, coincide com a dire
         return t1
     return  math.inf
 
+def verifica_face(p_i, face):
+    
+    area_total = Produto_escalar(produto_vetorial(Subtracao_vetores(face['p2'], face['p1']), Subtracao_vetores(face['p3'], face['p1'])), face['normal'])
+
+    c1 = Produto_escalar(produto_vetorial(Subtracao_vetores(face['p1'], p_i), Subtracao_vetores(face['p2'], p_i)), face['normal']) / area_total
+    c2 = Produto_escalar(produto_vetorial(Subtracao_vetores(face['p3'], p_i), Subtracao_vetores(face['p1'], p_i)), face['normal']) / area_total
+    c3 = 1 - c1 - c2
+
+    return c1 > 0.0 and c2 > 0.0 and c3 > 0.0
+
+
+def IntersecaoCubo(cubo, posicaoOlhoObservador, D): 
+
+    [t, normal] = IntersecaoTodasFaces(cubo['malha']['faces'], posicaoOlhoObservador, D)
+
+    cubo['normal'] = normal
+
+    return t
+
+def PlanoFace(p_pi, n_bar):
+    return {
+    
+        'p_pi': p_pi,
+        'n_bar': n_bar, 
+    
+    }
+
+def IntersecaoFace(face, posicaoOlhoObservador, D):
+    plano = PlanoFace(face['p1'], face['normal']) 
+
+    t1    = IntersecaoPlano(plano, posicaoOlhoObservador, D)
+    p_i = Soma_vetores(posicaoOlhoObservador, Vetor_escalar(D, t1))
+
+    if(verifica_face(p_i, face)):
+        return t1
+    return math.inf
+
+
+def IntersecaoTodasFaces(faces, posicaoOlhoObservador, D):
+  
+    t = math.inf
+    t_aux = 0
+    normal_aux = Vetor(0, 0, 0)
+
+    for face in faces:
+        if(Produto_escalar(face['normal'], D) < 0):
+            t_aux = IntersecaoFace(face, posicaoOlhoObservador, D)
+            if(t_aux < t):
+                t = t_aux
+                normal_aux = face['normal']
+            
+    return [t, normal_aux]

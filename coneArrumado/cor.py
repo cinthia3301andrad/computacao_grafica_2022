@@ -1,7 +1,8 @@
 import math
+from cubo import *
 from   plano import *
 from   calc_vetores import Soma_vetores, Subtracao_vetores, Produto_escalar, Ponto, Vetor, Vetor_escalar, Produto_arroba, Calcula_vetor_refletido, calcula_M_cilindro, mult_matriz_vetor, produto_vetorial, normalizaVetor
-from intersecoes import IntersecaoCilindro,  IntersecaoEsfera, IntersecaoPlano, IntersecaoCone
+from intersecoes import IntersecaoCilindro,IntersecaoCubo,  IntersecaoEsfera, IntersecaoPlano, IntersecaoCone
 
 def Cor(r, g, b):
     return {'r': r, 'g': g, 'b': b}
@@ -202,6 +203,12 @@ def Intersecao_objeto_proximo(Po, D, cena, shadowcheck):
                 t_proximo         = t_min_cone
                 objeto_encontrado = objeto
             
+        if(objeto['tipo'] == 'cubo'):
+            t1 = IntersecaoCubo(objeto, Po, D)
+            if( t1 > 0. and t1 < t_proximo  ):
+                t_proximo         = t1
+                objeto_encontrado = objeto
+                if (shadowcheck == 1): return [t_proximo, objeto_encontrado, hit]
     return [t_proximo, objeto_encontrado, hit]       
                 
     
@@ -307,7 +314,6 @@ def DecideCor(Po, cena, canvas, D, P_F):
         else:
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
         
-
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cone'):
      
         t_corrigido = t_proximo - 0.1
@@ -346,7 +352,28 @@ def DecideCor(Po, cena, canvas, D, P_F):
         else:
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
 
-    
+    if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cubo'):
+        t_corrigido = t_proximo - 0.1
+        P = Calcula_ponto_intersecao(Po, t_corrigido , D) #ponto que o raio atual incidiu
+        L                 = Calc_L(P_F, P)
+        v_vetor           = normalizaVetor(Subtracao_vetores(Po, P))
+        N                 = objeto_encontrado['normal']
+        r_vetor_refletido = normalizaVetor(Calcula_vetor_refletido(L, N))
+        
+        # Cálculo da distância entre o ponto de interseção e a fonte luminosa
+        pf_pi     = Subtracao_vetores(P_F, P)
+        tam_pf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
+
+        # Verifica se o raio que ilumina o ponto de interseção está obstruído
+        if (shadowcheck == 1):
+            [s, _, _]   = Intersecao_objeto_proximo(P, L, cena, shadowcheck)
+        else:
+            s = tam_pf_pi
+        
+        if(s > 0 and s < tam_pf_pi):   
+            intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, True)
+        else:
+            intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
     if(objeto_encontrado == None):
         return canvas['cor_fundo']
     
