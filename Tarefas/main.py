@@ -16,6 +16,15 @@ from cubo     import *
 from calc_vetores import *
 from cor import *
 
+from PIL import Image
+
+
+img_madeira_chao = Image.open("madeira.jpg")
+px_img_madeira_chao = img_madeira_chao.load() 
+
+img_madeira_parede_lateral = Image.open("madeira2.jpg")
+px_img_madeira_parede_lateral = img_madeira_parede_lateral.load() 
+
 posicaoOlhoObservador = Ponto(0,0,0)
 P_F                   = Ponto(100, 0, -20)
 dJanela               = 30 #distância entre a janela e o olho observador
@@ -55,7 +64,7 @@ K_d_chao     = Vetor (0.2, 0.7, 0.2)
 K_a_chao     = Vetor(0.2, 0.7, 0.2)
 K_e_chao     = Vetor(0.0, 0.0, 0.0)
 m_plano_chao = 1
-plano_chao   = Plano(P_pi, n_bar, Cor(0, 255, 255),K_e_chao, K_d_chao, K_a_chao, m_plano_chao)
+plano_chao   = Plano(P_pi, n_bar, Cor(0, 255, 255),K_e_chao, K_d_chao, K_a_chao, m_plano_chao, px_img_madeira_chao)
 
 # Definição do plano de fundo
 P_pi         = Ponto(200, -150, -400) #ponto conhecido
@@ -64,7 +73,7 @@ K_d_fundo     = Vetor(0.686, 0.933, 0.933)
 K_a_fundo     =  Vetor(0.686, 0.933, 0.933)
 K_e_fundo     = Vetor(0.686, 0.933, 0.933)
 m_plano_fundo = 1
-plano_fundo   = Plano(P_pi, n_bar , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo)
+plano_fundo   = Plano(P_pi, n_bar , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo,px_img_madeira_parede_lateral)
 
 # Definição do plano de lateral_esq
 P_pi         = Ponto(-200, -150, 0) #ponto conhecido
@@ -125,16 +134,25 @@ objeto_cubo = Cubo(centro_cubo, K_e_cubo, K_d_cubo, K_a_cubo,
 
 
 #objetos  = [plano_fundo, plano_chao, objeto_esfera1, objeto_cilindro1, objeto_cone  ]
-objetos   = [ objeto_cone, objeto_esfera1,objeto_cilindro1,  plano_chao, plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto, objeto_cubo]
-#objetos  = [ objeto_esfera1]
+# Nãoobjetos   = [ objeto_cone, objeto_esfera1,objeto_cilindro1,  plano_chao, plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto, objeto_cubo]
+objetos  = [plano_chao]
 
 cena      = Cena(objetos)
 
 image     = Image.new(mode="RGB", size=(canvas['wc'], canvas['hc']))
 pixels    = image.load()
 
+
+
+
+''' for cor_rgb in img.getdata():
+    if cor_rgb not in cores:
+        cores.append(cor_rgb)
+        print(cor_rgb) '''
+
 for x in range(canvas['wc']):
     for y in range(canvas['hc']):
+        
         # Direção do raio saindo da origem e passando pelo centro de um quadrado
         # da tela da Janela
         D     = CanvasParaJanela(x, y, janela) #centro do pixel atual
@@ -143,7 +161,7 @@ for x in range(canvas['wc']):
         # finita do plano de projeção ("Plano da janela" ou "Plano da tela de mosquito")
         # Obs.: Para ver o cenário todo, ele precisa estar no campo de visão
         #       (dentro do "frustum", i.e., dentro do tronco de pirâmide de visualização)
-        color = DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F)
+        color = DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F, x, y)
         
         # Projeção orthográfica: Raios paraleleos saindo de cada centro de retângulo da "tela de mosquito"
         # com vetor direção perpendicular ao plano de projeção, isto é, com d_r = -k = (0, 0, -1)

@@ -16,8 +16,6 @@ def Cubo(centro, K_e,K_d,K_a, m, tam_aresta):
         Vetor(centro['x']+ tam_aresta/2, centro['y']+ tam_aresta/2, centro['z'] - tam_aresta/2),
     ]
 
-    
-
     faces = [
         Face(vertices[0], vertices[1], vertices[3]),
         Face(vertices[1], vertices[2], vertices[3]),

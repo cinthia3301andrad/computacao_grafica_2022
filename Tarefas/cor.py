@@ -20,7 +20,7 @@ def Calc_L(P_F, P):
     return L
 
 # Calcula a energia que vem do ponto observado, após interação do material com as fontes luminosas
-def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, temSombra = False):
+def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, cor_atual = None, temSombra = False):
     # incicialização das contribuições ambiente, difusa e especular
     intensidade_a = 0.0 #ambiente
     intensidade_d = 0.0 #difusa
@@ -44,9 +44,17 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, temSombra 
     I_F = Vetor(0.7, 0.7, 0.7) # Pontual
     
     #Reflectividade do material nos canais r, g e b para reflexões ambiente, difusa e especular
-    K_a = objeto_encontrado['K_a']
+    K_a =  objeto_encontrado['K_a']
     K_d = objeto_encontrado['K_d']
     K_e = objeto_encontrado['K_e']
+    print("cor_atual")
+    if(cor_atual != None):
+        K_a = cor_atual 
+        K_d = cor_atual 
+        K_e = cor_atual 
+
+        
+   
     
     # Cálculo das contribuições de energia resultantes das reflexões Ambiente, Difusa e Especular
     intensidade_a = Produto_arroba(I_A, K_a)                    # Luz ambiente
@@ -229,7 +237,7 @@ def Intersecao_objeto_proximo(Po, D, cena, shadowcheck, tam_pf_pi = math.inf ):
                 
     
 # cena recebe  o raio e retorna a cor do objeto mais próximo
-def DecideCor(Po, cena, canvas, D, P_F):
+def DecideCor(Po, cena, canvas, D, P_F, x, y):
     # Po é o ponto de partida do raio
     # D  é o vetor direção do raio
     # cena contém os objetos do cenário
@@ -283,6 +291,16 @@ def DecideCor(Po, cena, canvas, D, P_F):
         # Cálculo da distância entre o ponto de interseção e a fonte luminosa
         pf_pi     = Subtracao_vetores(P_F, P)
         tam_pf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
+
+        cor_atual = None
+
+        if(objeto_encontrado['imagem'] != None):
+
+            fx = x % canvas['hc']
+            fz = y % canvas['wc']
+            cor_atual =  objeto_encontrado['imagem'][fx, fz]
+            cor_atual = Vetor(cor_atual[0]/255, cor_atual[1]/255, cor_atual[2]/255)
+
         
         # Verifica se o raio que ilumina o ponto de interseção está obstruído
         if (shadowcheck == 1):
@@ -291,9 +309,9 @@ def DecideCor(Po, cena, canvas, D, P_F):
             s = tam_pf_pi
        
         if(s > 0 and s < tam_pf_pi):
-            intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, True)
+            intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado,  cor_atual, True)
         else:
-            intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
+            intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, cor_atual)
 
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cilindro'):
         #return objeto_encontrado['cor']

@@ -2,7 +2,7 @@ from calc_vetores import Vetor
 
 tipo= 'plano'
 
-def Plano(p_pi, n_bar, cor, K_e,K_d,K_a, m):
+def Plano(p_pi, n_bar, cor, K_e,K_d,K_a, m, imagem=None):
     return {
         'tipo': tipo ,
         'p_pi': p_pi,
@@ -11,7 +11,8 @@ def Plano(p_pi, n_bar, cor, K_e,K_d,K_a, m):
         'K_e': K_e, 
         'K_d': K_d, 
         'K_a': K_a,
-        'm': m
+        'm': m,
+        'imagem': imagem,
     }
 
 def PlanoBase(p_pi, n_bar):
