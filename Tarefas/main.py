@@ -17,9 +17,14 @@ from calc_vetores import *
 from cor import *
 
 from PIL import Image
+import pygame
+import pygame.gfxdraw
+pygame.init()
 
 
 img_madeira_chao = Image.open("madeira.jpg")
+x, y = img_madeira_chao.size
+print('x', str(x), y)
 px_img_madeira_chao = img_madeira_chao.load() 
 
 img_madeira_parede_lateral = Image.open("madeira2.jpg")
@@ -149,26 +154,48 @@ pixels    = image.load()
     if cor_rgb not in cores:
         cores.append(cor_rgb)
         print(cor_rgb) '''
-
+screen = pygame.display.set_mode([500, 500])
+superfice = pygame.Surface(screen.get_size(), pygame.SRCALPHA, 32)
+   
+running = True
+# Draw a solid blue circle in the center
 for x in range(canvas['wc']):
     for y in range(canvas['hc']):
         
         # Direção do raio saindo da origem e passando pelo centro de um quadrado
         # da tela da Janela
         D     = CanvasParaJanela(x, y, janela) #centro do pixel atual
-         
+            
         # Projeção perspectiva: Raios convergem para o olho do observador que está a uma distância
         # finita do plano de projeção ("Plano da janela" ou "Plano da tela de mosquito")
         # Obs.: Para ver o cenário todo, ele precisa estar no campo de visão
         #       (dentro do "frustum", i.e., dentro do tronco de pirâmide de visualização)
         color = DecideCor(posicaoOlhoObservador, cena, canvas, D, P_F, x, y)
-        
+            
         # Projeção orthográfica: Raios paraleleos saindo de cada centro de retângulo da "tela de mosquito"
         # com vetor direção perpendicular ao plano de projeção, isto é, com d_r = -k = (0, 0, -1)
         # Obs.: Para ver o cenário todo, a Janela tem de ser bem grande
         #color = DecideCor(D, cena, canvas, Vetor(0, 0, -1), P_F)
-
-        pixels[x, y] = (color['r'], color['g'], color['b'])
       
-image.save("esfera.png", format="png")
-image.show()
+        #pixels[x, y] = (color['r'], color['g'], color['b'])
+        pygame.gfxdraw.pixel(superfice, x, y, (color['r'], color['g'], color['b']))
+screen.blit(superfice, (0, 0))
+pygame.display.flip()        
+
+try:
+    while 1:
+        event = pygame.event.wait()
+        if event.type == pygame.QUIT:
+            break
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE or event.unicode == 'q':
+                break
+        if event.type == pygame.MOUSEBUTTONUP:
+            print('event.button', event.button, event.pos)
+                            
+        pygame.display.flip()
+finally:
+        pygame.quit() 
+
+''' image.save("esfera.png", format="png")
+image.show() '''

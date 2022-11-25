@@ -47,7 +47,7 @@ def Calcula_iluminacao( N, L, r_refletido,v_vetor, objeto_encontrado, cor_atual 
     K_a =  objeto_encontrado['K_a']
     K_d = objeto_encontrado['K_d']
     K_e = objeto_encontrado['K_e']
-    print("cor_atual")
+ 
     if(cor_atual != None):
         K_a = cor_atual 
         K_d = cor_atual 
@@ -295,6 +295,7 @@ def DecideCor(Po, cena, canvas, D, P_F, x, y):
         cor_atual = None
 
         if(objeto_encontrado['imagem'] != None):
+       
 
             fx = x % canvas['hc']
             fz = y % canvas['wc']
