@@ -69,7 +69,7 @@ K_d_chao     = Vetor (0.2, 0.7, 0.2)
 K_a_chao     = Vetor(0.2, 0.7, 0.2)
 K_e_chao     = Vetor(0.0, 0.0, 0.0)
 m_plano_chao = 1
-plano_chao   = Plano(P_pi, n_bar, Cor(0, 255, 255),K_e_chao, K_d_chao, K_a_chao, m_plano_chao, px_img_madeira_chao)
+plano_chao   = Plano(P_pi, n_bar, Cor(0, 255, 255),K_e_chao, K_d_chao, K_a_chao, m_plano_chao ) #, px_img_madeira_chao)
 
 # Definição do plano de fundo
 P_pi         = Ponto(200, -150, -400) #ponto conhecido
@@ -78,7 +78,7 @@ K_d_fundo     = Vetor(0.686, 0.933, 0.933)
 K_a_fundo     =  Vetor(0.686, 0.933, 0.933)
 K_e_fundo     = Vetor(0.686, 0.933, 0.933)
 m_plano_fundo = 1
-plano_fundo   = Plano(P_pi, n_bar , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo,px_img_madeira_parede_lateral)
+plano_fundo   = Plano(P_pi, n_bar , Cor(0, 0, 255), K_e_fundo, K_d_fundo, K_a_fundo, m_plano_fundo) #,px_img_madeira_parede_lateral)
 
 # Definição do plano de lateral_esq
 P_pi         = Ponto(-200, -150, 0) #ponto conhecido
@@ -138,9 +138,23 @@ objeto_cubo = Cubo(centro_cubo, K_e_cubo, K_d_cubo, K_a_cubo,
 );
 
 
+# Definição do cilindro
+rCilindro  = 40
+m_cilindro = 10
+h_cilindro = 50
+centro_cilindro = Ponto(100, -150, -200)
+#d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+d_cil = Vetor(0, 1, 0)
+K_d_cilindro= Vetor(0.824, 0.706, 0.549)
+K_a_cilindro= Vetor(0.824, 0.706, 0.549)
+K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+cilindro = Cilindro(centro_cilindro, 
+                      rCilindro, h_cilindro, d_cil,
+                      Cor(255, 0, 0),K_e_esfera, K_d_esfera, K_a_esfera, m_esfera)
+
 #objetos  = [plano_fundo, plano_chao, objeto_esfera1, objeto_cilindro1, objeto_cone  ]
 # Nãoobjetos   = [ objeto_cone, objeto_esfera1,objeto_cilindro1,  plano_chao, plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto, objeto_cubo]
-objetos  = [plano_chao]
+objetos  = [cilindro]
 
 cena      = Cena(objetos)
 
@@ -177,25 +191,26 @@ for x in range(canvas['wc']):
         # Obs.: Para ver o cenário todo, a Janela tem de ser bem grande
         #color = DecideCor(D, cena, canvas, Vetor(0, 0, -1), P_F)
       
-        #pixels[x, y] = (color['r'], color['g'], color['b'])
-        pygame.gfxdraw.pixel(superfice, x, y, (color['r'], color['g'], color['b']))
-screen.blit(superfice, (0, 0))
-pygame.display.flip()        
+        pixels[x, y] = (color['r'], color['g'], color['b'])
+        print(color)
+#         pygame.gfxdraw.pixel(superfice, x, y, (color['r'], color['g'], color['b']))
+# screen.blit(superfice, (0, 0))
+# pygame.display.flip()        
 
-try:
-    while 1:
-        event = pygame.event.wait()
-        if event.type == pygame.QUIT:
-            break
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE or event.unicode == 'q':
-                break
-        if event.type == pygame.MOUSEBUTTONUP:
-            print('event.button', event.button, event.pos)
+# try:
+#     while 1:
+#         event = pygame.event.wait()
+#         if event.type == pygame.QUIT:
+#             break
+#         if event.type == pygame.KEYDOWN:
+#             if event.key == pygame.K_ESCAPE or event.unicode == 'q':
+#                 break
+#         if event.type == pygame.MOUSEBUTTONUP:
+#             print('event.button', event.button, event.pos)
                             
-        pygame.display.flip()
-finally:
-        pygame.quit() 
+#         pygame.display.flip()
+# finally:
+#         pygame.quit() 
 
-''' image.save("esfera.png", format="png")
-image.show() '''
+image.save("esfera.png", format="png")
+image.show()

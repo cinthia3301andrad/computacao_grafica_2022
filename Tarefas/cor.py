@@ -314,6 +314,49 @@ def DecideCor(Po, cena, canvas, D, P_F, x, y):
         else:
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, cor_atual)
 
+        # if(objeto_encontrado['imagem']['valor'] != None):
+
+        #     P_x = P['x']
+        #     #P_y = -150
+        #     P_z = P['z']
+        #     #print("P_z ", P_z)
+        #     print("P_X ", P_x )
+        #     xm = -150 
+        #     xM = 150   
+        #     zm = -400 
+        #     zM = 0
+        #     fx = (P_x - xm)/(xM - xm)
+        #     fz = (P_z - zm)/(zM - zm)
+        #     print("fx ", fx, "fz ", fz)
+
+
+        #     #x,y = objeto_encontrado['imagem'].size
+            
+
+        #     xtm = -0.5
+        #     xtM = xtm + objeto_encontrado['imagem']['tamanho'][0]  
+        #     ytm = -0.5  
+        #     ytM = ytm + objeto_encontrado['imagem']['tamanho'][1]
+
+
+        #     # print("xtM ",xtM, "ytM ", ytM)
+        #     # print(xtm + fx * (xtM - xtm)+0.5)
+        #     # print(ytm + fz * (ytM - ytm)+0.5)
+
+        #     #print("AQUI XT", math.trunc(ytm + fz * objeto_encontrado['imagem']['tamanho'][1]+0.5))
+        #     #print(math.trunc(ytm + fz * objeto_encontrado['imagem']['tamanho'][1]+0.5))
+
+        #     xt = math.trunc(xtm + fx * objeto_encontrado['imagem']['tamanho'][0] +0.5)
+ 
+        #     yt = math.trunc(ytm + fz * objeto_encontrado['imagem']['tamanho'][1] +0.5)
+
+        #     #xt =  math.trunc(xtm + fx * (xtM - xtm)+0.5)
+        #     #yt =  math.trunc(ytm + fz * (ytM - ytm)+0.5)
+            
+
+        #     cor_atual =  objeto_encontrado['imagem']['valor'][xt, yt]
+        #     cor_atual = Vetor(cor_atual[0]/255, cor_atual[1]/255, cor_atual[2]/255)
+
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'cilindro'):
         #return objeto_encontrado['cor']
         t_corrigido = t_proximo - 0.1
