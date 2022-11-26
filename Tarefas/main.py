@@ -154,7 +154,7 @@ cilindro = Cilindro(centro_cilindro,
 
 #objetos  = [plano_fundo, plano_chao, objeto_esfera1, objeto_cilindro1, objeto_cone  ]
 # Nãoobjetos   = [ objeto_cone, objeto_esfera1,objeto_cilindro1,  plano_chao, plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto, objeto_cubo]
-objetos  = [cilindro]
+objetos  = [plano_chao]
 
 cena      = Cena(objetos)
 
@@ -193,24 +193,24 @@ for x in range(canvas['wc']):
       
         pixels[x, y] = (color['r'], color['g'], color['b'])
         print(color)
-#         pygame.gfxdraw.pixel(superfice, x, y, (color['r'], color['g'], color['b']))
-# screen.blit(superfice, (0, 0))
-# pygame.display.flip()        
+        pygame.gfxdraw.pixel(superfice, x, y, (color['r'], color['g'], color['b']))
+screen.blit(superfice, (0, 0))
+pygame.display.flip()        
 
-# try:
-#     while 1:
-#         event = pygame.event.wait()
-#         if event.type == pygame.QUIT:
-#             break
-#         if event.type == pygame.KEYDOWN:
-#             if event.key == pygame.K_ESCAPE or event.unicode == 'q':
-#                 break
-#         if event.type == pygame.MOUSEBUTTONUP:
-#             print('event.button', event.button, event.pos)
+try:
+    while 1:
+        event = pygame.event.wait()
+        if event.type == pygame.QUIT:
+            break
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE or event.unicode == 'q':
+                break
+        if event.type == pygame.MOUSEBUTTONUP:
+            print('event.button', event.button, event.pos)
                             
-#         pygame.display.flip()
-# finally:
-#         pygame.quit() 
+        pygame.display.flip()
+finally:
+        pygame.quit() 
 
 image.save("esfera.png", format="png")
 image.show()
