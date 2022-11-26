@@ -1,34 +1,45 @@
-# Simple pygame program
+from cena import Cena
 
-# Import and initialize the pygame library
-import pygame
-import pygame.gfxdraw
-pygame.init()
+from janela import Janela
 
-# Set up the drawing window
-screen = pygame.display.set_mode([500, 500])
-superfice = pygame.Surface(screen.get_size(), pygame.SRCALPHA, 32)
+from esfera import Esfera
+
+from material import Material
+
+from definicoes import Cor, Vetor, Ponto
+
+# K_d_esfera     = Vetor(0.854, 0.647, 0.125)
+# K_a_esfera     = Vetor(0.854, 0.647, 0.125)
+# K_e_esfera     = Vetor(0.854, 0.647, 0.125)
+# objeto_esfera1 = Esfera(centro_esfera, rEsfera, Cor(255, 0, 0),K_d_esfera, K_d_esfera, K_d_esfera, m_esfera)
+
+def main():
+    largura, altura = 500, 500
+
+    centro_esfera  = Ponto(0, 95, -200)
+# rEsfera        = 5
+# m_esfera       = 10
+# centro_esfera  = Ponto(0, 95, -200), -200)
+    rEsfera        = 5
+    K_d_esfera     = Vetor(0.854, 0.647, 0.125)
+    K_a_esfera     = Vetor(0.854, 0.647, 0.125)
+    K_e_esfera     = Vetor(0.854, 0.647, 0.125)
+    m_esfera       = 10
+    materialEsfera       = Material( Cor(255, 0, 0), K_e_esfera, K_d_esfera, K_a_esfera, m_esfera)
+    esfera         = Esfera(centro_esfera, rEsfera, materialEsfera)
+
+    objetos = [esfera]
    
-# Run until the user asks to quit
-running = True
-while running:
+    #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
+    luzes   = []
 
-    # Did the user click the window close button?
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    dJanela               = 30 #distância entre a janela e o olho observador
 
-    # Fill the background with white
-    screen.fill((255, 255, 255))
+    cena = Cena(largura, altura, objetos, luzes)
+    janela = Janela(dJanela, largura, altura, cena)
 
-    # Draw a solid blue circle in the center
-    pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
-
-    # Flip the display
-    pygame.display.flip()
-
-# Done! Time to quit.
-pygame.quit()
+    janela.abrir()
+    janela.loopEventos()
 
 
-
+main()
