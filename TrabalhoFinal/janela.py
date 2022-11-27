@@ -4,9 +4,11 @@ import pygame
 import pygame.gfxdraw
 import random
 
-from definicoes import Vetor
+from definicoes import Cor, Vetor, Ponto
 
 
+from intercesaoInfo import IntercesaoInfo
+from raio import Raio
 from cena import Cena
 
 class Janela:
@@ -39,27 +41,41 @@ class Janela:
             -self.dJanela)
 
     def desenha(self):
-
+   
         superfice = pygame.Surface(self.janela.get_size(), pygame.SRCALPHA, 32)
+        eye = Ponto(0, 0, 0)
+        
+        
    
         for x in range(self.cena.largura):
             for y in range(self.cena.altura):
                 D = self.canvasParaJanela(x, y)
-
-                color = self.calculaCor()
-                r = random.randint(1, 255)
-                g = random.randint(1, 255)
-                b = random.randint(1, 255)
+            
+                raio = Raio(eye, D)
+                infoIntersecao = IntercesaoInfo(raio)
                 
+                self.calculaIntersecao(raio, infoIntersecao)
+                color = self.calculaCor(raio, infoIntersecao)
+        
            
-                pygame.gfxdraw.pixel(superfice, x, y, (r, g, b)) #para cada posicao x,y da superficie, colore com o (r, g, b)
+                pygame.gfxdraw.pixel(superfice, x, y, (color.r, color.g, color.b)) #para cada posicao x,y da superficie, colore com o (r, g, b)
         self.janela.blit(superfice, (0, 0))
         pygame.display.flip()  
 
-    def calculaCor(self):
+    def calculaIntersecao(self, raio, infoIntersecao):
         for objeto in self.cena.objetos:
+            objeto.intersecao(raio, infoIntersecao)
+            
+            infoIntersecao.atualizaObjeto(objeto)
+            
 
-    
+    def calculaCor(self, raio, infoIntersecao):
+        if(infoIntersecao.valido):
+            return infoIntersecao.hitObjeto.material.cor
+        else:
+            cor = Cor(0, 255, 0)
+            return cor
+  
     def loopEventos(self):
         self.desenha()
 

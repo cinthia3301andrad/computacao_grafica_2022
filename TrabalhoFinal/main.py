@@ -20,7 +20,7 @@ def main():
 # rEsfera        = 5
 # m_esfera       = 10
 # centro_esfera  = Ponto(0, 95, -200), -200)
-    rEsfera        = 5
+    rEsfera        = 50
     K_d_esfera     = Vetor(0.854, 0.647, 0.125)
     K_a_esfera     = Vetor(0.854, 0.647, 0.125)
     K_e_esfera     = Vetor(0.854, 0.647, 0.125)

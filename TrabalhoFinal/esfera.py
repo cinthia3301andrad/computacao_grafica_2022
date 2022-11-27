@@ -1,8 +1,8 @@
 import numpy as np
-from numba import jit
 from raio import Raio
-
+import math
 from objetos.objeto import Objeto
+from funcoes import Subtracao_vetores, Produto_escalar
 
 
 class Esfera(Objeto):
@@ -13,25 +13,26 @@ class Esfera(Objeto):
         self.material = material
 
 
-    def intersecao(self, raio: Raio) :
-        return intersecao(raio, self.posicaoCentro, self.raioEsfera)
+    def intersecao(self, raio: Raio, infoIntersecao) :
+        return intersecao(raio, infoIntersecao, self.posicaoCentro, self.raioEsfera)
 
     def getNormal(self, ponto): #calcula e retorna a normal do ponto da superficie esfera
         return (ponto - self.posicaoCentro) / self.raioEsfera
 
-@jit
-def intersecao(raio, posicaoCentro, raioEsfera):
-    co = raio.origem - posicaoCentro #subtração de vetores que da um vetor
+def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera):
+    w = Subtracao_vetores(raio.origem, posicaoCentro)
+   
+    a = Produto_escalar(raio.direcao, raio.direcao)
+    b = 2 * Produto_escalar(w, raio.direcao)
+    c = Produto_escalar(w, w) - raioEsfera * raioEsfera 
 
-    b = co @ raio.direcao
-    c = co @ co - raioEsfera ** 2
-    delta = b ** 2 - c
-    if (delta < 0): 
-        return None
+    delta = b * b - 4 * a * c
+    if(delta < 0):
+        return math.inf, math.inf
 
- 
     t1 = (-b + math.sqrt(delta)) / (2 * a)
     t2 = (-b - math.sqrt(delta)) / (2 * a)
+    
     t = raio.t
     if (0 < t1 < t): 
         t = t1
@@ -39,6 +40,10 @@ def intersecao(raio, posicaoCentro, raioEsfera):
         t = t2
     if (t == raio.t): 
         return None
-
+        
     raio.t = t
-    return raio.origem + raio.direcao*t
+    infoIntersecao.atualizaIntersecao(t)
+
+    return Calcula_ponto_intersecao(raio.origem, t, raio.direcao)
+  
+   
