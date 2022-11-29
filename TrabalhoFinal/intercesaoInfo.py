@@ -1,5 +1,7 @@
 # from raio import Raio
 import numpy as np
+from funcoes import Subtracao_vetores, Produto_escalar, Calcula_ponto_intersecao
+
 class IntercesaoInfo:
     def __init__(self, raio):
         self.t_mais_proximo = 100000.0
@@ -16,6 +18,9 @@ class IntercesaoInfo:
 
     def atualizaObjeto(self, novo_objeto):
         self.hitObjeto = novo_objeto
+
+    def getPontoAtual(self):
+        return Calcula_ponto_intersecao(self.raio.origem, self.t_mais_proximo, self.raio.direcao)
    
 
 

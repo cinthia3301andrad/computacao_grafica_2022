@@ -2,7 +2,7 @@ import numpy as np
 from raio import Raio
 import math
 from objetos.objeto import Objeto
-from funcoes import Subtracao_vetores, Produto_escalar
+from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor
 
 
 class Esfera(Objeto):
@@ -17,7 +17,14 @@ class Esfera(Objeto):
         return intersecao(raio, infoIntersecao, self.posicaoCentro, self.raioEsfera)
 
     def getNormal(self, ponto): #calcula e retorna a normal do ponto da superficie esfera
-        return (ponto - self.posicaoCentro) / self.raioEsfera
+        #return Subtracao_vetores(ponto , self.posicaoCentro) / self.raioEsfera
+
+        return normalizaVetor(Subtracao_vetores(ponto, self.posicaoCentro))
+
+    def getColor(self):
+        return self.material.cor
+
+
 
 def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera):
     w = Subtracao_vetores(raio.origem, posicaoCentro)
@@ -44,6 +51,6 @@ def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera):
     raio.t = t
     infoIntersecao.atualizaIntersecao(t)
 
-    return Calcula_ponto_intersecao(raio.origem, t, raio.direcao)
+    #return Calcula_ponto_intersecao(raio.origem, t, raio.direcao)
   
    

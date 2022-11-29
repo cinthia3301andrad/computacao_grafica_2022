@@ -5,7 +5,7 @@ import pygame.gfxdraw
 import random
 
 from definicoes import Cor, Vetor, Ponto
-
+from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor
 
 from intercesaoInfo import IntercesaoInfo
 from raio import Raio
@@ -45,8 +45,6 @@ class Janela:
         superfice = pygame.Surface(self.janela.get_size(), pygame.SRCALPHA, 32)
         eye = Ponto(0, 0, 0)
         
-        
-   
         for x in range(self.cena.largura):
             for y in range(self.cena.altura):
                 D = self.canvasParaJanela(x, y)
@@ -70,8 +68,17 @@ class Janela:
             
 
     def calculaCor(self, raio, infoIntersecao):
+        
         if(infoIntersecao.valido):
-            return infoIntersecao.hitObjeto.material.cor
+            objeto_atual = infoIntersecao.hitObjeto
+            normal = normalizaVetor(objeto_atual.getNormal(infoIntersecao.getPontoAtual()))
+      
+            P = infoIntersecao.getPontoAtual()
+         
+            cor = self.cena.computaLuzes(normal, P, objeto_atual, raio)
+
+            # return objeto_atual.getColor(color)
+            return cor
         else:
             cor = Cor(0, 255, 0)
             return cor

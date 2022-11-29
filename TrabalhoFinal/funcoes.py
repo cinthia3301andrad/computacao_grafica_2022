@@ -2,6 +2,7 @@ import math
 from definicoes import Cor, Vetor, Ponto
 
 def Produto_escalar(v_1, v_2):
+
     return v_1.x * v_2.x + v_1.y * v_2.y + v_1.z * v_2.z
     
 
@@ -33,17 +34,21 @@ def CanvasParaJanela(c, l, janela): #retorna o vetor (Vx, Vy, Vz) que define a d
 
 def Calcula_vetor_refletido(L, N):
     escalar_l_n = Produto_escalar(L, N) * 2
-    vetor_l_n = Vetor(N['x']*escalar_l_n, N['y']*escalar_l_n, N['z']*escalar_l_n)
+    vetor_l_n = Vetor(N.x*escalar_l_n, N.y*escalar_l_n, N.z*escalar_l_n)
 
     return Subtracao_vetores(vetor_l_n, L)
 
 # Calcula o ponto gerado pelo parâmetro t de um raio
 def Calcula_ponto_intersecao(Po, t, D): #D = centro do pixel atual
+   
     return Ponto(
         Po.x + t*D.x,
         Po.y + t*D.y,
         Po.z + t*D.z,
     )
+def Calc_L(P_F, P):
+    L = normalizaVetor(Subtracao_vetores(P_F, P))
+    return L
 
 def calcula_M_cilindro(d):
     M = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]

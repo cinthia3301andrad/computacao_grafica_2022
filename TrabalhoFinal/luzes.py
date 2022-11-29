@@ -1,82 +1,88 @@
 import numpy as np
-from utils.ray import Ray
-from utils import transforms
-from utils.material import Material
+import math
+from definicoes import Cor, Vetor, Ponto
+from funcoes import Produto_arroba, Vetor_escalar, Calc_L, Subtracao_vetores, Produto_escalar, normalizaVetor, Calcula_vetor_refletido
 
 
-class Light:
-    def __init__(self, position: np.ndarray, intensidade: float, cor: np.ndarray = np.array([255., 255., 255.])):
-        self.position = position
+class Luz:
+    def __init__(self, posicao, intensidade, k_difusa, k_especular, k_ambiente):
+        self.posicao = posicao
         self.intensidade = intensidade
-        self.cor = cor/255.
+        self.k_difusa = k_difusa
+        self.k_especular = k_especular
+        self.k_ambiente = k_ambiente
 
-    def computaLuz(self, point: np.ndarray, normal: np.ndarray, ray: Ray, shininess: float):
+    def computaLuz(self, ponto, normal, raio, shininess: float):
         return 0
 
-    def getDirection(self, point: np.ndarray):
-        direction = self.position - point
-        distance = np.linalg.norm(direction)
-        return direction / distance, distance
+    def getDirecao(self, ponto):
+        direcao = self.posicao - ponto
+        distance = np.linalg.norm(direcao)
+        return direcao / distance, distance
 
     @property
     def ignoreShadow(self):
         return False
 
-class PointLight(Light):
-    def __init__(self, position: np.ndarray, intensidade, cor: np.ndarray = np.array([255., 255., 255.])):
-        super().__init__(position, intensidade, cor)
 
-    def computaLuz(self, point: np.ndarray, normal: np.ndarray, ray: Ray, material: Material):
-        direction = self.position - point
-        distance = np.linalg.norm(direction)
-        direction = direction / distance
+class LuzPontual(Luz):
+    def __init__(self, posicao, intensidade, k_difusa, k_especular, m):
+        self.posicao = posicao
+        self.intensidade = intensidade
+        self.k_difusa = k_difusa
+        self.k_especular = k_especular
 
-        dot = direction @ normal
-        if dot <= 0: return 0
+        self.m = m
 
-        sqrtD = (distance ** 0.5)
-        lightness = self.intensidade * dot / sqrtD
-        if material.shininess == np.inf:
-            return lightness
+    def computaLuz(self, normal, ponto, objeto_atual, raio):
 
-        r = 2*(direction @ normal) * normal - direction
-        dot2 = r @ -ray.direction
-        if dot2 > 0:
-            lightness += self.intensidade * (dot2 ** material.shininess) / sqrtD
+    # incicialização das contribuições ambiente, difusa e especular
+     
+        intensidade_d = 0.0 #difusa
+        intensidade_e = 0.0 #especular
+        L = normalizaVetor(Calc_L(self.posicao, ponto))
+        normal = normalizaVetor(normal)
 
-        return lightness
+        r_vetor_refletido = normalizaVetor(Calcula_vetor_refletido(L, normal))
+        v_vetor = normalizaVetor(Subtracao_vetores(raio.origem, ponto))
 
-class AmbientLight(Light):
-    def __init__(self, intensidade, cor):
-        super().__init__(np.zeros(3), intensidade, cor)
+        # Cálculo do fator de atenuação da reflexão difusa
+        fd = max(0, Produto_escalar(L, normal))
 
-    def computaLuz(self):
-        return self.intensidade
+        # Cálculo do fator de atenuação da reflexão especular
+        m = self.m
+        fe = pow(max(0, Produto_escalar(r_vetor_refletido, v_vetor)), m)
+
+        I_F = self.intensidade  # Pontual
+        # Cálculo das contribuições de energia resultantes das reflexões Ambiente, Difusa e Especular
+        intensidade_d = Vetor_escalar(Produto_arroba(
+            I_F, self.k_difusa), fd)  # Reflexão difusa
+        intensidade_e = Vetor_escalar(Produto_arroba(
+            I_F, self.k_especular), fe)  # Reflexão especular
+        print("ue", intensidade_d.x,  intensidade_d.y,  intensidade_d.z)
+        return Cor((intensidade_e.x + intensidade_d.x),
+                   (intensidade_e.y + intensidade_d.y),
+                   (intensidade_e.z + intensidade_d.z))
+
+
+class LuzAmbiente(Luz):
+
+    def __init__(self, intensidade, k_ambiente):
+
+        self.k_ambiente = k_ambiente
+        self.intensidade = intensidade
+
+    def computaLuz(self, normal, ponto, objeto_atual, raio):
+        I_A = self.intensidade
+        K_a = self.k_ambiente
+        intensidade_a = Produto_arroba(I_A, K_a)
+        print("UE", (K_a.x,
+                   K_a.y,
+                   K_a.z))
+        return Cor(intensidade_a.x,
+                   intensidade_a.y,
+                   intensidade_a.z)
 
     @property
     def ignoreShadow(self):
         return True
-
-
-class DirectionalLight(Light):
-    def __init__(self, direction: np.ndarray, intensidade: np.ndarray, cor = np.array([255., 255., 255.])):
-        super().__init__(np.array([0., 0., 0.]), intensidade, cor)
-        self.direction = transforms.normalize(-direction)
-
-    def computaLuz(self, point: np.ndarray, normal: np.ndarray, ray: Ray, material: Material):
-        dot = self.direction @ normal
-        if dot <= 0: return 0
-
-        lightness = self.intensidade * dot
-        if material.shininess == np.inf:
-            return lightness
-
-        r = 2*(self.direction @ normal) * normal - self.direction
-        dot2 = r @ -ray.direction
-        if dot2 > 0:
-            lightness += self.intensidade * (dot2 ** material.shininess)
-
-        return lightness
-
-    def getDirection(self, point: np.ndarray):
-        return self.direction, np.inf

@@ -277,7 +277,7 @@ def DecideCor(Po, cena, canvas, D, P_F, x, y):
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado, True)
         else:
             intensidade = Calcula_iluminacao( N, L, r_vetor_refletido, v_vetor, objeto_encontrado)
-
+            print(intensidade['x'], intensidade['y'], intensidade['z'])
     if(objeto_encontrado != None and objeto_encontrado['tipo'] == 'plano'):
         t_corrigido = t_proximo - 0.1
         P = Calcula_ponto_intersecao(Po,t_corrigido , D) # Ponto atingido pelo raio

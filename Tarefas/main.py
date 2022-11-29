@@ -24,7 +24,7 @@ pygame.init()
 
 img_madeira_chao = Image.open("madeira.jpg")
 x, y = img_madeira_chao.size
-print('x', str(x), y)
+
 px_img_madeira_chao = img_madeira_chao.load() 
 
 img_madeira_parede_lateral = Image.open("madeira2.jpg")
@@ -154,7 +154,7 @@ cilindro = Cilindro(centro_cilindro,
 
 #objetos  = [plano_fundo, plano_chao, objeto_esfera1, objeto_cilindro1, objeto_cone  ]
 # Nãoobjetos   = [ objeto_cone, objeto_esfera1,objeto_cilindro1,  plano_chao, plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto, objeto_cubo]
-objetos  = [plano_chao]
+objetos  = [objeto_esfera1]
 
 cena      = Cena(objetos)
 
@@ -192,7 +192,7 @@ for x in range(canvas['wc']):
         #color = DecideCor(D, cena, canvas, Vetor(0, 0, -1), P_F)
       
         pixels[x, y] = (color['r'], color['g'], color['b'])
-        print(color)
+      
         pygame.gfxdraw.pixel(superfice, x, y, (color['r'], color['g'], color['b']))
 screen.blit(superfice, (0, 0))
 pygame.display.flip()        
