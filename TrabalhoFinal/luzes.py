@@ -35,9 +35,7 @@ class LuzPontual(Luz):
         self.m = m
 
     def computaLuz(self, normal, ponto, objeto_atual, raio):
-
     # incicialização das contribuições ambiente, difusa e especular
-     
         intensidade_d = 0.0 #difusa
         intensidade_e = 0.0 #especular
         L = normalizaVetor(Calc_L(self.posicao, ponto))
@@ -45,28 +43,28 @@ class LuzPontual(Luz):
 
         r_vetor_refletido = normalizaVetor(Calcula_vetor_refletido(L, normal))
         v_vetor = normalizaVetor(Subtracao_vetores(raio.origem, ponto))
-
+     
         # Cálculo do fator de atenuação da reflexão difusa
         fd = max(0, Produto_escalar(L, normal))
 
         # Cálculo do fator de atenuação da reflexão especular
         m = self.m
         fe = pow(max(0, Produto_escalar(r_vetor_refletido, v_vetor)), m)
-
         I_F = self.intensidade  # Pontual
         # Cálculo das contribuições de energia resultantes das reflexões Ambiente, Difusa e Especular
         intensidade_d = Vetor_escalar(Produto_arroba(
             I_F, self.k_difusa), fd)  # Reflexão difusa
         intensidade_e = Vetor_escalar(Produto_arroba(
             I_F, self.k_especular), fe)  # Reflexão especular
-        print("ue", intensidade_d.x,  intensidade_d.y,  intensidade_d.z)
-        return Cor((intensidade_e.x + intensidade_d.x),
-                   (intensidade_e.y + intensidade_d.y),
-                   (intensidade_e.z + intensidade_d.z))
+
+        intensidade_x = (intensidade_e.x + intensidade_d.x)
+        intensidade_y = (intensidade_e.y + intensidade_d.y)
+        intensidade_z =   (intensidade_e.z + intensidade_d.z)
+    
+        return Cor(intensidade_x, intensidade_y, intensidade_z)
 
 
 class LuzAmbiente(Luz):
-
     def __init__(self, intensidade, k_ambiente):
 
         self.k_ambiente = k_ambiente
@@ -76,13 +74,50 @@ class LuzAmbiente(Luz):
         I_A = self.intensidade
         K_a = self.k_ambiente
         intensidade_a = Produto_arroba(I_A, K_a)
-        print("UE", (K_a.x,
-                   K_a.y,
-                   K_a.z))
+       
         return Cor(intensidade_a.x,
                    intensidade_a.y,
                    intensidade_a.z)
 
-    @property
+    def ignoreShadow(self):
+        return True
+
+class LuzDirecional(Luz):
+    def __init__(self,  direcao, intensidade, k_difusa, k_especular, m):
+
+        self.intensidade = intensidade
+        self.k_difusa = k_difusa
+        self.k_especular = k_especular
+        self.direcao = direcao
+        self.m = m
+
+    def computaLuz(self, normal, ponto, objeto_atual, raio):
+        intensidade_d = 0.0 #difusa
+        intensidade_e = 0.0 #especular
+        L = normalizaVetor(self.direcao)
+        normal = normalizaVetor(normal)
+
+        r_vetor_refletido = normalizaVetor(Calcula_vetor_refletido(L, normal))
+        v_vetor = normalizaVetor(Subtracao_vetores(raio.origem, ponto))
+     
+        # Cálculo do fator de atenuação da reflexão difusa
+        fd = max(0, Produto_escalar(L, normal))
+
+        # Cálculo do fator de atenuação da reflexão especular
+        m = self.m
+        fe = pow(max(0, Produto_escalar(r_vetor_refletido, v_vetor)), m)
+        I_F = self.intensidade  # Pontual
+        # Cálculo das contribuições de energia resultantes das reflexões Ambiente, Difusa e Especular
+        intensidade_d = Vetor_escalar(Produto_arroba(
+            I_F, self.k_difusa), fd)  # Reflexão difusa
+        intensidade_e = Vetor_escalar(Produto_arroba(
+            I_F, self.k_especular), fe)  # Reflexão especular
+
+        intensidade_x = (intensidade_e.x + intensidade_d.x)
+        intensidade_y = (intensidade_e.y + intensidade_d.y)
+        intensidade_z =   (intensidade_e.z + intensidade_d.z)
+    
+        return Cor(intensidade_x, intensidade_y, intensidade_z)
+
     def ignoreShadow(self):
         return True

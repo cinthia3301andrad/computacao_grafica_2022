@@ -8,7 +8,7 @@ from material import Material
 
 from definicoes import Cor, Vetor, Ponto
 
-from luzes import LuzPontual, LuzAmbiente
+from luzes import LuzPontual, LuzAmbiente, LuzDirecional
 
 # K_d_esfera     = Vetor(0.854, 0.647, 0.125)
 # K_a_esfera     = Vetor(0.854, 0.647, 0.125)
@@ -24,10 +24,10 @@ def main():
     # m_esfera       = 10
     # centro_esfera  = Ponto(0, 95, -200), -200)
     rEsfera = 40
-    K_d_esfera = Vetor(0.7, 0.2, 0.2)
-    K_a_esfera = Vetor(0.7, 0.2, 0.2)
-    K_e_esfera = Vetor(0.7, 0.2, 0.2)
-    m_esfera = 10
+    K_d_esfera = Vetor(1, 0, 0)
+    K_a_esfera = Vetor(1, 0, 0)
+    K_e_esfera = Vetor(1, 0, 0)
+    m_esfera = 100
     materialEsfera = Material(Cor(255, 0, 0))
 
     P_F = Ponto(0, 60, -30)
@@ -37,13 +37,18 @@ def main():
     luz_ambiente = LuzAmbiente(intensidade_ambiente, K_a_esfera)
     luz_pontual = LuzPontual(
         P_F, intensidade_pf, K_d_esfera, K_e_esfera, m_esfera)
-        
+
+    direcao_luz_direcional = Ponto(-1., 0, 0.4) #
+
+    intensidade_direcional = Vetor(0.7, 0.7, 0.7)
+    luz_direcional = LuzDirecional(
+      direcao_luz_direcional, intensidade_direcional, K_d_esfera, K_e_esfera, m_esfera)
     esfera = Esfera(centro_esfera, rEsfera, materialEsfera)
 
     objetos = [esfera]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_pontual, luz_ambiente]
+    luzes = [ luz_direcional]
 
     dJanela = 30  # distância entre a janela e o olho observador
 

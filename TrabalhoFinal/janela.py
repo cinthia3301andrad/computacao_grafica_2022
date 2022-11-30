@@ -74,11 +74,12 @@ class Janela:
             normal = normalizaVetor(objeto_atual.getNormal(infoIntersecao.getPontoAtual()))
       
             P = infoIntersecao.getPontoAtual()
-         
+            
             cor = self.cena.computaLuzes(normal, P, objeto_atual, raio)
-
+     
             # return objeto_atual.getColor(color)
-            return cor
+            return Cor(cor.r, cor.g, cor.g)
+            #return Cor(0, 255, 255)
         else:
             cor = Cor(0, 255, 0)
             return cor
