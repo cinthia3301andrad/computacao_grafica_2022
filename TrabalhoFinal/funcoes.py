@@ -89,13 +89,20 @@ def mult_matriz_vetor(M, vetor):
 
     return calc
 
+def mult_matriz_ponto(M, vetor):
+    calc = Ponto(
+        M[0][0]*vetor.x + M[0][1]*vetor.y +M[0][2]*vetor.z + M[0][3],
+        M[1][0]*vetor.x + M[1][1]*vetor.y +M[1][2]*vetor.z + M[1][3],
+        M[2][0]*vetor.x + M[2][1]*vetor.y +M[2][2]*vetor.z + M[2][3],
+    )
 
+    return calc
 
 def produto_vetorial(vetor_A, vetor_B):
     
-    x = vetor_A['y']*vetor_B['z'] - vetor_A['z']*vetor_B['y']
-    y = vetor_A['z']*vetor_B['x'] - vetor_A['x']*vetor_B['z']
-    z = vetor_A['x']*vetor_B['y'] - vetor_A['y']*vetor_B['x']
+    x = vetor_A.y *vetor_B.z - vetor_A.z*vetor_B.y
+    y = vetor_A.z*vetor_B.x - vetor_A.x*vetor_B.z
+    z = vetor_A.x *vetor_B.y - vetor_A.y*vetor_B.x
     
     r = Vetor(
         x, 

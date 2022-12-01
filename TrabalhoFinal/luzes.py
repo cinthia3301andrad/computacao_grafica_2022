@@ -1,7 +1,7 @@
 import numpy as np
 import math
 from definicoes import Cor, Vetor, Ponto
-from funcoes import Produto_arroba, Vetor_escalar, Calc_L, Subtracao_vetores, Produto_escalar, normalizaVetor, Calcula_vetor_refletido
+from funcoes import Produto_arroba, Vetor_escalar, Calc_L, Subtracao_vetores, Produto_escalar, normalizaVetor, Calcula_vetor_refletido, mult_matriz_vetor
 
 
 class Luz:
@@ -63,7 +63,6 @@ class LuzPontual(Luz):
     
         return Cor(intensidade_x, intensidade_y, intensidade_z)
 
-
 class LuzAmbiente(Luz):
     def __init__(self, intensidade, k_ambiente):
 
@@ -118,6 +117,9 @@ class LuzDirecional(Luz):
         intensidade_z =   (intensidade_e.z + intensidade_d.z)
     
         return Cor(intensidade_x, intensidade_y, intensidade_z)
+    
+    def mundoParaCamera(self, matriz):
+        self.direcao = mult_matriz_vetor(matriz, self.direcao)
 
     def ignoreShadow(self):
         return True

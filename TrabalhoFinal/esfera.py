@@ -2,7 +2,7 @@ import numpy as np
 from raio import Raio
 import math
 from objetos.objeto import Objeto
-from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor
+from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto
 
 
 class Esfera(Objeto):
@@ -24,7 +24,8 @@ class Esfera(Objeto):
     def getColor(self):
         return self.material.cor
 
-
+    def mundoParaCamera(self, matriz):
+        self.posicaoCentro = mult_matriz_ponto(matriz, self.posicaoCentro)
 
 def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera):
     w = Subtracao_vetores(raio.origem, posicaoCentro)

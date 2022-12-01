@@ -10,6 +10,8 @@ from definicoes import Cor, Vetor, Ponto
 
 from luzes import LuzPontual, LuzAmbiente, LuzDirecional
 
+from camera import Camera
+
 # K_d_esfera     = Vetor(0.854, 0.647, 0.125)
 # K_a_esfera     = Vetor(0.854, 0.647, 0.125)
 # K_e_esfera     = Vetor(0.854, 0.647, 0.125)
@@ -17,6 +19,7 @@ from luzes import LuzPontual, LuzAmbiente, LuzDirecional
 
 
 def main():
+
     largura, altura = 500, 500
 
     centro_esfera =  Ponto(0, 0, -100)
@@ -50,6 +53,18 @@ def main():
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [ luz_direcional]
 
+
+    posicao_c = Vetor(0, 0, 1) #Vetor(0, -5, 1)
+    at = Vetor(0, 0, -1)
+    up = Vetor(0, 1, -1)
+    camera1 = Camera(posicao_c, at, up)
+    matriz = camera1.matriz()
+
+    for objeto in objetos:
+      objeto.mundoParaCamera(matriz)
+    for luz in luzes:
+      luz.mundoParaCamera(matriz) 
+    
     dJanela = 30  # distância entre a janela e o olho observador
 
     cena = Cena(largura, altura, objetos, luzes)
