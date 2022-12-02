@@ -56,16 +56,13 @@ class Janela:
                 color = self.calculaCor(raio, infoIntersecao)
         
            
-                pygame.gfxdraw.pixel(superfice, x, y, (color.r, color.g, color.b)) #para cada posicao x,y da superficie, colore com o (r, g, b)
+                pygame.gfxdraw.pixel(superfice, (self.cena.largura -x) ,(self.cena.altura -y) , (color.r, color.g, color.b)) #para cada posicao x,y da superficie, colore com o (r, g, b)
         self.janela.blit(superfice, (0, 0))
         pygame.display.flip()  
 
     def calculaIntersecao(self, raio, infoIntersecao):
         for objeto in self.cena.objetos:
-            objeto.intersecao(raio, infoIntersecao)
-            
-            infoIntersecao.atualizaObjeto(objeto)
-            
+            objeto.intersecao(raio, infoIntersecao, objeto)            
 
     def calculaCor(self, raio, infoIntersecao):
         

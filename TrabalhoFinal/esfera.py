@@ -13,8 +13,8 @@ class Esfera(Objeto):
         self.material = material
 
 
-    def intersecao(self, raio: Raio, infoIntersecao) :
-        return intersecao(raio, infoIntersecao, self.posicaoCentro, self.raioEsfera)
+    def intersecao(self, raio: Raio, infoIntersecao, obj) :
+        return intersecao(raio, infoIntersecao, self.posicaoCentro, self.raioEsfera, obj)
 
     def getNormal(self, ponto): #calcula e retorna a normal do ponto da superficie esfera
         #return Subtracao_vetores(ponto , self.posicaoCentro) / self.raioEsfera
@@ -27,7 +27,7 @@ class Esfera(Objeto):
     def mundoParaCamera(self, matriz):
         self.posicaoCentro = mult_matriz_ponto(matriz, self.posicaoCentro)
 
-def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera):
+def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera, obj):
     w = Subtracao_vetores(raio.origem, posicaoCentro)
    
     a = Produto_escalar(raio.direcao, raio.direcao)
@@ -50,8 +50,7 @@ def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera):
         return None
         
     raio.t = t
-    infoIntersecao.atualizaIntersecao(t)
-
+    infoIntersecao.atualizaIntersecao(t, obj)
     #return Calcula_ponto_intersecao(raio.origem, t, raio.direcao)
   
    
