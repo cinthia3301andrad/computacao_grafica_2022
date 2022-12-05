@@ -2,6 +2,7 @@ from cena import Cena
 
 from janela import Janela
 
+from cone import Cone
 from esfera import Esfera
 from plano import Plano
 
@@ -15,6 +16,8 @@ from definicoes import Cor, Vetor, Ponto
 from luzes import LuzPontual, LuzAmbiente, LuzDirecional
 
 from camera import Camera
+
+from funcoes import Vetor_escalar, Soma_vetores
 
 # K_d_esfera     = Vetor(0.854, 0.647, 0.125)
 # K_a_esfera     = Vetor(0.854, 0.647, 0.125)
@@ -96,6 +99,21 @@ def main():
     K_e_teto=  Vetor(0.933, 0.933, 0.933)
     materialPlanoTeto = Material(Cor(0, 255, 255), K_d_teto, K_e_teto, K_a_teto, m_plano_teto)
     plano_teto   = Plano(P_pi, n_bar ,materialPlanoTeto)
+
+
+   
+    rCone         = 90
+    hCone         = 150
+    d_cone        = Vetor(0, 1 , 0)
+    centro_cone   = Ponto(0, -60, -200)
+    K_a_cone      = Vetor(0, 1, 0.498) #Vetor(0.0, 0.0, 0.0)
+    K_d_cone      = Vetor(0, 1, 0.498)
+    K_e_cone      = Vetor(0, 1, 0.498) #Vetor(0.0, 0.0, 0.0)
+    m_cone        = 100
+    materialCone = Material(Cor(0, 255, 255), K_d_cone, K_e_cone, K_a_cone, m_cone )
+    h_dc = Vetor_escalar(d_cone ,hCone )
+    v_cone = Soma_vetores(centro_cone, h_dc)
+    objeto_cone   = Cone(centro_cone, rCone, hCone, d_cone, v_cone,materialCone)
 
 
     P_F = Ponto(0, 60, -30)
