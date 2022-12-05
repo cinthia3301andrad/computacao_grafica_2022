@@ -7,6 +7,7 @@ from plano import Plano
 
 from cilindro import Cilindro
 
+import math
 from material import Material
 
 from definicoes import Cor, Vetor, Ponto
@@ -91,9 +92,9 @@ def main():
     rCilindro  = 40
     m_cilindro = 10
     h_cilindro = 50
-    centro_cilindro = Ponto(100, -30, -200)
-    #d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-    d_cil = Vetor(0, 1, 0)
+    centro_cilindro = Ponto(-100, 0, -400)
+   # d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+    d_cil = Vetor(0, 0,  1)
     K_d_cilindro= Vetor(0.824, 0.706, 0.549)
     K_a_cilindro= Vetor(0.824, 0.706, 0.549)
     K_e_cilindro= Vetor(0.824, 0.706, 0.549)
