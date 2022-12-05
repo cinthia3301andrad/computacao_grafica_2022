@@ -1,9 +1,14 @@
 from raio import Raio
 import math
 from objetos.objeto import Objeto
+<<<<<<< HEAD
 
 from planoCircular import PlanoCircular
 from funcoes import Calcula_ponto_intersecao, Vetor, Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, Vetor_escalar, Soma_vetores, mult_matriz_vetor,produto_vetorial
+=======
+from funcoes import Vetor, Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, Vetor_escalar, Soma_vetores, mult_matriz_vetor,produto_vetorial, Calcula_ponto_intersecao
+from planoCircular import PlanoCircular
+>>>>>>> d7c07c6862a8826f7a2e4ffaa2a04314301fa28c
 class Cone(Objeto):
     def __init__(self, centro, raio : float, altura, direcao, v, material): # ,com_base = 1
         self.centro = centro
