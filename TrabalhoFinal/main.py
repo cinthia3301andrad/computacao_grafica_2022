@@ -119,7 +119,7 @@ def main():
     h_cilindro = 50
     centro_cilindro = Ponto(-100, 0, -400)
    # d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-    d_cil = Vetor(0, 0,  1)
+    d_cil = Vetor(0, 1,  0)
     K_d_cilindro= Vetor(0.824, 0.706, 0.549)
     K_a_cilindro= Vetor(0.824, 0.706, 0.549)
     K_e_cilindro= Vetor(0.824, 0.706, 0.549)
@@ -128,7 +128,7 @@ def main():
 
 
 
-    objetos = [plano_chao , plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
+    objetos = [cilindro, plano_chao , plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente, luz_pontual]

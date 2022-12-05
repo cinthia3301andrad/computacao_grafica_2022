@@ -21,7 +21,7 @@ class Cilindro(Objeto):
 
     def getNormal(self, ponto):  # calcula e retorna a normal do ponto da superficie Cilindro
         # return Subtracao_vetores(ponto , self.posicaoCentro) / self.raioCilindro
-        w = Subtracao_vetores(ponto, self.base)
+        w = Subtracao_vetores(ponto, self.posicaoCentro)
 
         parte_dois = Vetor_escalar(self.direcaoCilindro, 
         Produto_escalar(w, self.direcaoCilindro)
@@ -39,7 +39,7 @@ class Cilindro(Objeto):
 def intersecao(raio, infoIntersecao, 
 posicaoCentro, raioCilindro, direcaoCilindro,  alturaCilindro, base, obj):
     n_Base = Vetor(-direcaoCilindro.x, -direcaoCilindro.y, -direcaoCilindro.z)
-    basePlano = PlanoCircular(base, n_Base,raioCilindro, obj.material)
+    basePlano = PlanoCircular(posicaoCentro, n_Base,raioCilindro, obj.material)
 
     basePlano.intersecao(raio, infoIntersecao, obj)
 
@@ -80,16 +80,16 @@ posicaoCentro, raioCilindro, direcaoCilindro,  alturaCilindro, base, obj):
     p1 = Calcula_ponto_intersecao(raio.origem, t1, raio.direcao)
     p2 = Calcula_ponto_intersecao(raio.origem, t2, raio.direcao)
   
-    h1 = Produto_escalar(Subtracao_vetores(p1, base), direcaoCilindro)
-    h2 = Produto_escalar(Subtracao_vetores(p2, base), direcaoCilindro)
+    projecao1 = Produto_escalar(Subtracao_vetores(p1, posicaoCentro), direcaoCilindro)
+    projecao2 = Produto_escalar(Subtracao_vetores(p2, posicaoCentro), direcaoCilindro)
     t = raio.t
-    if(t1 < t2):
+ 
+    if(projecao1 >= 0 and projecao1 <= alturaCilindro):
         t = t1
-    else:
-        t = t2
-    raio.t = t
-    if(h1 >= 0 and h1 <= alturaCilindro):
+        raio.t = t
         infoIntersecao.atualizaIntersecao(t1, obj)
-    if(h2 >= 0 and h2 <= alturaCilindro):
+    if(projecao2 >= 0 and projecao2 <= alturaCilindro):
+        t = t2
+        raio.t = t
         infoIntersecao.atualizaIntersecao(t2, obj)
     # return Calcula_ponto_intersecao(raio.origem, t, raio.direcao)
