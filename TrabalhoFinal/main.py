@@ -116,7 +116,7 @@ def main():
     objeto_cone   = Cone(centro_cone, rCone, hCone, d_cone, v_cone,materialCone)
 
 
-    P_F = Ponto(0, 60, -30)
+    P_F = Ponto(0, 0, -30)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
     intensidade_ambiente = Vetor(0.3, 0.3, 0.3)   # Ambiente
 
@@ -135,9 +135,9 @@ def main():
     rCilindro  = 40
     m_cilindro = 10
     h_cilindro = 50
-    centro_cilindro = Ponto(-100, 0, -400)
+    centro_cilindro = Ponto(0, 0, -200)
    # d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-    d_cil = Vetor(0, 1,  0)
+    d_cil = Vetor(0, 0, 1)
     K_d_cilindro= Vetor(0.824, 0.706, 0.549)
     K_a_cilindro= Vetor(0.824, 0.706, 0.549)
     K_e_cilindro= Vetor(0.824, 0.706, 0.549)
@@ -146,7 +146,7 @@ def main():
 
 
 
-    objetos = [cilindro, plano_chao , plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
+    objetos = [objeto_cone, plano_chao , plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente, luz_pontual]

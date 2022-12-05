@@ -40,17 +40,15 @@ def intersecao(raio, infoIntersecao,
 posicaoCentro, raioCilindro, direcaoCilindro,  alturaCilindro, base, obj):
     n_Base = Vetor(-direcaoCilindro.x, -direcaoCilindro.y, -direcaoCilindro.z)
     basePlano = PlanoCircular(posicaoCentro, n_Base,raioCilindro, obj.material)
+    
+    basePlano.intersecao(raio, infoIntersecao, basePlano)
 
-    basePlano.intersecao(raio, infoIntersecao, obj)
-
-    centroTopo = Soma_vetores(posicaoCentro, Vetor_escalar(direcaoCilindro,alturaCilindro))
+    centroTopo = Soma_vetores(posicaoCentro, Vetor_escalar(direcaoCilindro, alturaCilindro))
     topoPlano = PlanoCircular(centroTopo, direcaoCilindro,raioCilindro, obj.material)
 
     topoPlano.intersecao(raio, infoIntersecao, obj)
 
-    prod_escalar = Produto_escalar(raio.direcao, direcaoCilindro)
-
-    
+    prod_escalar = Produto_escalar(raio.direcao, direcaoCilindro) 
 
     mult = Vetor_escalar(direcaoCilindro, prod_escalar)
 
@@ -83,13 +81,15 @@ posicaoCentro, raioCilindro, direcaoCilindro,  alturaCilindro, base, obj):
     projecao1 = Produto_escalar(Subtracao_vetores(p1, posicaoCentro), direcaoCilindro)
     projecao2 = Produto_escalar(Subtracao_vetores(p2, posicaoCentro), direcaoCilindro)
     t = raio.t
- 
+
     if(projecao1 >= 0 and projecao1 <= alturaCilindro):
         t = t1
         raio.t = t
+    
         infoIntersecao.atualizaIntersecao(t1, obj)
     if(projecao2 >= 0 and projecao2 <= alturaCilindro):
         t = t2
         raio.t = t
+
         infoIntersecao.atualizaIntersecao(t2, obj)
     # return Calcula_ponto_intersecao(raio.origem, t, raio.direcao)

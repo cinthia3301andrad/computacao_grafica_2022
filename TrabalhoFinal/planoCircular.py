@@ -12,7 +12,7 @@ class PlanoCircular(Objeto):
         self.material= material
     def intersecao(self, raio: Raio ,infoIntersecao, obj):
         return intersecao(raio, infoIntersecao,
-                     self.centroPlano, self.n_bar, self.raioCilindro,obj)
+                     self.centroPlano, self.n_bar, self.raioCilindro, self)
 
     def getNormal(self, _): #calcula e retorna a normal do ponto da superficie esfera
         #return Subtracao_vetores(ponto , self.posicaoCentro) / self.raioEsfera
@@ -26,17 +26,23 @@ class PlanoCircular(Objeto):
         self.n_bar = mult_matriz_vetor(matriz, self.n_bar)
     
 def intersecao(raio, infoIntersecao, centroPlano , n_bar, raioCilindro, obj):
-    h1 = Produto_escalar(Subtracao_vetores(centroPlano, raio.origem), n_bar)
-    h2 = Produto_escalar(raio.direcao, n_bar)
-    if (h2 == 0 or (h1 / h2) <= 1) :
-        return
-            
-    t = h1 / h2
 
-    P_base = Calcula_ponto_intersecao(raio.origem, t, raio.direcao)
+    w = Subtracao_vetores(raio.origem, centroPlano )
+   
+    numerador   = Produto_escalar(w, n_bar)
+    denominador = Produto_escalar(raio.direcao, n_bar)
+    
+    if(denominador == 0 ):
+        return 
+    t_i = -numerador/denominador
+    if(t_i < 0):
+        return 
+    
+    
+    P_base = Calcula_ponto_intersecao(raio.origem, t_i, raio.direcao)
     P_Cb            = Subtracao_vetores(P_base, centroPlano)
     comprimentoP_Cb = math.sqrt(Produto_escalar(P_Cb, P_Cb)) 
     if(comprimentoP_Cb > raioCilindro):
         return
-    centroPonto = Subtracao_vetores(P_base, centroPlano)
-    infoIntersecao.atualizaIntersecao(t, obj)
+
+    infoIntersecao.atualizaIntersecao(t_i, obj)

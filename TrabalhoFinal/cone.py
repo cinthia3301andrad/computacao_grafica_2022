@@ -1,7 +1,9 @@
 from raio import Raio
 import math
 from objetos.objeto import Objeto
-from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, Vetor_escalar, Soma_vetores, mult_matriz_vetor,produto_vetorial
+
+from planoCircular import PlanoCircular
+from funcoes import Calcula_ponto_intersecao, Vetor, Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, Vetor_escalar, Soma_vetores, mult_matriz_vetor,produto_vetorial
 class Cone(Objeto):
     def __init__(self, centro, raio : float, altura, direcao, v, material): # ,com_base = 1
         self.centro = centro
@@ -30,7 +32,10 @@ class Cone(Objeto):
         self.direcao = mult_matriz_vetor(matriz, self.direcao)
 
 def intersecao(raio, infoIntersecao, centro, direcao, r, altura, v, obj):
+    n_Base = Vetor(-direcao.x, -direcao.y, -direcao.z)
+    basePlano = PlanoCircular(centro, n_Base,r, obj.material)
     
+    basePlano.intersecao(raio, infoIntersecao, basePlano)
     v_cone     = Subtracao_vetores( v , raio.origem)
     drdotdc = Produto_escalar(raio.direcao, direcao)
     drdotdr = Produto_escalar( raio.direcao, raio.direcao)
@@ -55,7 +60,7 @@ def intersecao(raio, infoIntersecao, centro, direcao, r, altura, v, obj):
     
     t1 = (-b + math.sqrt(delta)) / (2*a)
     t2 = (-b - math.sqrt(delta)) / (2*a)
-
+    menor_t = raio.t
     if   (t1 >= t2 and t2 > 0):
         menor_t = t2
     elif (t1 < t2 and t1 > 0):
@@ -64,12 +69,13 @@ def intersecao(raio, infoIntersecao, centro, direcao, r, altura, v, obj):
         menor_t = t2
     elif (t2 < 0 and t1 > 0):
         menor_t = t1
-
-    t = raio.t
-    if (0 < menor_t < t): 
-        t = menor_t
-    if (t == raio.t): 
-        return None
+    else: 
+        return
+    P        = Calcula_ponto_intersecao(raio.origem, menor_t , raio.direcao)
+    projecao = Produto_escalar(Subtracao_vetores( v ,P), direcao) 
+                
+    if(projecao < 0 or projecao > altura): # P é inválido
+        return
         
-    raio.t = t
-    infoIntersecao.atualizaIntersecao(t, obj)
+    raio.t = menor_t
+    infoIntersecao.atualizaIntersecao(menor_t, obj)
