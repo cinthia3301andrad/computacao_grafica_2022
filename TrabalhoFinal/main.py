@@ -31,15 +31,15 @@ def main():
     dJanela = 30  # distância entre a janela e o olho observador
 
 
-    centro_esfera =  Ponto(50, 0, 0)
+    centro_esfera =  Ponto(0, 95, -200)
     # rEsfera        = 5
     # m_esfera       = 10
     # centro_esfera  = Ponto(0, 95, -200), -200)
-    rEsfera = 40
-    K_d_esfera = Vetor(1, 0.3, 0.1)
-    K_a_esfera = Vetor(1, 0.3, 0.1)
-    K_e_esfera = Vetor(1, 0.3, 0.1)
-    m_esfera = 100
+    rEsfera = 5
+    K_d_esfera = Vetor(0.854, 0.647, 0.125)
+    K_a_esfera = Vetor(0.854, 0.647, 0.125)
+    K_e_esfera = Vetor(0.854, 0.647, 0.125)
+    m_esfera = 1
  
     materialEsfera = Material(Cor(255, 0, 0), K_d_esfera, K_a_esfera, K_e_esfera, m_esfera)
 
@@ -104,12 +104,12 @@ def main():
    
     rCone         = 90
     hCone         = 150
-    d_cone        = Vetor(0, 1 , 0)
+    d_cone        = Vetor(0., 1., 0.)
     centro_cone   = Ponto(0, -60, -200)
     K_a_cone      = Vetor(0, 1, 0.498) #Vetor(0.0, 0.0, 0.0)
     K_d_cone      = Vetor(0, 1, 0.498)
     K_e_cone      = Vetor(0, 1, 0.498) #Vetor(0.0, 0.0, 0.0)
-    m_cone        = 100
+    m_cone        = 1
     materialCone = Material(Cor(0, 255, 255), K_d_cone, K_e_cone, K_a_cone, m_cone )
     h_dc = Vetor_escalar(d_cone ,hCone )
     v_cone = Soma_vetores(centro_cone, h_dc)
@@ -132,21 +132,26 @@ def main():
 
 
     # Definição do cilindro
-    rCilindro  = 40
+    rCilindro  = 5
     m_cilindro = 10
-    h_cilindro = 50
-    centro_cilindro = Ponto(0, 0, -200)
+    h_cilindro = 90
+    centro_cilindro = Ponto(0, -150, -200)
    # d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-    d_cil = Vetor(0, 0, 1)
+    d_cil = Vetor(0., 1., 0.)
     K_d_cilindro= Vetor(0.824, 0.706, 0.549)
     K_a_cilindro= Vetor(0.824, 0.706, 0.549)
     K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    materialCilindro= Material(Cor(255, 0, 0), K_d_cilindro, K_e_cilindro, K_a_cilindro, m_esfera)
+
     cilindro = Cilindro(centro_cilindro, 
-                          rCilindro, d_cil, h_cilindro, materialEsfera)
+                          rCilindro, d_cil, h_cilindro, materialCilindro)
+
+    Arvore = [cilindro,objeto_cone, esfera]
+
+    paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
 
-
-    objetos = [objeto_cone, plano_chao , plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
+    objetos = [Arvore,  paredes]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente, luz_pontual]

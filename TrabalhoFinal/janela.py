@@ -61,8 +61,9 @@ class Janela:
         pygame.display.flip()  
 
     def calculaIntersecao(self, raio, infoIntersecao):
-        for objeto in self.cena.objetos:
-            objeto.intersecao(raio, infoIntersecao, objeto)            
+        for objetoComplexo in self.cena.objetos:
+            for objeto in objetoComplexo:
+                objeto.intersecao(raio, infoIntersecao, objeto)            
 
     def calculaCor(self, raio, infoIntersecao):
         
