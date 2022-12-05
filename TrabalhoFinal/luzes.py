@@ -96,7 +96,7 @@ class LuzDirecional(Luz):
         fd = max(0, Produto_escalar(L, normal))
 
         # Cálculo do fator de atenuação da reflexão especular
-        m = objeto_atual.m
+        m = objeto_atual.material.m
         fe = pow(max(0, Produto_escalar(r_vetor_refletido, v_vetor)), m)
         I_F = self.intensidade  # Pontual
         # Cálculo das contribuições de energia resultantes das reflexões Ambiente, Difusa e Especular
