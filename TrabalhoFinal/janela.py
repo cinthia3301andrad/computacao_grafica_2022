@@ -56,7 +56,7 @@ class Janela:
                 color = self.calculaCor(raio, infoIntersecao)
         
            
-                pygame.gfxdraw.pixel(superfice,  x, y, (color.r, color.g, color.b)) #(self.cena.largura -x) ,(self.cena.altura -y)#para cada posicao x,y da superficie, colore com o (r, g, b)
+                pygame.gfxdraw.pixel(superfice,x, y  , (color.r, color.g, color.b)) #(self.cena.largura -x) ,(self.cena.altura -y) para cada posicao x,y da superficie, colore com o (r, g, b)
         self.janela.blit(superfice, (0, 0))
         pygame.display.flip()  
 

@@ -5,6 +5,8 @@ from janela import Janela
 from esfera import Esfera
 from plano import Plano
 
+from cilindro import Cilindro
+
 from material import Material
 
 from definicoes import Cor, Vetor, Ponto
@@ -30,11 +32,12 @@ def main():
     # m_esfera       = 10
     # centro_esfera  = Ponto(0, 95, -200), -200)
     rEsfera = 40
-    K_d_esfera = Vetor(1, 0, 0)
-    K_a_esfera = Vetor(1, 0, 0)
-    K_e_esfera = Vetor(1, 0, 0)
+    K_d_esfera = Vetor(1, 0.3, 0.1)
+    K_a_esfera = Vetor(1, 0.3, 0.1)
+    K_e_esfera = Vetor(1, 0.3, 0.1)
     m_esfera = 100
-    materialEsfera = Material(Cor(255, 0, 0))
+ 
+    materialEsfera = Material(Cor(255, 0, 0), K_d_esfera, K_a_esfera, K_e_esfera, m_esfera)
 
     centro_esfera2 =  Ponto(-50, 0, 0)
     esfera = Esfera(centro_esfera, 20, materialEsfera)
@@ -43,10 +46,15 @@ def main():
     esfera4 = Esfera(Ponto(0, 0, -50), 20, materialEsfera)
     esfera5 = Esfera(Ponto(0, 0, 0), 20, materialEsfera)
 
+
+    K_d_plano = Vetor(0.7, 1, 0)
+    K_a_plano = Vetor(0.7, 1, 0)
+    K_e_plano = Vetor(0.7, 1, 0)
+    m_plano = 100
       # Definição do plano do chão
     P_pi         = Ponto(0, -150, 0) #ponto conhecido
     n_bar        = Vetor(0, 1, 0) #vetor normal
-    materialPlano = Material(Cor(0, 255, 255))
+    materialPlano = Material(Cor(0, 255, 255), K_d_plano, K_a_plano, K_e_plano, m_plano)
     plano_chao   = Plano(P_pi, n_bar, materialPlano) #, px_img_madeira_chao)
 
         # Definição do plano de fundo
@@ -68,19 +76,33 @@ def main():
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
     intensidade_ambiente = Vetor(0.3, 0.3, 0.3)   # Ambiente
 
-    luz_ambiente = LuzAmbiente(intensidade_ambiente, K_a_esfera)
+    luz_ambiente = LuzAmbiente(intensidade_ambiente)
     luz_pontual = LuzPontual(
-        P_F, intensidade_pf, K_d_esfera, K_e_esfera, m_esfera)
+        P_F, intensidade_pf)
 
     direcao_luz_direcional = Ponto(0, 1, 0) 
 
     intensidade_direcional = Vetor(0.7, 0.7, 0.7)
     luz_direcional = LuzDirecional(
-      direcao_luz_direcional, intensidade_direcional, K_d_esfera, K_e_esfera, m_esfera)
+      direcao_luz_direcional, intensidade_direcional)
+
+
+    # Definição do cilindro
+    rCilindro  = 40
+    m_cilindro = 10
+    h_cilindro = 50
+    centro_cilindro = Ponto(100, -30, -200)
+    #d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+    d_cil = Vetor(0, 1, 0)
+    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    cilindro = Cilindro(centro_cilindro, 
+                          rCilindro, d_cil, h_cilindro, materialEsfera)
 
 
 
-    objetos = [ plano_chao, plano_fundo, plano_lateral_esq , plano_lateral_dir]
+    objetos = [ cilindro]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente]
@@ -100,10 +122,10 @@ def main():
     camera1 = Camera(posicao_c, at, up)
     matriz = camera1.matriz()
 
-    # for objeto in objetos:
-    #   objeto.mundoParaCamera(matriz)
-    # for luz in luzes:
-    #   luz.mundoParaCamera(matriz) 
+    #for objeto in objetos:
+   #   objeto.mundoParaCamera(matriz)
+   # for luz in luzes:
+    #  luz.mundoParaCamera(matriz) 
     
 
     cena = Cena(largura, altura, objetos, luzes)
