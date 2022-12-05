@@ -21,8 +21,13 @@ class Cilindro(Objeto):
 
     def getNormal(self, ponto):  # calcula e retorna a normal do ponto da superficie Cilindro
         # return Subtracao_vetores(ponto , self.posicaoCentro) / self.raioCilindro
+        w = Subtracao_vetores(ponto, self.base)
 
-        return normalizaVetor(Subtracao_vetores(ponto, self.posicaoCentro))
+        parte_dois = Vetor_escalar(self.direcaoCilindro, 
+        Produto_escalar(w, self.direcaoCilindro)
+                                )
+        N = Subtracao_vetores(w, parte_dois)
+        return normalizaVetor(N)
 
     def getColor(self):
         return self.material.cor
@@ -74,8 +79,7 @@ posicaoCentro, raioCilindro, direcaoCilindro,  alturaCilindro, base, obj):
 
     p1 = Calcula_ponto_intersecao(raio.origem, t1, raio.direcao)
     p2 = Calcula_ponto_intersecao(raio.origem, t2, raio.direcao)
-    print("po1", p1)
-    print("po1", p2)
+  
     h1 = Produto_escalar(Subtracao_vetores(p1, base), direcaoCilindro)
     h2 = Produto_escalar(Subtracao_vetores(p2, base), direcaoCilindro)
     t = raio.t
