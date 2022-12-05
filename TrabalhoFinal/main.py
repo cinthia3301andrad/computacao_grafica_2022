@@ -146,7 +146,7 @@ def main():
 
 
 
-    objetos = [cilindro, plano_chao , plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
+    objetos = [objeto_cone, plano_chao , plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente, luz_pontual]
