@@ -3,6 +3,7 @@ from cena import Cena
 from janela import Janela
 
 from esfera import Esfera
+from plano import Plano
 
 from material import Material
 
@@ -42,6 +43,26 @@ def main():
     esfera4 = Esfera(Ponto(0, 0, -50), 20, materialEsfera)
     esfera5 = Esfera(Ponto(0, 0, 0), 20, materialEsfera)
 
+      # Definição do plano do chão
+    P_pi         = Ponto(0, -150, 0) #ponto conhecido
+    n_bar        = Vetor(0, 1, 0) #vetor normal
+    materialPlano = Material(Cor(0, 255, 255))
+    plano_chao   = Plano(P_pi, n_bar, materialPlano) #, px_img_madeira_chao)
+
+        # Definição do plano de fundo
+    P_pi         = Ponto(200, -150, -400) #ponto conhecido
+    n_bar        = Vetor(0, 0, 1) #vetor normal
+    plano_fundo   = Plano(P_pi, n_bar , materialPlano) #,px_img_madeira_parede_lateral)
+
+    # Definição do plano de lateral_esq
+    P_pi         = Ponto(-200, -150, 0) #ponto conhecido
+    n_bar        = Vetor(1, 0, 0) #vetor normal
+    plano_lateral_esq   = Plano(P_pi, n_bar , materialPlano)
+
+    # Definição do plano de lateral_dir
+    P_pi         = Ponto(200, -150, 0) #ponto conhecido
+    n_bar        = Vetor(-1, 0, 0) #vetor normal
+    plano_lateral_dir   = Plano(P_pi, n_bar ,materialPlano)
 
     P_F = Ponto(0, 60, -30)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
@@ -59,10 +80,10 @@ def main():
 
 
 
-    objetos = [ esfera4, esfera5, esfera, esfera2, esfera3]
+    objetos = [ plano_chao, plano_fundo, plano_lateral_esq , plano_lateral_dir]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_direcional]
+    luzes = [luz_ambiente]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
@@ -79,10 +100,10 @@ def main():
     camera1 = Camera(posicao_c, at, up)
     matriz = camera1.matriz()
 
-    for objeto in objetos:
-      objeto.mundoParaCamera(matriz)
-    for luz in luzes:
-      luz.mundoParaCamera(matriz) 
+    # for objeto in objetos:
+    #   objeto.mundoParaCamera(matriz)
+    # for luz in luzes:
+    #   luz.mundoParaCamera(matriz) 
     
 
     cena = Cena(largura, altura, objetos, luzes)
