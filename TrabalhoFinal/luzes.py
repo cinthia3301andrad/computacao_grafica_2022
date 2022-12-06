@@ -119,3 +119,39 @@ class LuzDirecional(Luz):
 
     def ignoreShadow(self):
         return True
+
+
+class LuzSpot(Luz):
+    def __init__(self, posicao, intensidade, direcao, teta):
+        self.posicao = posicao
+        self.intensidade = intensidade
+        self.direcao = direcao
+        self.teta = teta
+
+    def computaLuz(self, normal, ponto, objeto_atual, raio):
+        L = normalizaVetor(Subtracao_vetores(self.posicao, ponto))
+        r_vetor_refletido = normalizaVetor(Calcula_vetor_refletido(L, normal))
+        v_vetor = normalizaVetor(Subtracao_vetores(raio.origem, ponto))
+
+        alfa = Produto_escalar(L, Vetor_escalar(self.direcao, -1))
+
+        intensidade_x = 0
+        intensidade_y = 0 
+        intensidade_z = 0
+
+        if alfa > self.teta: 
+            fd = max(0, Produto_escalar(L, normal))
+            m = objeto_atual.material.m
+            fe = pow(max(0, Produto_escalar(r_vetor_refletido, v_vetor)), m)
+            I_F = self.intensidade  # Pontual
+            # Cálculo das contribuições de energia resultantes das reflexões Ambiente, Difusa e Especular
+            intensidade_d = Vetor_escalar(Produto_arroba(
+                I_F, objeto_atual.material.k_difusa), fd)  # Reflexão difusa
+            intensidade_e = Vetor_escalar(Produto_arroba(
+                I_F, objeto_atual.material.k_especular), fe)  # Reflexão especular
+        
+            intensidade_x = (intensidade_e.x + intensidade_d.x)
+            intensidade_y = (intensidade_e.y + intensidade_d.y)
+            intensidade_z = (intensidade_e.z + intensidade_d.z)
+    
+        return Cor(intensidade_x, intensidade_y, intensidade_z)

@@ -118,3 +118,11 @@ def Calcula_ponto_raio(Po, t, D): #D = centro do pixel atual
         Po.y + t*D.y,
         Po.z + t*D.z,
     )
+
+def Face(p1, p2, p3):
+    return {
+        'p1': p1, 
+        'p2': p2, 
+        'p3': p3, 
+        'normal': normalizaVetor(produto_vetorial(Subtracao_vetores(p2, p1), Subtracao_vetores(p3, p1)))
+    }

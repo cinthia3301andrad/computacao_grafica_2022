@@ -13,7 +13,7 @@ from material import Material
 
 from definicoes import Cor, Vetor, Ponto
 
-from luzes import LuzPontual, LuzAmbiente, LuzDirecional
+from luzes import LuzPontual, LuzAmbiente, LuzDirecional, LuzSpot
 
 from camera import Camera
 
@@ -115,6 +115,21 @@ def main():
     v_cone = Soma_vetores(centro_cone, h_dc)
     objeto_cone   = Cone(centro_cone, rCone, hCone, d_cone, v_cone,materialCone)
 
+        # Definição do cilindro
+    rCilindro  = 5
+    m_cilindro = 10
+    h_cilindro = 90
+    centro_cilindro = Ponto(0, -150, -200)
+   # d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
+    d_cil = Vetor(0., 1., 0.)
+    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    materialCilindro= Material(Cor(255, 0, 0), K_d_cilindro, K_e_cilindro, K_a_cilindro, m_esfera)
+
+    cilindro = Cilindro(centro_cilindro, 
+                          rCilindro, d_cil, h_cilindro, materialCilindro)
+
 
     P_F = Ponto(-50, 30, -30)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
@@ -130,21 +145,12 @@ def main():
     luz_direcional = LuzDirecional(
       direcao_luz_direcional, intensidade_direcional)
 
+    spot_posicao = Ponto(0, 0, -30)
+    spot_intensidade = Vetor(0.7, 0.7, 0.7)
+    spot_direcao = Ponto(0, 1, 0)
+    spot_teta = 1
 
-    # Definição do cilindro
-    rCilindro  = 5
-    m_cilindro = 10
-    h_cilindro = 90
-    centro_cilindro = Ponto(0, -150, -200)
-   # d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
-    d_cil = Vetor(0., 1., 0.)
-    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
-    materialCilindro= Material(Cor(255, 0, 0), K_d_cilindro, K_e_cilindro, K_a_cilindro, m_esfera)
-
-    cilindro = Cilindro(centro_cilindro, 
-                          rCilindro, d_cil, h_cilindro, materialCilindro)
+    luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
 
     Arvore = [cilindro,objeto_cone, esfera]
 
@@ -154,7 +160,7 @@ def main():
     objetos = [Arvore,  paredes]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_pontual, luz_ambiente]
+    luzes = [luz_ambiente, luz_spot]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
