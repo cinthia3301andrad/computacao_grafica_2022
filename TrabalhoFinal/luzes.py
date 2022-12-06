@@ -126,20 +126,21 @@ class LuzSpot(Luz):
         self.posicao = posicao
         self.intensidade = intensidade
         self.direcao = direcao
-        self.teta = teta
+        self.costeta = math.cos(teta)
+        self.tipo = 'spot'
 
     def computaLuz(self, normal, ponto, objeto_atual, raio):
         L = normalizaVetor(Subtracao_vetores(self.posicao, ponto))
         r_vetor_refletido = normalizaVetor(Calcula_vetor_refletido(L, normal))
         v_vetor = normalizaVetor(Subtracao_vetores(raio.origem, ponto))
 
-        alfa = Produto_escalar(L, Vetor_escalar(self.direcao, -1))
+        cosalfa = Produto_escalar(L, Vetor_escalar(self.direcao, -1))
 
         intensidade_x = 0
         intensidade_y = 0 
         intensidade_z = 0
 
-        if alfa > self.teta: 
+        if cosalfa > self.costeta: 
             fd = max(0, Produto_escalar(L, normal))
             m = objeto_atual.material.m
             fe = pow(max(0, Produto_escalar(r_vetor_refletido, v_vetor)), m)

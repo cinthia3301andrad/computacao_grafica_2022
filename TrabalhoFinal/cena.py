@@ -28,9 +28,9 @@ class Cena:
         contribuicao = None
           # Cálculo da distância entre o ponto de interseção e a fonte luminosa
 
-        L                 = Calc_L(self.luzes[0].posicao, P) #direcao
+        L                 = Calc_L(self.luzes[1].posicao, P) #direcao
                 
-        pf_pi     = Subtracao_vetores(self.luzes[0].posicao, P)
+        pf_pi     = Subtracao_vetores(self.luzes[1].posicao, P)
         tam_pf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
         raioS = Raio(P, normalizaVetor(L),tam_pf_pi)
   
@@ -40,8 +40,12 @@ class Cena:
             for objeto in objetoComplexo:
                 objeto.intersecao(raioS, infoIntersecaoSombra, objeto) 
          
-        if(raioS.t > 0 and raioS.t < tam_pf_pi):
-            temSombra = True
+                if(raioS.t > 0 and raioS.t < tam_pf_pi):
+                    temSombra = True
+                    break
+            if temSombra:
+                break
+        if temSombra: 
             for luz in self.luzes:
                 if(luz.tipo == 'ambiente'):
                     r = luz.computaLuz( normal,P, material, raio).r

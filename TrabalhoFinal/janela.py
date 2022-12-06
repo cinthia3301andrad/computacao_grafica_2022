@@ -28,6 +28,7 @@ class Janela:
 
 
 
+
     def abrir(self):
             pygame.display.init()
 
@@ -52,6 +53,7 @@ class Janela:
                 infoIntersecao = IntercesaoInfo(raio)
                 
                 self.calculaIntersecao(raio, infoIntersecao)
+                
                 color = self.calculaCor(raio, infoIntersecao)
         
            
@@ -62,9 +64,7 @@ class Janela:
     def calculaIntersecao(self, raio, infoIntersecao):
         for objetoComplexo in self.cena.objetos:
             for objeto in objetoComplexo:
-                objeto.intersecao(raio, infoIntersecao, objeto)      
-                
-                      
+                objeto.intersecao(raio, infoIntersecao, objeto)            
 
     def calculaCor(self, raio, infoIntersecao):
         
@@ -75,9 +75,9 @@ class Janela:
             P = infoIntersecao.getPontoAtual()
             
             cor = self.cena.computaLuzes(normal, P, objeto_atual, raio)
-     
+            if cor != None: 
             # return objeto_atual.getColor(color)
-            return Cor(cor.r, cor.g, cor.g)
+                return Cor(cor.r, cor.g, cor.b)
             #return Cor(0, 255, 255)
         else:
             cor = Cor(0, 255, 0)

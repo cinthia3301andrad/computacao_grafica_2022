@@ -145,10 +145,10 @@ def main():
     luz_direcional = LuzDirecional(
       direcao_luz_direcional, intensidade_direcional)
 
-    spot_posicao = Ponto(0, 0, -30)
+    spot_posicao = Ponto(0, 50, -100)
     spot_intensidade = Vetor(0.7, 0.7, 0.7)
-    spot_direcao = Ponto(0, 1, 0)
-    spot_teta = 1
+    spot_direcao = Ponto(0, -1, -1)
+    spot_teta = 0.349066
 
     luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
 
