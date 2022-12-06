@@ -3,8 +3,8 @@ import numpy as np
 from funcoes import Subtracao_vetores, Produto_escalar, Calcula_ponto_intersecao
 
 class IntercesaoInfo:
-    def __init__(self, raio):
-        self.t_mais_proximo = 100000.0
+    def __init__(self, raio, t = 100000.0):
+        self.t_mais_proximo = t
         self.valido = False
         self.hitObjeto = None
         self.raio = raio
@@ -22,7 +22,7 @@ class IntercesaoInfo:
             self.hitObjeto = novo_objeto
 
     def getPontoAtual(self):
-        return Calcula_ponto_intersecao(self.raio.origem, self.t_mais_proximo, self.raio.direcao)
+        return Calcula_ponto_intersecao(self.raio.origem, self.t_mais_proximo - 0.1, self.raio.direcao)
    
 
 

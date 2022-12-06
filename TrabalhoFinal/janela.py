@@ -28,7 +28,6 @@ class Janela:
 
 
 
-
     def abrir(self):
             pygame.display.init()
 
@@ -63,7 +62,9 @@ class Janela:
     def calculaIntersecao(self, raio, infoIntersecao):
         for objetoComplexo in self.cena.objetos:
             for objeto in objetoComplexo:
-                objeto.intersecao(raio, infoIntersecao, objeto)            
+                objeto.intersecao(raio, infoIntersecao, objeto)      
+                
+                      
 
     def calculaCor(self, raio, infoIntersecao):
         

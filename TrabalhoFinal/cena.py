@@ -2,6 +2,9 @@
 import numpy as np
 import math
 from definicoes import Cor, Vetor, Ponto
+from funcoes import Produto_escalar,Subtracao_vetores,Calc_L, normalizaVetor
+from raio import Raio
+from intercesaoInfo import IntercesaoInfo
 
 
 
@@ -23,25 +26,52 @@ class Cena:
 
     def computaLuzes(self, normal, P, material, raio):
         contribuicao = None
-        
-        for luz in self.luzes:
-       
-            r = luz.computaLuz( normal,P, material, raio).r
-            g = luz.computaLuz( normal,P, material, raio).g
-            b = luz.computaLuz( normal,P, material, raio).b
+          # Cálculo da distância entre o ponto de interseção e a fonte luminosa
 
-            
-            if(contribuicao != None):
-                contribuicao = Cor( contribuicao.r + r, 
-                                contribuicao.g + g,
-                                contribuicao.b + b)
-            else:
-                contribuicao = Cor(r, g, b)
-        if(contribuicao.r > 1): contribuicao.r = 1
-        if(contribuicao.g > 1): contribuicao.g = 1
-        if(contribuicao.b > 1): contribuicao.b = 1
-        return Cor(round(contribuicao.r*255), round(contribuicao.g*255), round(contribuicao.b*255))
-        
+        L                 = Calc_L(self.luzes[0].posicao, P) #direcao
+                
+        pf_pi     = Subtracao_vetores(self.luzes[0].posicao, P)
+        tam_pf_pi = math.sqrt(Produto_escalar(pf_pi, pf_pi))
+        raioS = Raio(P, normalizaVetor(L),tam_pf_pi)
+  
+        infoIntersecaoSombra = IntercesaoInfo(raioS, tam_pf_pi)
+        temSombra = False
+        for objetoComplexo in self.objetos:
+            for objeto in objetoComplexo:
+                objeto.intersecao(raioS, infoIntersecaoSombra, objeto) 
+         
+        if(raioS.t > 0 and raioS.t < tam_pf_pi):
+            temSombra = True
+            for luz in self.luzes:
+                if(luz.tipo == 'ambiente'):
+                    r = luz.computaLuz( normal,P, material, raio).r
+                    g = luz.computaLuz( normal,P, material, raio).g
+                    b = luz.computaLuz( normal,P, material, raio).b
+                    if(contribuicao != None):
+                        return Cor(round(contribuicao.r*255), round(contribuicao.g*255), round(contribuicao.b*255))
+                    else:
+                        return Cor(round(r*255), round(g*255), round(b*255))
+
+        else: 
+            temSombra = False
+            for luz in self.luzes:
+               
+                r = luz.computaLuz( normal,P, material, raio).r
+                g = luz.computaLuz( normal,P, material, raio).g
+                b = luz.computaLuz( normal,P, material, raio).b
+
+                    
+                if(contribuicao != None):
+                    contribuicao = Cor( contribuicao.r + r, 
+                                        contribuicao.g + g,
+                                        contribuicao.b + b)
+                else:
+                    contribuicao = Cor(r, g, b)
+            if(contribuicao.r > 1): contribuicao.r = 1
+            if(contribuicao.g > 1): contribuicao.g = 1
+            if(contribuicao.b > 1): contribuicao.b = 1
+            return Cor(round(contribuicao.r*255), round(contribuicao.g*255), round(contribuicao.b*255))
+                
 
    
 

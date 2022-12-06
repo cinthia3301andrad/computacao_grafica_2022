@@ -31,11 +31,11 @@ def main():
     dJanela = 30  # distância entre a janela e o olho observador
 
 
-    centro_esfera =  Ponto(0, 95, -200)
+    centro_esfera =  Ponto(0, 50, -200)
     # rEsfera        = 5
     # m_esfera       = 10
     # centro_esfera  = Ponto(0, 95, -200), -200)
-    rEsfera = 5
+    rEsfera = 15
     K_d_esfera = Vetor(0.854, 0.647, 0.125)
     K_a_esfera = Vetor(0.854, 0.647, 0.125)
     K_e_esfera = Vetor(0.854, 0.647, 0.125)
@@ -116,7 +116,7 @@ def main():
     objeto_cone   = Cone(centro_cone, rCone, hCone, d_cone, v_cone,materialCone)
 
 
-    P_F = Ponto(0, 0, -30)
+    P_F = Ponto(-50, 30, -30)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
     intensidade_ambiente = Vetor(0.3, 0.3, 0.3)   # Ambiente
 
@@ -154,7 +154,7 @@ def main():
     objetos = [Arvore,  paredes]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_ambiente, luz_pontual]
+    luzes = [luz_pontual, luz_ambiente]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)

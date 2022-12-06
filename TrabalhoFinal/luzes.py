@@ -27,6 +27,8 @@ class LuzPontual(Luz):
     def __init__(self, posicao, intensidade):
         self.posicao = posicao
         self.intensidade = intensidade
+        self.is_p_f = True
+        self.tipo = 'pontual'
  
     def computaLuz(self, normal, ponto, objeto_atual, raio):
     # incicialização das contribuições ambiente, difusa e especular
@@ -60,8 +62,9 @@ class LuzPontual(Luz):
 class LuzAmbiente(Luz):
     def __init__(self, intensidade):
 
-   
+        self.is_p_f = False
         self.intensidade = intensidade
+        self.tipo = 'ambiente'
 
     def computaLuz(self, normal, ponto, objeto_atual, raio):
         I_A = self.intensidade
@@ -76,17 +79,17 @@ class LuzAmbiente(Luz):
         return True
 
 class LuzDirecional(Luz):
-    def __init__(self,  direcao, intensidade):
+    def __init__(self,  posicao, intensidade):
 
         self.intensidade = intensidade
     
-        self.direcao = direcao
-       
+        self.posicao = posicao
+        self.tipo = 'direcional'
 
     def computaLuz(self, normal, ponto, objeto_atual, raio):
         intensidade_d = 0.0 #difusa
         intensidade_e = 0.0 #especular
-        L = normalizaVetor(self.direcao)
+        L = normalizaVetor(self.posicao)
         normal = normalizaVetor(normal)
 
         r_vetor_refletido = normalizaVetor(Calcula_vetor_refletido(L, normal))
@@ -112,7 +115,7 @@ class LuzDirecional(Luz):
         return Cor(intensidade_x, intensidade_y, intensidade_z)
     
     def mundoParaCamera(self, matriz):
-        self.direcao = mult_matriz_vetor(matriz, self.direcao)
+        self.posicao = mult_matriz_vetor(matriz, self.posicao)
 
     def ignoreShadow(self):
         return True
