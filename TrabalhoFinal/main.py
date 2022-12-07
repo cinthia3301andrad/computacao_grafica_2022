@@ -2,6 +2,7 @@ from cena import Cena
 
 from janela import Janela
 
+from cubo import Cubo
 from cone import Cone
 from esfera import Esfera
 from plano import Plano
@@ -122,14 +123,18 @@ def main():
     centro_cilindro = Ponto(0, -150, -200)
    # d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
     d_cil = Vetor(0., 1., 0.)
-    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_d_cilindro= Vetor(0.8, 0.0, 0.0)
+    K_a_cilindro= Vetor(0.8, 0.0, 0.0)
+    K_e_cilindro= Vetor(0.8, 0.0, 0.0)
     materialCilindro= Material(Cor(255, 0, 0), K_d_cilindro, K_e_cilindro, K_a_cilindro, m_esfera)
 
     cilindro = Cilindro(centro_cilindro, 
                           rCilindro, d_cil, h_cilindro, materialCilindro)
 
+    posicaoCentro = Ponto(0, 0, -160)
+    tam_aresta = 40
+    normal_cubo = Vetor(1, 1, 1)
+    objeto_cubo = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCilindro )
 
     P_F = Ponto(-50, 30, -30)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
@@ -150,6 +155,7 @@ def main():
     spot_direcao = Ponto(0, -1, -1)
     spot_teta = 0.349066
 
+
     luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
 
     Arvore = [cilindro,objeto_cone, esfera]
@@ -157,7 +163,7 @@ def main():
     paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
 
-    objetos = [Arvore,  paredes]
+    objetos = [[objeto_cubo]]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente, luz_pontual]
