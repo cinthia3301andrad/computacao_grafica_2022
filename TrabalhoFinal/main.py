@@ -145,7 +145,7 @@ def main():
     luz_direcional = LuzDirecional(
       direcao_luz_direcional, intensidade_direcional)
 
-    spot_posicao = Ponto(0, 50, -100)
+    spot_posicao = Ponto(0, 100, -100)
     spot_intensidade = Vetor(0.7, 0.7, 0.7)
     spot_direcao = Ponto(0, -1, -1)
     spot_teta = 0.349066
@@ -160,7 +160,7 @@ def main():
     objetos = [Arvore,  paredes]
 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_ambiente, luz_spot]
+    luzes = [luz_ambiente, luz_pontual]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
