@@ -8,3 +8,5 @@ class Material:
         self.k_ambiente = k_ambiente
         self.m = m
         self.imagem = imagem
+
+    

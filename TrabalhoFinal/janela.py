@@ -54,7 +54,7 @@ class Janela:
                 
                 self.calculaIntersecao(raio, infoIntersecao)
                 
-                color = self.calculaCor(raio, infoIntersecao)
+                color = self.calculaCor(raio, infoIntersecao, x , y)
         
            
                 pygame.gfxdraw.pixel(superfice,  x, y, (color.r, color.g, color.b)) #(self.cena.largura -x) ,(self.cena.altura -y)#para cada posicao x,y da superficie, colore com o (r, g, b)
@@ -66,13 +66,23 @@ class Janela:
             for objeto in objetoComplexo:
                 objeto.intersecao(raio, infoIntersecao, objeto)            
 
-    def calculaCor(self, raio, infoIntersecao):
+    def calculaCor(self, raio, infoIntersecao, x , y):
         
         if(infoIntersecao.valido):
             objeto_atual = infoIntersecao.hitObjeto
             normal = normalizaVetor(objeto_atual.getNormal(infoIntersecao.getPontoAtual()))
       
             P = infoIntersecao.getPontoAtual()
+
+            if objeto_atual.material.imagem:
+
+                fx = x % self.cena.altura
+                fz = y % self.cena.largura
+                cor_atual =  objeto_atual.material.imagem[fx, fz]
+                cor_atual = Vetor(cor_atual[0]/255, cor_atual[1]/255, cor_atual[2]/255)
+                objeto_atual.material.k_difusa = cor_atual
+                objeto_atual.material.k_especular = cor_atual
+                objeto_atual.material.k_ambiente = cor_atual
             
             cor = self.cena.computaLuzes(normal, P, objeto_atual, raio)
             if cor != None: 

@@ -31,6 +31,7 @@ class LuzPontual(Luz):
         self.tipo = 'pontual'
  
     def computaLuz(self, normal, ponto, objeto_atual, raio):
+        
     # incicialização das contribuições ambiente, difusa e especular
         intensidade_d = 0.0 #difusa
         intensidade_e = 0.0 #especular
