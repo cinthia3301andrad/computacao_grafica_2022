@@ -3,9 +3,10 @@ import pygame
 import pygame
 import pygame.gfxdraw
 import random
+import math 
 
 from definicoes import Cor, Vetor, Ponto
-from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor
+from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto
 
 from intercesaoInfo import IntercesaoInfo
 from raio import Raio
@@ -76,13 +77,30 @@ class Janela:
 
             if objeto_atual.material.imagem:
 
-                fx = x % self.cena.altura
-                fz = y % self.cena.largura
-                cor_atual =  objeto_atual.material.imagem[fx, fz]
-                cor_atual = Vetor(cor_atual[0]/255, cor_atual[1]/255, cor_atual[2]/255)
-                objeto_atual.material.k_difusa = cor_atual
-                objeto_atual.material.k_especular = cor_atual
-                objeto_atual.material.k_ambiente = cor_atual
+                C = Ponto(-200, -150, -400)
+                D = Ponto(200, -150, -400)
+                S = Ponto(-200, 150, -400)
+
+                M, LI, LJ = objeto_atual.matriz(C,D,S)
+                #print('LI ', LI, 'LJ', LJ)
+
+                Pm = mult_matriz_ponto(M, P)
+
+                fx = Pm.x/LI  # p chao e teto P.x e P.z
+                fy = 1-(Pm.y/LJ)
+                #print(fx, " FX", fy, " FY")
+                if fx > 0 and fx < 1:
+                    if fy > 0 and fy < 1:
+                #coordenada de textura
+                
+                        y_textura = math.trunc(fy * (objeto_atual.material.TexturaAltura - 1.) + 0.5)
+                        x_textura = math.trunc(fx * (objeto_atual.material.TexturaLargura - 1.)  + 0.5)
+
+                        cor_atual =  objeto_atual.material.imagem[x_textura, y_textura]
+                        cor_atual = Vetor(cor_atual[0]/255, cor_atual[1]/255, cor_atual[2]/255)
+                        objeto_atual.material.k_difusa = cor_atual
+                        objeto_atual.material.k_especular = cor_atual
+                        objeto_atual.material.k_ambiente = cor_atual
             
             cor = self.cena.computaLuzes(normal, P, objeto_atual, raio)
             if cor != None: 

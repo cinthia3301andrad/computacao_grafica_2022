@@ -1,6 +1,6 @@
 
 class Material:
-    def __init__(self, cor,k_difusa,k_especular, k_ambiente, m,  imagem = None):
+    def __init__(self, cor,k_difusa,k_especular, k_ambiente, m,  imagem = None, largura= None , altura= None ):
         self.cor = cor
         
         self.k_difusa = k_difusa
@@ -8,5 +8,7 @@ class Material:
         self.k_ambiente = k_ambiente
         self.m = m
         self.imagem = imagem
+        self.TexturaLargura = largura 
+        self.TexturaAltura = altura 
 
     

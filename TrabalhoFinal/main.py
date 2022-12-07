@@ -62,7 +62,7 @@ def main():
     m_plano = 1
     P_pi         = Ponto(0, -150, 0) #ponto conhecido
     n_bar        = Vetor(0, 1, 0) #vetor normal
-    materialChao = Material(Cor(0, 255, 255), K_d_chao, K_e_chao, K_a_chao, m_plano, px_img_madeira_chao)
+    materialChao = Material(Cor(0, 255, 255), K_d_chao, K_e_chao, K_a_chao, m_plano)
     plano_chao   = Plano(P_pi, n_bar, materialChao) #, px_img_madeira_chao)
 
         # Definição do plano de fundo
@@ -70,7 +70,7 @@ def main():
     K_a_fundo     =  Vetor(0.686, 0.933, 0.933)
     K_e_fundo     = Vetor(0.686, 0.933, 0.933)
     m_plano_fundo = 1
-    materialPlanoFundo = Material(Cor(0, 255, 255), K_d_fundo, K_e_fundo, K_a_fundo, m_plano_fundo, px_img_madeira_chao)
+    materialPlanoFundo = Material(Cor(0, 255, 255), K_d_fundo, K_e_fundo, K_a_fundo, m_plano_fundo, px_img_madeira_chao ,  4256, 2832)
     P_pi         = Ponto(200, -150, -400) #ponto conhecido
     n_bar        = Vetor(0, 0, 1) #vetor normal
     plano_fundo   = Plano(P_pi, n_bar , materialPlanoFundo) #,px_img_madeira_parede_lateral)
@@ -82,7 +82,7 @@ def main():
     K_a_lateral_esq     =  Vetor(0.686, 0.933, 0.933)
     K_e_lateral_esq     = Vetor(0.686, 0.933, 0.933)
     m_plano_lateral_esq = 1
-    materialPlanoEsq = Material(Cor(0, 255, 255), K_d_lateral_esq, K_e_lateral_esq, K_a_lateral_esq, m_plano_lateral_esq, px_img_madeira_chao)
+    materialPlanoEsq = Material(Cor(0, 255, 255), K_d_lateral_esq, K_e_lateral_esq, K_a_lateral_esq, m_plano_lateral_esq)
     plano_lateral_esq   = Plano(P_pi, n_bar , materialPlanoEsq)
 
     # Definição do plano de lateral_dir
@@ -92,20 +92,20 @@ def main():
     K_a_lateral_dir     =  Vetor(0.686, 0.933, 0.933)
     K_e_lateral_dir     = Vetor(0.686, 0.933, 0.933)
     m_plano_lateral_dir = 1
-    materialPlanoDir = Material(Cor(0, 255, 255), K_d_lateral_dir, K_e_lateral_dir, K_a_lateral_dir, m_plano_lateral_dir, px_img_madeira_chao)
+    materialPlanoDir = Material(Cor(0, 255, 255), K_d_lateral_dir, K_e_lateral_dir, K_a_lateral_dir, m_plano_lateral_dir)
     plano_lateral_dir   = Plano(P_pi, n_bar ,materialPlanoDir)
 
         # Definição do plano de teto
     P_pi         = Ponto(0, 150, 0) #ponto conhecido
-    n_bar        = Vetor(0, -1, 0) #vetor normal
+    n_bar        = Vetor(0, -1, 0) #vetor normal.
     K_d_teto     = Vetor(0.933, 0.933, 0.933)
     K_a_teto  = Vetor(0.933, 0.933, 0.933)
     m_plano_teto = 1     
     K_e_teto=  Vetor(0.933, 0.933, 0.933)
-    materialPlanoTeto = Material(Cor(0, 255, 255), K_d_teto, K_e_teto, K_a_teto, m_plano_teto, px_img_madeira_chao)
+    materialPlanoTeto = Material(Cor(0, 255, 255), K_d_teto, K_e_teto, K_a_teto, m_plano_teto)
     plano_teto   = Plano(P_pi, n_bar ,materialPlanoTeto)
 
-    folhas = Image.open("folhas.jpg")
+    folhas = Image.open("folha.jpg")
     folhas_load = folhas.load()
     rCone         = 90
     hCone         = 150
@@ -115,7 +115,7 @@ def main():
     K_d_cone      = Vetor(0, 1, 0.498)
     K_e_cone      = Vetor(0, 1, 0.498) #Vetor(0.0, 0.0, 0.0)
     m_cone        = 1
-    materialCone = Material(Cor(0, 255, 255), K_d_cone, K_e_cone, K_a_cone, m_cone,folhas_load )
+    materialCone = Material(Cor(0, 255, 255), K_d_cone, K_e_cone, K_a_cone, m_cone )
     h_dc = Vetor_escalar(d_cone ,hCone )
     v_cone = Soma_vetores(centro_cone, h_dc)
     objeto_cone   = Cone(centro_cone, rCone, hCone, d_cone, v_cone,materialCone)
@@ -141,8 +141,8 @@ def main():
     objeto_cubo = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCilindro )
 
     P_F = Ponto(-30, 0, -30) #Ponto(0, 0, 0)#
-    intensidade_pf = Vetor(0.7, 0.7, 0.7)
-    intensidade_ambiente = Vetor(0.3, 0.3, 0.3)   # Ambiente
+    intensidade_pf = Vetor(0.3, 0.3, 0.3)
+    intensidade_ambiente = Vetor(0.5, 0.5, 0.5)   # Ambiente
 
     luz_ambiente = LuzAmbiente(intensidade_ambiente)
     luz_pontual = LuzPontual(
@@ -154,10 +154,10 @@ def main():
     luz_direcional = LuzDirecional(
       direcao_luz_direcional, intensidade_direcional)
 
-    spot_posicao = Ponto(0, 100, -100)
+    spot_posicao = Ponto(0, 60, -100)
     spot_intensidade = Vetor(0.7, 0.7, 0.7)
     spot_direcao = Ponto(0, -1, -1)
-    spot_teta = 0.349066
+    spot_teta = 0.00001
 
 
     luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
@@ -167,10 +167,10 @@ def main():
     paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
 
-    objetos = [[objeto_cubo]]
-
+    objetos = [paredes] #[objeto_cubo]
+ 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_ambiente, luz_pontual]
+    luzes = [luz_ambiente, luz_spot]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)

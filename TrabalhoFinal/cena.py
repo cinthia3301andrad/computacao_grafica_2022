@@ -29,7 +29,7 @@ class Cena:
           # Cálculo da distância entre o ponto de interseção e a fonte luminosa
         posicaoPF = 0
         for luz in self.luzes:
-            if(luz.tipo == 'pontual'):
+            if(luz.tipo == 'spot'):
                 posicaoPF = luz.posicao
 
         L                 = Calc_L(posicaoPF, P) #direcao

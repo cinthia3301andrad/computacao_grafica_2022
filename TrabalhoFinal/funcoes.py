@@ -89,6 +89,8 @@ def mult_matriz_vetor(M, vetor):
 
     return calc
 
+
+
 def mult_matriz_ponto(M, vetor):
     calc = Ponto(
         M[0][0]*vetor.x + M[0][1]*vetor.y +M[0][2]*vetor.z + M[0][3],
