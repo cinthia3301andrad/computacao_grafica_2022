@@ -148,5 +148,5 @@ def IntersecaoTodasFaces(faces, posicaoOlhoObservador, D):
             if(t_aux < t):
                 t = t_aux
                 normal_aux = face['normal']
-            
+
     return [t, normal_aux]

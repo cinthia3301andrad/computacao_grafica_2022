@@ -135,7 +135,7 @@ K_e_cubo      = Vetor(1, 0.078, 0.576) #Vetor(0.0, 0.0, 0.0)
 
 objeto_cubo = Cubo(centro_cubo, K_e_cubo, K_d_cubo, K_a_cubo,
                 m_cone,aresta_cubo
-);
+)
 
 
 # Definição do cilindro
@@ -154,7 +154,7 @@ cilindro = Cilindro(centro_cilindro,
 
 #objetos  = [plano_fundo, plano_chao, objeto_esfera1, objeto_cilindro1, objeto_cone  ]
 # Nãoobjetos   = [ objeto_cone, objeto_esfera1,objeto_cilindro1,  plano_chao, plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto, objeto_cubo]
-objetos  = [objeto_esfera1]
+objetos  = [objeto_cubo]
 
 cena      = Cena(objetos)
 
