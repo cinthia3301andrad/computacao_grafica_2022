@@ -60,6 +60,10 @@ class LuzPontual(Luz):
     
         return Cor(intensidade_x, intensidade_y, intensidade_z)
 
+    def mundoParaCamera(self, matriz):
+        self.posicao = mult_matriz_vetor(matriz, self.posicao)
+
+
 class LuzAmbiente(Luz):
     def __init__(self, intensidade):
 
@@ -157,3 +161,7 @@ class LuzSpot(Luz):
             intensidade_z = (intensidade_e.z + intensidade_d.z)
     
         return Cor(intensidade_x, intensidade_y, intensidade_z)
+    
+    def mundoParaCamera(self, matriz):
+        self.posicao = mult_matriz_vetor(matriz, self.posicao)
+        self.direcao = mult_matriz_vetor(matriz, self.direcao)
