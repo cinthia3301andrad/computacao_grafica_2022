@@ -9,6 +9,8 @@ from plano import Plano
 
 from cilindro import Cilindro
 
+from planoCircular import PlanoCircular
+
 import math
 from material import Material
 
@@ -95,7 +97,7 @@ def main():
     materialPlanoDir = Material(Cor(0, 255, 255), K_d_lateral_dir, K_e_lateral_dir, K_a_lateral_dir, m_plano_lateral_dir)
     plano_lateral_dir   = Plano(P_pi, n_bar ,materialPlanoDir)
 
-        # Definição do plano de teto
+    # Definição do plano de teto
     P_pi         = Ponto(0, 150, 0) #ponto conhecido
     n_bar        = Vetor(0, -1, 0) #vetor normal.
     K_d_teto     = Vetor(0.933, 0.933, 0.933)
@@ -118,7 +120,14 @@ def main():
     materialCone = Material(Cor(0, 255, 255), K_d_cone, K_e_cone, K_a_cone, m_cone )
     h_dc = Vetor_escalar(d_cone ,hCone )
     v_cone = Soma_vetores(centro_cone, h_dc)
-    objeto_cone   = Cone(centro_cone, rCone, hCone, d_cone, v_cone,materialCone)
+
+    n_Base = Vetor(-d_cone.x, -d_cone.y, -d_cone.z)
+    basePlano_cone = PlanoCircular(centro_cone, n_Base,rCone, materialCone)
+
+    objeto_cone   = Cone(centro_cone, rCone, hCone, d_cone, v_cone,materialCone, basePlano_cone)
+
+
+  
 
         # Definição do cilindro
     rCilindro  = 5
@@ -132,17 +141,27 @@ def main():
     K_e_cilindro= Vetor(0.8, 0.0, 0.0)
     materialCilindro= Material(Cor(255, 0, 0), K_d_cilindro, K_e_cilindro, K_a_cilindro, m_esfera)
 
+    n_Base = Vetor(-d_cil.x, -d_cil.y, -d_cil.z)
+    basePlano = PlanoCircular(centro_cilindro, n_Base,
+                              rCilindro, materialCilindro)
+
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(
+        d_cil, h_cilindro))
+    topoPlano = PlanoCircular(
+        centroTopo, d_cil, rCilindro, materialCilindro)
+
     cilindro = Cilindro(centro_cilindro, 
-                          rCilindro, d_cil, h_cilindro, materialCilindro)
+                          rCilindro, d_cil, h_cilindro, materialCilindro, basePlano,topoPlano)
 
     posicaoCentro = Ponto(0, 0, -160)
     tam_aresta = 40
     normal_cubo = Vetor(1, 1, 1)
+  
     objeto_cubo = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCilindro )
-
-    P_F = Ponto(-30, 0, -30) #Ponto(0, 0, 0)#
-    intensidade_pf = Vetor(0.3, 0.3, 0.3)
-    intensidade_ambiente = Vetor(0.5, 0.5, 0.5)   # Ambiente
+ 
+    P_F = Ponto(-50, 30, -30)
+    intensidade_pf = Vetor(0.7, 0.7, 0.7)
+    intensidade_ambiente = Vetor(0.3, 0.3, 0.3)   # Ambiente
 
     luz_ambiente = LuzAmbiente(intensidade_ambiente)
     luz_pontual = LuzPontual(
@@ -167,7 +186,7 @@ def main():
     paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
 
-    objetos = [paredes] #[objeto_cubo]
+    objetos = [[objeto_cone, cilindro], [plano_chao]] #[objeto_cubo]
  
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente, luz_spot]
@@ -177,20 +196,30 @@ def main():
     # at = Vetor(0, 0, -100)
     # up = Vetor(0, 10, -100)
 
-    # posicao_c = Vetor(80, 0, 0) #Vetor(0, -5, 1)
-    # at = Vetor(10, 0, 0)
-    # up = Vetor(10, 40, 0)
+    posicao_c = Vetor(0, 10, 0) #Vetor(0, -5, 1)
+    at = Vetor(0, 20, -160)
+    up = Vetor(0, 40, -160)
 
-    posicao_c = Vetor(0, 100, 0) 
-    at = Vetor(0, 0, 0)
-    up = Vetor(80, 0, 0)
+   # posicao_c = Vetor(0, 100, 0) 
+    #at = Vetor(0, 0, 0)
+   # up = Vetor(80, 0, 0)
     camera1 = Camera(posicao_c, at, up)
     matriz = camera1.matriz()
 
-    #for objeto in objetos:
-   #   objeto.mundoParaCamera(matriz)
-   # for luz in luzes:
-    #  luz.mundoParaCamera(matriz) 
+    vetor_translacao = Vetor(20, 0,0)
+
+    axis_z_cone = Vetor(1, 0, 0)
+    
+    #objeto_cone.translacao(vetor_translacao)
+    cilindro.translacao(vetor_translacao)
+    #objeto_cone.rotacao(axis_z_cone, 2)
+
+    for objetoComplexo in objetos:
+        for objeto in objetoComplexo:
+            objeto.mundoParaCamera(matriz)
+    for luz in luzes:
+        if(luz.tipo != 'ambiente'):
+            luz.mundoParaCamera(matriz) 
     
 
     cena = Cena(largura, altura, objetos, luzes)

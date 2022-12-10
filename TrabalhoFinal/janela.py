@@ -3,10 +3,9 @@ import pygame
 import pygame
 import pygame.gfxdraw
 import random
-import math 
 
 from definicoes import Cor, Vetor, Ponto
-from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto
+from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor
 
 from intercesaoInfo import IntercesaoInfo
 from raio import Raio
@@ -17,7 +16,6 @@ class Janela:
     def __init__(self, dJanela, colunasCanvas, linhasCanvas, cena: Cena):
         wJanela = 60 #dimenções da janela, por onde o observador ver o mundo
         hJanela = 60
-
         self.wj = wJanela
         self.hj = hJanela
         self.dJanela = dJanela
@@ -26,9 +24,6 @@ class Janela:
         self.janela = None
         self.cena = cena
         self.display = (cena.largura, cena.altura)
-
-
-
 
     def abrir(self):
             pygame.display.init()
@@ -41,7 +36,7 @@ class Janela:
             self.hj/2-self.dy*l, 
             -self.dJanela)
 
-    def desenha(self):
+    def desenha(self, novaJanela = True):
    
         superfice = pygame.Surface(self.janela.get_size(), pygame.SRCALPHA, 32)
         eye = Ponto(0, 0, 0)
@@ -55,52 +50,28 @@ class Janela:
                 
                 self.calculaIntersecao(raio, infoIntersecao)
                 
-                color = self.calculaCor(raio, infoIntersecao, x , y)
+                color = self.calculaCor(raio, infoIntersecao)
         
            
-                pygame.gfxdraw.pixel(superfice,  x, y, (color.r, color.g, color.b)) #(self.cena.largura -x) ,(self.cena.altura -y)#para cada posicao x,y da superficie, colore com o (r, g, b)
-        self.janela.blit(superfice, (0, 0))
-        pygame.display.flip()  
+                pygame.gfxdraw.pixel(superfice,  (self.cena.largura -x), (self.cena.altura -y), (color.r, color.g, color.b)) #(self.cena.largura -x) ,(self.cena.altura -y)#para cada posicao x,y da superficie, colore com o (r, g, b)
+        if(novaJanela):
+            self.janela.blit(superfice, (0, 0))
+            pygame.display.flip()  
 
     def calculaIntersecao(self, raio, infoIntersecao):
         for objetoComplexo in self.cena.objetos:
             for objeto in objetoComplexo:
                 objeto.intersecao(raio, infoIntersecao, objeto)            
 
-    def calculaCor(self, raio, infoIntersecao, x , y):
+    def calculaCor(self, raio, infoIntersecao):
         
         if(infoIntersecao.valido):
             objeto_atual = infoIntersecao.hitObjeto
+         
+
             normal = normalizaVetor(objeto_atual.getNormal(infoIntersecao.getPontoAtual()))
       
             P = infoIntersecao.getPontoAtual()
-
-            if objeto_atual.material.imagem:
-
-                C = Ponto(-200, -150, -400)
-                D = Ponto(200, -150, -400)
-                S = Ponto(-200, 150, -400)
-
-                M, LI, LJ = objeto_atual.matriz(C,D,S)
-                #print('LI ', LI, 'LJ', LJ)
-
-                Pm = mult_matriz_ponto(M, P)
-
-                fx = Pm.x/LI  # p chao e teto P.x e P.z
-                fy = 1-(Pm.y/LJ)
-                #print(fx, " FX", fy, " FY")
-                if fx > 0 and fx < 1:
-                    if fy > 0 and fy < 1:
-                #coordenada de textura
-                
-                        y_textura = math.trunc(fy * (objeto_atual.material.TexturaAltura - 1.) + 0.5)
-                        x_textura = math.trunc(fx * (objeto_atual.material.TexturaLargura - 1.)  + 0.5)
-
-                        cor_atual =  objeto_atual.material.imagem[x_textura, y_textura]
-                        cor_atual = Vetor(cor_atual[0]/255, cor_atual[1]/255, cor_atual[2]/255)
-                        objeto_atual.material.k_difusa = cor_atual
-                        objeto_atual.material.k_especular = cor_atual
-                        objeto_atual.material.k_ambiente = cor_atual
             
             cor = self.cena.computaLuzes(normal, P, objeto_atual, raio)
             if cor != None: 
@@ -113,24 +84,25 @@ class Janela:
   
     def loopEventos(self):
         self.desenha()
-
         try:
             while 1:
-                event = pygame.event.wait()
-                if event.type == pygame.QUIT:
-                    break
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE or event.unicode == 'q':
-                        break
-                    #if event.key in self.keys:
-                           # self.keys[event.key]()
-                if event.type == pygame.MOUSEBUTTONUP:
-                    #if event.button in self.buttons:
-                           # self.buttons[event.button]()
-                   print('event.button', event.button, event.pos)
-                                    
+            
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.KEYDOWN:
+                        print("foi", event.key)  
+                        if event.key == pygame.K_z or event.key == 122:
+                            print("ENTROU NA Translação")
+                            vetor_translacao = Vetor(40, 0,0)
+
+                            self.cena.objetos[0][0].translacao(vetor_translacao) 
+                            self.desenha() 
+                            print("recalculando a cena...")               
                 pygame.display.flip()
-                #self.cena.desenha()
+                
+                
                 #print("FOI------------------------------")
         finally:
                 pygame.quit() 

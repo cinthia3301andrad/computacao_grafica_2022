@@ -29,10 +29,10 @@ def intersecao(raio, infoIntersecao, p_pi , n_bar, obj):
     denominador = Produto_escalar(raio.direcao , n_bar)
     
     if(denominador == 0 ):
-        return math.inf
+        return 
     t_i = -numerador/denominador
     if(t_i < 0):
-        return math.inf
+        return 
     
     t = raio.t
     if (0 < t_i < t): 

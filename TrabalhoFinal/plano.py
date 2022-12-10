@@ -22,6 +22,7 @@ class Plano(Objeto):
         self.p_pi = mult_matriz_ponto(matriz, self.p_pi)
         self.n_bar = mult_matriz_vetor(matriz, self.n_bar)
 
+
     def matriz(self, C, D, S):
         I = Subtracao_vetores(D,C)
         

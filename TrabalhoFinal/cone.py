@@ -5,18 +5,21 @@ from objetos.objeto import Objeto
 from planoCircular import PlanoCircular
 from funcoes import Calcula_ponto_intersecao, Vetor, Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, Vetor_escalar, Soma_vetores, mult_matriz_vetor,produto_vetorial
 from planoCircular import PlanoCircular
+
+from transformacoes import translacaoPonto, rotacaoPonto,rotacaoVetor
 class Cone(Objeto):
-    def __init__(self, centro, raio : float, altura, direcao, v, material): # ,com_base = 1
+    def __init__(self, centro, raio : float, altura, direcao, v, material, basePlano): # ,com_base = 1
         self.centro = centro
         self.raio = raio
         self.altura = altura
         self.direcao = direcao
         self.material = material
         self.v = v
+        self.basePlano = basePlano
         #self.com_base = com_base
 
     def intersecao(self, raio: Raio, infoIntersecao, obj):
-        return intersecao( raio, infoIntersecao, self.centro, self.direcao, self.raio, self.altura, self.v, obj)
+        return intersecao( raio, infoIntersecao, self.centro, self.direcao, self.raio, self.altura, self.v, obj, self.basePlano)
     
     def getNormal(self, ponto): #calcula e retorna a normal do ponto da superficie esfera
         #return Subtracao_vetores(ponto , self.posicaoCentro) / self.raioEsfera
@@ -28,13 +31,34 @@ class Cone(Objeto):
     def getColor(self):
         return self.material.cor
 
+    def reCalculaPlanos(self):
+        n_Base = Vetor(-self.direcao.x, -self.direcao.y, -self.direcao.z)
+        basePlano_cone = PlanoCircular(self.centro, n_Base,self.raio, self.material)
+        self.basePlano = basePlano_cone
+
     def mundoParaCamera(self, matriz):
+        self.v = mult_matriz_ponto(matriz, self.v)
         self.centro = mult_matriz_ponto(matriz, self.centro)
         self.direcao = mult_matriz_vetor(matriz, self.direcao)
 
-def intersecao(raio, infoIntersecao, centro, direcao, r, altura, v, obj):
-    n_Base = Vetor(-direcao.x, -direcao.y, -direcao.z)
-    basePlano = PlanoCircular(centro, n_Base,r, obj.material)
+        self.reCalculaPlanos()
+
+    def rotacao(self, axis, teta):
+        self.v = rotacaoPonto(axis, self.v, teta)
+        self.centro = rotacaoPonto(axis, self.centro, teta)
+        self.direcao = rotacaoVetor(axis, self.direcao, teta)
+        self.reCalculaPlanos()
+
+    def translacao(self, d):
+        self.v = translacaoPonto(d, self.v)
+
+        self.centro = translacaoPonto(d, self.centro)
+   
+
+        self.reCalculaPlanos()
+
+def intersecao(raio, infoIntersecao, centro, direcao, r, altura, v, obj, basePlano):
+    
     
     basePlano.intersecao(raio, infoIntersecao, basePlano)
     v_cone     = Subtracao_vetores( v , raio.origem)

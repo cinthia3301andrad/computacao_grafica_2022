@@ -7,18 +7,20 @@ from funcoes import mult_matriz_vetor, Calcula_ponto_intersecao, Soma_vetores, P
 
 from planoCircular import PlanoCircular
 
-
+from transformacoes import rotacaoPonto, translacaoPonto
 class Cilindro(Objeto):
-    def __init__(self, posicaoCentro, raioCilindro: float, direcao, altura, material):
+    def __init__(self, posicaoCentro, raioCilindro: float, direcao, altura, material, basePlano, topoPlano):
         super().__init__(posicaoCentro, material)
         self.raioCilindro = raioCilindro
         self.posicaoCentro = posicaoCentro
         self.direcaoCilindro = direcao
         self.alturaCilindro = altura
         self.material = material
+        self.basePlano = basePlano
+        self.topoPlano = topoPlano
 
     def intersecao(self, raio: Raio, infoIntersecao, obj):
-        return intersecao(raio, infoIntersecao, self.posicaoCentro, self.raioCilindro, self.direcaoCilindro, self.alturaCilindro, obj)
+        return intersecao(raio, infoIntersecao, self.posicaoCentro, self.raioCilindro, self.direcaoCilindro, self.alturaCilindro, obj, self.basePlano, self.topoPlano)
 
     def getNormal(self, ponto):  # calcula e retorna a normal do ponto da superficie Cilindro
         # return Subtracao_vetores(ponto , self.posicaoCentro) / self.raioCilindro
@@ -29,27 +31,46 @@ class Cilindro(Objeto):
                                    )
         N = Subtracao_vetores(w, parte_dois)
         return normalizaVetor(N)
+    
+    def reCalculaPlanos(self):
+        n_Base = Vetor(-self.direcaoCilindro.x, -self.direcaoCilindro.y, -self.direcaoCilindro.z)
+        nova_basePlano_plano = PlanoCircular(self.posicaoCentro, n_Base,self.raioCilindro, self.material)
+
+        self.basePlano = nova_basePlano_plano
+
+        centroTopo = Soma_vetores(self.posicaoCentro, Vetor_escalar(
+        self.direcaoCilindro, self.alturaCilindro))
+        novo_topoPlano = PlanoCircular(
+        self.posicaoCentro, self.direcaoCilindro, self.raioCilindro, self.material)
+
+        self.topoPlano = novo_topoPlano
 
     def getColor(self):
         return self.material.cor
 
     def mundoParaCamera(self, matriz):
         self.posicaoCentro = mult_matriz_ponto(matriz, self.posicaoCentro)
-        self.direcaoCilindro = mult_matriz_vetor(matriz, self.posicaoCentro)
+        self.direcaoCilindro = mult_matriz_vetor(matriz, self.direcaoCilindro)
 
+        self.reCalculaPlanos()
+    
+    def rotacao(axis, teta):
+        self.posicaoCentro = rotacaoPonto(axis, self.posicaoCentro, teta)
+
+    def translacao(self, d):
+        self.posicaoCentro = translacaoPonto(d, self.posicaoCentro)
+
+        self.reCalculaPlanos()
+
+   
 
 def intersecao(raio, infoIntersecao,
-               posicaoCentro, raioCilindro, direcaoCilindro,  alturaCilindro, obj):
-    n_Base = Vetor(-direcaoCilindro.x, -direcaoCilindro.y, -direcaoCilindro.z)
-    basePlano = PlanoCircular(posicaoCentro, n_Base,
-                              raioCilindro, obj.material)
+               posicaoCentro, raioCilindro, direcaoCilindro,  alturaCilindro, obj, basePlano, topoPlano):
+
 
     basePlano.intersecao(raio, infoIntersecao, basePlano)
 
-    centroTopo = Soma_vetores(posicaoCentro, Vetor_escalar(
-        direcaoCilindro, alturaCilindro))
-    topoPlano = PlanoCircular(
-        centroTopo, direcaoCilindro, raioCilindro, obj.material)
+    
 
     topoPlano.intersecao(raio, infoIntersecao, obj)
 

@@ -49,7 +49,7 @@ class Cena:
                     break
             if temSombra:
                 break
-        if(raioS.t > 0 and  raioS.t < tam_pf_pi):
+        if(raioS.t > 0.001 and  raioS.t < tam_pf_pi):
             temSombra = True
         if temSombra: 
             for luz in self.luzes:
