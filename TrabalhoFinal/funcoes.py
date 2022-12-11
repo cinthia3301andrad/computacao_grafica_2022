@@ -8,6 +8,8 @@ def Produto_escalar(v_1, v_2):
 
 def normalizaVetor(vetor):
     #l_vetor = math.sqrt(vetor.x*vetor.x+vetor.y*vetor.y+vetor.z*vetor.z)
+    if(vetor.x ==0 and vetor.y ==0 and vetor.z == 0):
+        return vetor
     l_vetor = math.sqrt(Produto_escalar(vetor, vetor))
     vetor.x = vetor.x / l_vetor
     vetor.y = vetor.y / l_vetor

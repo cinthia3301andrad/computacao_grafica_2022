@@ -186,10 +186,10 @@ def main():
     paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
 
 
-    objetos = [[ objeto_cone]] #[objeto_cubo]
+    objetos = [[objeto_cubo]] #[objeto_cubo]
  
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_ambiente, luz_spot]
+    luzes = [luz_ambiente]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
@@ -211,14 +211,14 @@ def main():
     axis_z_cone = Vetor(0, 1, 0)
     
     #objeto_cone.translacao(vetor_translacao)
-   # cilindro.rotacao(axis_z_cone, 0.45) #45 graus em
+    objeto_cubo.rotacao(axis_z_cone, 0.45) #45 graus em
     #objeto_cone.rotacao(axis_z_cone, 2)
 
 
     vetor_escala = Vetor(10, 0, 0)
     vetor_ancora = Vetor(0, 0, 0)
 
-    objeto_cone.escala(vetor_escala, vetor_ancora)   
+    #objeto_cone.escala(vetor_escala, vetor_ancora)   
    
 
     for objetoComplexo in objetos:

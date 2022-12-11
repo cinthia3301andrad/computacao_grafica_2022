@@ -63,6 +63,7 @@ class Cone(Objeto):
         self.altura = self.altura * fator
 
         self.v = escalaPonto(escala, self.v, ancor)
+        self.centro = escalaPonto(escala, self.centro, ancor)
         self.reCalculaPlanos()
 
 def intersecao(raio, infoIntersecao, centro, direcao, r, altura, v, obj, basePlano):

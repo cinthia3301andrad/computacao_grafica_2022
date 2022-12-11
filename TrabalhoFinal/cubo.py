@@ -6,6 +6,8 @@ from raio import Raio
 from planoFace import PlanoFace
 import math
 
+from transformacoes import rotacaoPonto
+
 from intercesaoInfo import IntercesaoInfo
 
 from face import Face
@@ -60,6 +62,12 @@ class Cubo(Objeto):
         for face in self.faces:
             face.mundoParaCamera(matriz)
 
+    def rotacao(self, axis, teta):
+        for face in self.faces:
+         #   print("face", face)
+            face.p1 = rotacaoPonto(axis, face.p1, teta)
+            face.p2 = rotacaoPonto(axis, face.p2, teta)
+            face.p3 = rotacaoPonto(axis, face.p3, teta)
 
 def intersecao(self, raio, infoIntersecao, posicaoCentro, tam_aresta, normal, faces, obj):
 

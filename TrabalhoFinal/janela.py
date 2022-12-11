@@ -86,13 +86,13 @@ class Janela:
         self.desenha()
         try:
             while 1:
-            
+             
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.KEYDOWN:
-                        print("foi", event.key)  
+                      
                         if event.key == pygame.K_z or event.key == 122:
                             print("ENTROU NA Translação")
                             vetor_translacao = Vetor(40, 0,0)
