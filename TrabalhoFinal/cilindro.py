@@ -7,7 +7,7 @@ from funcoes import mult_matriz_vetor, Calcula_ponto_intersecao, Soma_vetores, P
 
 from planoCircular import PlanoCircular
 
-from transformacoes import rotacaoPonto, translacaoPonto
+from transformacoes import rotacaoPonto, translacaoPonto, escalaPonto
 class Cilindro(Objeto):
     def __init__(self, posicaoCentro, raioCilindro: float, direcao, altura, material, basePlano, topoPlano):
         super().__init__(posicaoCentro, material)
@@ -54,13 +54,24 @@ class Cilindro(Objeto):
 
         self.reCalculaPlanos()
     
-    def rotacao(axis, teta):
+    def rotacao(self,axis, teta):
         self.posicaoCentro = rotacaoPonto(axis, self.posicaoCentro, teta)
+        self.reCalculaPlanos()
 
     def translacao(self, d):
         self.posicaoCentro = translacaoPonto(d, self.posicaoCentro)
 
         self.reCalculaPlanos()
+
+    def escala(self, escala, ancor):
+        fator = escala.x
+        self.raioCilindro = self.raioCilindro * fator
+        self.alturaCilindro = self.alturaCilindro * fator
+
+        self.posicaoCentro = escalaPonto(escala, self.posicaoCentro, ancor)
+        self.reCalculaPlanos()
+
+
 
    
 

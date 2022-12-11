@@ -53,3 +53,20 @@ def translacaoPonto(v, p):
     matriz_translacao = translacaoMatriz(v)
 
     return mult_matriz_ponto(matriz_translacao, p)
+
+
+def escalaMatriz(v, p):
+    resultado = matrizIdentidade()
+    resultado[0][0] = v.x
+    resultado[1][1] = v.y
+    resultado[2][2] = v.z
+    resultado[3][3] = 1 
+    resultado[0][3] = (1-v.x) * p.x
+    resultado[1][3] = (1-v.y) * p.y
+    resultado[2][3] = (1-v.z) * p.z
+
+    return resultado 
+def escalaPonto(escala, posicaoCentro, ancor):
+    matriz_escala = escalaMatriz(escala, posicaoCentro)
+
+    return mult_matriz_ponto(matriz_escala, ancor)

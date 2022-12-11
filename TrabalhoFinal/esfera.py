@@ -27,9 +27,18 @@ class Esfera(Objeto):
     def mundoParaCamera(self, matriz):
         self.posicaoCentro = mult_matriz_ponto(matriz, self.posicaoCentro)
 
+    def rotacao(axis, teta):
+        self.posicaoCentro = rotacaoPonto(axis, self.posicaoCentro, teta)
+
     def translacao(self, d):
         self.posicaoCentro = translacaoPonto(d, self.posicaoCentro)
 
+    def escala(self, escala, ancor):
+        fator = escala.x
+        self.raioEsfera = self.raioEsfera * fator
+    
+        self.posicaoCentro = escalaPonto(escala, self.posicaoCentro, ancor)
+      
 def intersecao(raio, infoIntersecao, posicaoCentro, raioEsfera, obj):
     w = Subtracao_vetores(raio.origem, posicaoCentro)
    

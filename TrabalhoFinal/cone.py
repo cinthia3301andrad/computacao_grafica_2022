@@ -6,7 +6,7 @@ from planoCircular import PlanoCircular
 from funcoes import Calcula_ponto_intersecao, Vetor, Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, Vetor_escalar, Soma_vetores, mult_matriz_vetor,produto_vetorial
 from planoCircular import PlanoCircular
 
-from transformacoes import translacaoPonto, rotacaoPonto,rotacaoVetor
+from transformacoes import translacaoPonto, rotacaoPonto,rotacaoVetor, escalaPonto
 class Cone(Objeto):
     def __init__(self, centro, raio : float, altura, direcao, v, material, basePlano): # ,com_base = 1
         self.centro = centro
@@ -55,6 +55,14 @@ class Cone(Objeto):
         self.centro = translacaoPonto(d, self.centro)
    
 
+        self.reCalculaPlanos()
+        
+    def escala(self, escala, ancor):
+        fator = escala.x
+        self.raio = self.raio * fator
+        self.altura = self.altura * fator
+
+        self.v = escalaPonto(escala, self.v, ancor)
         self.reCalculaPlanos()
 
 def intersecao(raio, infoIntersecao, centro, direcao, r, altura, v, obj, basePlano):
