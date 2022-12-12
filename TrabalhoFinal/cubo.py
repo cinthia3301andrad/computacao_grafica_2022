@@ -6,7 +6,7 @@ from raio import Raio
 from planoFace import PlanoFace
 import math
 
-from transformacoes import rotacaoPonto
+from transformacoes import rotacaoPonto, escalaPonto
 
 from intercesaoInfo import IntercesaoInfo
 
@@ -68,6 +68,14 @@ class Cubo(Objeto):
             face.p1 = rotacaoPonto(axis, face.p1, teta)
             face.p2 = rotacaoPonto(axis, face.p2, teta)
             face.p3 = rotacaoPonto(axis, face.p3, teta)
+    def escala(self, escala, _):
+        ancor = self.faces[0].p1
+        for face in self.faces:
+         #   print("face", face)
+            face.p1 =  escalaPonto(escala, face.p1, ancor)
+            face.p2 =  escalaPonto(escala, face.p2, ancor)
+            face.p3 =  escalaPonto(escala, face.p3, ancor)
+
 
 def intersecao(self, raio, infoIntersecao, posicaoCentro, tam_aresta, normal, faces, obj):
 
@@ -76,6 +84,8 @@ def intersecao(self, raio, infoIntersecao, posicaoCentro, tam_aresta, normal, fa
     self.normal = nova_normal
 
     infoIntersecao.atualizaIntersecao(t, obj)
+
+
 
 def verifica_face(p_i, face):
     
@@ -97,15 +107,15 @@ def verifica_face(p_i, face):
 def IntersecaoFace(face, raio, infoIntersecao, obj):
     plano = PlanoFace(face.p1, face.normal, obj.material) 
     
-    raiocopy = Raio(raio.origem, raio.direcao)
+   # raiocopy = Raio(raio.origem, raio.direcao)
 
-    plano.intersecao(raiocopy, infoIntersecao, obj)
-    p_i = Soma_vetores(raiocopy.origem, Vetor_escalar(raiocopy.direcao, raiocopy.t))
+    plano.intersecao(raio, infoIntersecao, obj)
+    p_i = Soma_vetores(raio.origem, Vetor_escalar(raio.direcao, raio.t))
     
     
     if(verifica_face(p_i, face)):
-        raio = raiocopy
-        return raio.t
+     #   raio = raiocopy
+        return infoIntersecao.t_mais_proximo
     return math.inf
 
 def IntersecaoTodasFaces(faces, raio, obj):
