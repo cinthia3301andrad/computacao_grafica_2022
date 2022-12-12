@@ -27,11 +27,11 @@ class Cena:
     def computaLuzes(self, normal, P, material, raio):
         contribuicao = None
           # Cálculo da distância entre o ponto de interseção e a fonte luminosa
-        posicaoPF = Ponto(0, 0, 0)
         temLuzComPonto = False
         temSombra = False
+        posicaoPF = .000
         for luz in self.luzes:
-            if(luz.tipo == 'spot'):
+            if(luz.tipo == 'pontual'):
                 temLuzComPonto = True
                 posicaoPF = luz.posicao
 
