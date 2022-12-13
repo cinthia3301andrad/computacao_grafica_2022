@@ -75,9 +75,9 @@ class Janela:
             P = infoIntersecao.getPontoAtual()
             if objeto_atual.material.imagem:
 
-                C = Ponto(-400, -150, -400)
-                D = Ponto(400, -150, -400)
-                S = Ponto(-400, 400, -400)
+                C = Ponto(-3750, -150, -2500)
+                D = Ponto(3750, -150, -2500)
+                S = Ponto(-3750, 4000, -2500)
 
                 M, LI, LJ = objeto_atual.matriz(C,D,S)
                 #print('LI ', LI, 'LJ', LJ)

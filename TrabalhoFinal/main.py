@@ -72,8 +72,8 @@ def main():
     K_a_fundo     =  Vetor(0.686, 0.933, 0.933)
     K_e_fundo     = Vetor(0.686, 0.933, 0.933)
     m_plano_fundo = 1
-    materialPlanoFundo = Material(Cor(0, 255, 255), K_d_fundo, K_e_fundo, K_a_fundo, m_plano_fundo, px_img_madeira_chao ,  612, 408)
-    P_pi         = Ponto(200, -150, -400) #ponto conhecido
+    materialPlanoFundo = Material(Cor(0, 255, 255), K_d_fundo, K_e_fundo, K_a_fundo, m_plano_fundo, px_img_madeira_chao , 612, 408 ) #noite = 960, 686
+    P_pi         = Ponto(200, -150, -1500) #ponto conhecido
     n_bar        = Vetor(0, 0, 1) #vetor normal
     plano_fundo   = Plano(P_pi, n_bar , materialPlanoFundo) #,px_img_madeira_parede_lateral)
 
@@ -161,7 +161,7 @@ def main():
 
 
     #CERCADO
-    rCilindro  = 10
+    rCilindro  = 8
     m_cilindro = 10
     h_cilindro = 1000 
     centro_cilindro = Ponto(-500, -110, -200) #Ponto(0, -60, -200) -150
@@ -304,7 +304,7 @@ def main():
     baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_silo)
     cilindro_celeiro = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_silo, topoPlano, baseC)
 
-    centro_cone   = Ponto(-300, 100, -300)
+    centro_cone   = Ponto(-300, 200, -300)
     rCone         = 70
     hCone         = 30
     d_cone        = Vetor(0, 1 , 0)
@@ -321,7 +321,7 @@ def main():
 
     rCilindro  = 70
     m_cilindro = 10
-    h_cilindro = 100 
+    h_cilindro = 200 
     centro_cilindro = Ponto( -300, 0, -300) #Ponto(0, -60, -200) -150
     d_cil = Vetor(0, 1, 0)
     K_d_cilindro= Vetor(0.824, 0.706, 0.549)
@@ -389,6 +389,93 @@ def main():
     baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
     cilindro_apoio4 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
 
+    #ARVORE
+    centro_cone   = Ponto(350, -60, -400) # 350, 150, 
+    rCone         = 90
+    hCone         = 150
+    d_cone        = Vetor(0, 1 , 0)
+    K_a_cone      = Vetor(0, 1, 0.498) #Vetor(0.0, 0.0, 0.0)
+    K_d_cone      = Vetor(0, 1, 0.498)
+    K_e_cone      = Vetor(0, 1, 0.498) #Vetor(0.0, 0.0, 0.0)
+    m_cone        = 100
+    material_cone = Material(Cor(255, 0, 0), K_e_cone, K_d_cone, K_a_cone, m_cone)
+    h_dc = Vetor_escalar(d_cone ,hCone )
+    v_cone = Soma_vetores(centro_cone, h_dc)
+    n_Base = d_cone
+    basePlano_cone = PlanoCircular(centro_cone, n_Base,rCone, materialCone)
+    cone_arvore  = Cone(centro_cone,rCone, hCone, d_cone, v_cone,material_cone, basePlano_cone)
+
+    rCilindro  = 20
+    m_cilindro = 10
+    h_cilindro = 90
+    centro_cilindro = Ponto(350, -150, -400)
+    d_cil = Vetor(0, 1, 0)
+    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_arvore = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
+
+    #POSTE
+    rCilindro  = 8
+    m_cilindro = 10
+    h_cilindro = 150 
+    centro_cilindro = Ponto(-100, -150, -220) #Ponto(0, -60, -200) -150
+    d_cil = Vetor(0, 1, 0)
+    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_poste = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
+
+    rCilindro  = 8
+    m_cilindro = 10
+    h_cilindro = 30 
+    centro_cilindro = Ponto(-100, -10, -220) #Ponto(0, -60, -200) -150
+    d_cil = Vetor(1, 0, 0)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_poste2 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
+
+    rCilindro  = 8
+    m_cilindro = 10
+    h_cilindro = 20 
+    centro_cilindro = Ponto(-70, -20, -220) #Ponto(0, -60, -200) -150
+    d_cil = Vetor(0, 1, 0)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_poste3 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
+
+    rCilindro  = 12
+    m_cilindro = 10
+    h_cilindro = 8 
+    centro_cilindro = Ponto(-70, -25, -220) #Ponto(0, -60, -200) -150
+    d_cil = Vetor(0, 1, 0)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_poste4 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
+
+    rEsfera        = 10
+    m_esfera       = 10
+    centro_esfera  = Ponto(-70, -25, -220)
+    K_d_esfera     = Vetor(1,1,1)
+    K_a_esfera     = Vetor(1,1,1)
+    K_e_esfera     = Vetor(1,1,1)
+    materialEsfera = Material(Cor(255, 0, 0), K_d_esfera, K_a_esfera, K_e_esfera, m_esfera)
+    esfera_poste = Esfera(centro_esfera, rEsfera, materialEsfera)
+
 
     P_F = Ponto(0, 0, 0)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
@@ -404,25 +491,24 @@ def main():
     luz_direcional = LuzDirecional(
       direcao_luz_direcional, intensidade_direcional)
 
-    spot_posicao = Ponto(0, 60, -100)
+    spot_posicao =  Ponto(-70,-100, -220) #Ponto(-100, -150, -220)
     spot_intensidade = Vetor(0.7, 0.7, 0.7)
-    spot_direcao = Ponto(0, -1, -1)
-    spot_teta = 0.00001
+    spot_direcao = Ponto(0, -1, 0)
+    spot_teta = 3.14/3
 
     cercado = [cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
     silo = [cone_silo, cilindro_celeiro]
     caixa_dagua = [ cone_caixadagua,cilindro_caixadagua, cilindro_apoio1, cilindro_apoio2, cilindro_apoio3, cilindro_apoio4] 
     luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
 
-    Arvore = [cilindro,objeto_cone, esfera]
-
+    Arvore = [cone_arvore, cilindro_arvore]
+    poste = [cilindro_poste, cilindro_poste2, cilindro_poste3, cilindro_poste4, esfera_poste]
     #paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
-    ceu = [plano_fundo, plano_chao]
+    ceu = [ plano_chao, plano_fundo]
  
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_ambiente, luz_pontual]
-    objetos = [ [plano_chao], ceu, cercado, silo, caixa_dagua] #cercado,caixa_dagua,silo,
- 
+    luzes = [luz_ambiente,luz_pontual ]
+    objetos = [ ceu] # ,cercado,caixa_dagua,silo,Arvore, poste
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
 
 
