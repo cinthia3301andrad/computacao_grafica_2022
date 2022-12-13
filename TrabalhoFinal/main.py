@@ -163,9 +163,8 @@ def main():
     #CERCADO
     rCilindro  = 8
     m_cilindro = 10
-    h_cilindro = 1000 
+    h_cilindro = 400 
     centro_cilindro = Ponto(-500, -110, -200) #Ponto(0, -60, -200) -150
-    #d_cil = Vetor(-1/math.sqrt(3), 1/math.sqrt(3), -1/math.sqrt(3))
     d_cil = Vetor(1, 0, 0)
     K_d_cilindro= Vetor(0.58, 0.29, 0)
     K_a_cilindro= Vetor(0.58,  0.29, 0)
@@ -186,6 +185,45 @@ def main():
     baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
     cilindro_cercado3 = Cilindro(centro_cilindro, 
                         rCilindro,d_cil, h_cilindro, material_cilindro , topoPlano, baseC)
+    
+    centro_cilindro = Ponto(100, -60, -200)
+    d_cil = Vetor(1, 0, 0)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_cercado13 = Cilindro(centro_cilindro, 
+                        rCilindro,d_cil, h_cilindro, material_cilindro , topoPlano, baseC)
+    
+    centro_cilindro = Ponto(100, -110, -200)
+    d_cil = Vetor(1, 0, 0)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_cercado14 = Cilindro(centro_cilindro, 
+                        rCilindro,d_cil, h_cilindro, material_cilindro , topoPlano, baseC)
+    
+    h_cilindro = 100 
+    centro_cilindro = Ponto(100, -150, -200)
+    d_cil = Vetor(0, 1, 0)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_cercado15 = Cilindro(centro_cilindro, 
+                        rCilindro,d_cil, h_cilindro, material_cilindro , topoPlano, baseC)
+    
+    h_cilindro = 100
+    centro_cilindro = Ponto(-100, -150, -200)
+    d_cil = Vetor(0, 1, 0)
+    centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
+    topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
+    n_Base = d_cil
+    baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    cilindro_cercado16 = Cilindro(centro_cilindro, rCilindro,d_cil, h_cilindro, material_cilindro , topoPlano, baseC)
+
+
     h_cilindro = 100 
     centro_cilindro = Ponto(-500, -150, -200) #Ponto(0, -60, -200) -150
     d_cil = Vetor(0, 1, 0)
@@ -496,7 +534,7 @@ def main():
     spot_direcao = Ponto(0, -1, 0)
     spot_teta = 3.14/3
 
-    cercado = [cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
+    cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
     silo = [cone_silo, cilindro_celeiro]
     caixa_dagua = [ cone_caixadagua,cilindro_caixadagua, cilindro_apoio1, cilindro_apoio2, cilindro_apoio3, cilindro_apoio4] 
     luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
@@ -508,7 +546,7 @@ def main():
  
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente,luz_pontual ]
-    objetos = [ ceu] # ,cercado,caixa_dagua,silo,Arvore, poste
+    objetos = [cercado] # ,cercado,caixa_dagua,silo,Arvore, poste
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
 
 
