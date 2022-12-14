@@ -155,11 +155,7 @@ def main():
     cilindro = Cilindro(centro_cilindro, 
                           rCilindro, d_cil, h_cilindro, materialCilindro, basePlano,topoPlano)
 
-    posicaoCentro = Ponto(0, -150, -160)
-    tam_aresta = 40
-    normal_cubo = Vetor(1, 1, 1)
-  
-    objeto_cubo = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCilindro )
+    
 
 
     #CERCADO
@@ -497,6 +493,38 @@ def main():
     esfera_poste = Esfera(centro_esfera, rEsfera, materialEsfera)
 
 
+
+    tam_aresta = 40
+    posicaoCentro = Ponto(250, -110, -250)
+   
+    normal_cubo = Vetor(1, 1, 1)
+    materialCuboBase= Material(Cor(255, 0, 0), Vetor(1, 0.75, 0.05), Vetor(1, 0.75, 0.05), Vetor(1, 0.75, 0.05), m_esfera)
+    materialCuboPorta= Material(Cor(255, 0, 0), Vetor(0.94, 0.48, 0.36), Vetor(0.94, 0.48, 0.36), Vetor(0.94, 0.48, 0.36), m_esfera)
+    materialCuboTelha= Material(Cor(255, 0, 0), Vetor(0.51, 0.17,0.090), Vetor(0.51, 0.17,0.090), Vetor(0.51, 0.17,0.090), m_esfera)
+    objeto_cubo_telha_esq = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboTelha )
+    objeto_cubo_telha_dir = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboTelha )
+    objeto_cubo_base = Cubo(posicaoCentro, 40, normal_cubo, materialCuboBase )
+    objeto_cubo_porta = Cubo(posicaoCentro, 40, normal_cubo, materialCuboPorta )
+
+    vetor_translacao = Vetor(4, 4, -5)
+
+    axis_z_cone = Vetor(0, 0, 1)
+
+   # objeto_cubo_telha_esq.rotacao(axis_z_cone, 0.45) #45 graus em
+   # objeto_cubo_telha_esq.translacao(vetor_translacao)
+    #objeto_cone.rotacao(axis_z_cone, 2)
+    objeto_cubo_porta.escala(Vetor(1, 3, 0.1))
+    objeto_cubo_porta.translacao(Vetor(10, 0, 1))
+
+
+    objeto_cubo_telha_esq.escala(Vetor(5, 0.3, 3))
+    objeto_cubo_telha_esq.translacao(Vetor(-100, 0 , 0))
+    objeto_cubo_telha_dir.escala(Vetor(5, 0.3, 3))
+    objeto_cubo_base.escala(Vetor(5, 4, 3))
+    
+    objeto_cubo_telha_esq.cisalhamento(Vetor(0, 0, 1), Vetor(0, 1, 0), 0.78)
+    objeto_cubo_telha_dir.cisalhamento(Vetor(0, 0, 1), Vetor(0, 1, 0),  -0.78)
+    objeto_cubo_telha_dir.translacao(Vetor(100, 450 , 0))
     P_F = Ponto(0, 0, 0)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
     intensidade_ambiente = Vetor(0.5, 0.5, 0.5)   # Ambiente
@@ -526,10 +554,11 @@ def main():
     #paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
     ceu = [ plano_chao, plano_fundo]
  
+    casa = [objeto_cubo_telha_esq, objeto_cubo_base, objeto_cubo_porta, objeto_cubo_telha_dir]
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente,luz_pontual ] #
     cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
-    objetos = [ceu, cercado, caixa_dagua, silo] # ,cercado,caixa_dagua,silo,Arvore, poste
+    objetos = [ceu, cercado, caixa_dagua, silo, casa] # ,cercado,caixa_dagua,silo,Arvore, poste
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente, luz_spot]
 
@@ -548,20 +577,8 @@ def main():
     # camera1 = Camera(posicao_c, at, up)
     # matriz = camera1.matriz()
 
-    vetor_translacao = Vetor(20, 0,0)
-
-    axis_z_cone = Vetor(1, 0, 0)
-    
-    #objeto_cone.translacao(vetor_translacao)
-    objeto_cubo.rotacao(axis_z_cone, 0.60) #45 graus em
-    #objeto_cone.rotacao(axis_z_cone, 2)
-
-
-    # vetor_escala = Vetor(10, 0, 0)
-    # vetor_ancora = Vetor(0, 0, 0)
-
-    #objeto_cone.escala(vetor_escala, vetor_ancora)   
-    # objeto_cone.escala(vetor_escala, vetor_ancora)   
+ 
+ 
    
 
   #  for objetoComplexo in objetos:

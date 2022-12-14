@@ -6,6 +6,29 @@ def matrizIdentidade():
 
     return M
 
+
+def cisalhamentoMatriz(v, u, x):
+    resultado = matrizIdentidade()
+    if (v.z == 1 and u.x == 1):
+        resultado[0][1] = x
+            
+    if (v.z == 1 and u.y == 1):
+        resultado[1][0] = x
+            
+    if (v.y == 1 and u.x == 1):
+        resultado[0][2] = x
+    
+    if (v.y == 1 and u.z == 1):
+        resultado[2][0] = x
+            
+    if (v.x == 1 and u.y == 1) :
+        resultado[1][2] = x
+            
+    if (v.x == 1 and u.z == 1) :
+        resultado[2][1] = x
+            
+    return resultado
+
 def montaMatrizRotacao(v, t):
     resultado = matrizIdentidade()
 
@@ -67,6 +90,11 @@ def escalaMatriz(v, p):
 
     return resultado 
 def escalaPonto(escala, posicaoCentro, ancor):
-    matriz_escala = escalaMatriz(escala, posicaoCentro)
+    matriz_escala = escalaMatriz(escala, ancor)
 
-    return mult_matriz_ponto(matriz_escala, ancor)
+    return mult_matriz_ponto(matriz_escala, posicaoCentro)
+
+def cisalhamentoPonto(plane, d, p, t):
+    matriz_escala = cisalhamentoMatriz(plane, d, t)
+
+    return mult_matriz_ponto(matriz_escala, p)

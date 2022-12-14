@@ -6,7 +6,7 @@ from raio import Raio
 from planoFace import PlanoFace
 import math
 
-from transformacoes import rotacaoPonto, escalaPonto
+from transformacoes import rotacaoPonto, escalaPonto, translacaoPonto, cisalhamentoPonto
 
 from intercesaoInfo import IntercesaoInfo
 
@@ -62,6 +62,13 @@ class Cubo(Objeto):
     def mundoParaCamera(self, matriz):
         for face in self.faces:
             face.mundoParaCamera(matriz)
+    
+    def translacao(self, d):
+        for face in self.faces:
+         #   print("face", face)
+            face.p1 = translacaoPonto(d, face.p1)
+            face.p2 =  translacaoPonto(d, face.p2)
+            face.p3 = translacaoPonto(d, face.p3)
 
     def rotacao(self, axis, teta):
         for face in self.faces:
@@ -69,13 +76,20 @@ class Cubo(Objeto):
             face.p1 = rotacaoPonto(axis, face.p1, teta)
             face.p2 = rotacaoPonto(axis, face.p2, teta)
             face.p3 = rotacaoPonto(axis, face.p3, teta)
-    def escala(self, escala, _):
+    def escala(self, escala):
         ancor = self.faces[0].p1
         for face in self.faces:
          #   print("face", face)
             face.p1 =  escalaPonto(escala, face.p1, ancor)
             face.p2 =  escalaPonto(escala, face.p2, ancor)
             face.p3 =  escalaPonto(escala, face.p3, ancor)
+
+    def cisalhamento(self, plane, d, t):
+        for face in self.faces:
+         #   print("face", face)
+            face.p1 =  cisalhamentoPonto(plane, d, face.p1, t)
+            face.p2 =  cisalhamentoPonto(plane, d, face.p2, t)
+            face.p3 =  cisalhamentoPonto(plane, d, face.p3, t)
 
 
 def intersecao(self, raio, infoIntersecao, posicaoCentro, tam_aresta, normal, faces, obj):
