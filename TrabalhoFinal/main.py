@@ -438,22 +438,21 @@ def main():
     #POSTE
     rCilindro  = 8
     m_cilindro = 10
-    h_cilindro = 150 
-    centro_cilindro = Ponto(-100, -150, -220) #Ponto(0, -60, -200) -150
+    h_cilindro = 250 
+    centro_cilindro = Ponto(100, -150, -220) #Ponto(0, -60, -200) -150
     d_cil = Vetor(0, 1, 0)
-    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_d_cilindro= Vetor(0.6627, 0.6627, 0.6627)
+    K_a_cilindro= Vetor(0.6627, 0.6627, 0.6627)
+    K_e_cilindro= Vetor(0.6627, 0.6627, 0.6627)
+    material_cilindro = Material(Cor(255, 0, 0),K_e_cilindro, K_d_cilindro, K_a_cilindro, m_cilindro)
     centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
     topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
     n_Base = d_cil
     baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
     cilindro_poste = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
 
-    rCilindro  = 8
-    m_cilindro = 10
     h_cilindro = 30 
-    centro_cilindro = Ponto(-100, -10, -220) #Ponto(0, -60, -200) -150
+    centro_cilindro = Ponto(70, 95, -220) #Ponto(0, -60, -200) -150
     d_cil = Vetor(1, 0, 0)
     centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
     topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
@@ -461,10 +460,8 @@ def main():
     baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
     cilindro_poste2 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
 
-    rCilindro  = 8
-    m_cilindro = 10
     h_cilindro = 20 
-    centro_cilindro = Ponto(-70, -20, -220) #Ponto(0, -60, -200) -150
+    centro_cilindro = Ponto(70, 80, -220) #Ponto(0, -60, -200) -150
     d_cil = Vetor(0, 1, 0)
     centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
     topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
@@ -473,9 +470,8 @@ def main():
     cilindro_poste3 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
 
     rCilindro  = 12
-    m_cilindro = 10
-    h_cilindro = 8 
-    centro_cilindro = Ponto(-70, -25, -220) #Ponto(0, -60, -200) -150
+    h_cilindro = 10 
+    centro_cilindro = Ponto(70, 70, -220) #Ponto(0, -60, -200) -150
     d_cil = Vetor(0, 1, 0)
     centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
     topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
@@ -483,9 +479,9 @@ def main():
     baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
     cilindro_poste4 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
 
-    rEsfera        = 10
+    rEsfera        = 8
     m_esfera       = 10
-    centro_esfera  = Ponto(-70, -25, -220)
+    centro_esfera  = Ponto(70, 70, -220)
     K_d_esfera     = Vetor(1,1,1)
     K_a_esfera     = Vetor(1,1,1)
     K_e_esfera     = Vetor(1,1,1)
@@ -545,29 +541,22 @@ def main():
     luz_direcional = LuzDirecional(
       direcao_luz_direcional, intensidade_direcional)
 
-    spot_posicao =  Ponto(-70,-100, -220) #Ponto(-100, -150, -220)
+    spot_posicao =  Ponto(70,-100, -220) #Ponto(-100, -150, -220)
     spot_intensidade = Vetor(0.7, 0.7, 0.7)
     spot_direcao = Ponto(0, -1, 0)
     spot_teta = 3.14/3
+    luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
 
     cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
     silo = [cone_silo, cilindro_celeiro]
     caixa_dagua = [cone_caixadagua, cilindro_caixadagua, cilindro_apoio1, cilindro_apoio2, cilindro_apoio3, cilindro_apoio4] 
-    luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
-
     Arvore = [cone_arvore, cilindro_arvore]
     poste = [cilindro_poste, cilindro_poste2, cilindro_poste3, cilindro_poste4, esfera_poste]
-    #paredes = [plano_chao,plano_fundo, plano_lateral_esq, plano_lateral_dir, plano_teto]
     ceu = [ plano_chao, plano_fundo]
- 
     casa = [objeto_cubo_telha_esq, objeto_cubo_base, objeto_cubo_telha_dir, objeto_cubo_telha_base, objeto_cubo_porta, objeto_cubo_janela]
-    #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_ambiente,luz_pontual ] #
-    cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
-    objetos = [ceu, cercado, caixa_dagua, silo, casa] # ,cercado,caixa_dagua,silo,Arvore, poste
-    #objetos = [casa] 
-    #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    #luzes = [luz_ambiente, luz_spot]
+
+    luzes = [luz_ambiente,luz_pontual, luz_spot ] 
+    objetos = [caixa_dagua,cercado, ceu,silo, poste] 
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
