@@ -6,11 +6,12 @@ from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor, mult_mat
 
 
 class Esfera(Objeto):
-    def __init__(self, posicaoCentro, raioEsfera: float, material ):
+    def __init__(self, posicaoCentro, raioEsfera: float, material, tipo = None ):
         super().__init__(posicaoCentro, material)
         self.raioEsfera = raioEsfera
         self.posicaoCentro = posicaoCentro
         self.material = material
+        self.tipo = tipo
 
 
     def intersecao(self, raio: Raio, infoIntersecao, obj) :

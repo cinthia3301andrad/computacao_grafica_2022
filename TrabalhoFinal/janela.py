@@ -99,8 +99,11 @@ class Janela:
                         objeto_atual.material.k_difusa = cor_atual
                         objeto_atual.material.k_especular = cor_atual
                         objeto_atual.material.k_ambiente = cor_atual
-
-            cor = self.cena.computaLuzes(normal, P, objeto_atual, raio)
+            nCalcS = False
+            if(objeto_atual.tipo == "ceu"):
+                nCalcS = True
+            
+            cor = self.cena.computaLuzes(normal, P, objeto_atual, raio, nCalcS)
             if cor != None: 
             # return objeto_atual.getColor(color)
                 return Cor(cor.r, cor.g, cor.b)

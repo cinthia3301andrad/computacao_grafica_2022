@@ -8,7 +8,7 @@ from planoCircular import PlanoCircular
 
 from transformacoes import translacaoPonto, rotacaoPonto,rotacaoVetor, escalaPonto
 class Cone(Objeto):
-    def __init__(self, centro, raio : float, altura, direcao, v, material, basePlano): # ,com_base = 1
+    def __init__(self, centro, raio : float, altura, direcao, v, material, basePlano, tipo = None): # ,com_base = 1
         self.centro = centro
         self.raio = raio
         self.altura = altura
@@ -16,6 +16,7 @@ class Cone(Objeto):
         self.material = material
         self.v = v
         self.basePlano = basePlano
+        self.tipo = tipo
         #self.com_base = com_base
 
     def intersecao(self, raio: Raio, infoIntersecao, obj):

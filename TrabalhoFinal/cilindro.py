@@ -9,7 +9,7 @@ from planoCircular import PlanoCircular
 
 from transformacoes import rotacaoPonto, translacaoPonto, escalaPonto
 class Cilindro(Objeto):
-    def __init__(self, posicaoCentro, raioCilindro: float, direcao, altura, material, basePlano, topoPlano):
+    def __init__(self, posicaoCentro, raioCilindro: float, direcao, altura, material, basePlano, topoPlano, tipo = None):
         super().__init__(posicaoCentro, material)
         self.raioCilindro = raioCilindro
         self.posicaoCentro = posicaoCentro
@@ -18,6 +18,7 @@ class Cilindro(Objeto):
         self.material = material
         self.basePlano = basePlano
         self.topoPlano = topoPlano
+        self.tipo = tipo
 
     def intersecao(self, raio: Raio, infoIntersecao, obj):
         return intersecao(raio, infoIntersecao, self.posicaoCentro, self.raioCilindro, self.direcaoCilindro, self.alturaCilindro, obj, self.basePlano, self.topoPlano)

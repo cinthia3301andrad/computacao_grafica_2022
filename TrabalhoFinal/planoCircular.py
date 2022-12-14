@@ -4,10 +4,11 @@ from objetos.objeto import Objeto
 from funcoes import Calcula_ponto_intersecao, Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, mult_matriz_vetor
 
 class PlanoCircular(Objeto):
-    def __init__(self, centroPlano, n_bar,raioCilindro, material):
+    def __init__(self, centroPlano, n_bar,raioCilindro, material, tipo = None):
         self.centroPlano = centroPlano
         self.n_bar = n_bar
         self.raioCilindro = raioCilindro
+        self.tipo = tipo
 
         self.material= material
     def intersecao(self, raio: Raio ,infoIntersecao, obj):

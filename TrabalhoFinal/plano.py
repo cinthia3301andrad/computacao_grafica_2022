@@ -4,10 +4,11 @@ from objetos.objeto import Objeto
 from funcoes import Subtracao_vetores, Produto_escalar, normalizaVetor, mult_matriz_ponto, mult_matriz_vetor, produto_vetorial
 
 class Plano(Objeto):
-    def __init__(self, p_pi, n_bar, material):
+    def __init__(self, p_pi, n_bar, material, tipo= None):
         self.p_pi = p_pi
         self.n_bar = n_bar
         self.material= material
+        self.tipo = tipo
     def intersecao(self, raio: Raio ,infoIntersecao, obj):
         return intersecao(raio, infoIntersecao, self.p_pi, self.n_bar, obj)
 

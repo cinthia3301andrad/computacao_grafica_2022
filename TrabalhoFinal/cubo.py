@@ -13,12 +13,13 @@ from intercesaoInfo import IntercesaoInfo
 from face import Face
 class Cubo(Objeto):
     
-    def __init__(self, posicaoCentro, tam_aresta, normal, material ):
+    def __init__(self, posicaoCentro, tam_aresta, normal, material, tipo= None ):
         
         self.posicaoCentro = posicaoCentro
         self.tam_aresta = tam_aresta
         self.normal = normal
         self.material = material
+        self.tipo =tipo
 
         self.vertices = [
         Vetor(posicaoCentro.x- tam_aresta/2, posicaoCentro.y- tam_aresta/2, posicaoCentro.z + tam_aresta/2),

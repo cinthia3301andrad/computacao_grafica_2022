@@ -24,7 +24,7 @@ class Cena:
         print("desenha°",self.largura, self.altura, self.objetos)
 
 
-    def computaLuzes(self, normal, P, material, raio):
+    def computaLuzes(self, normal, P, material, raio, nCalcS):
         contribuicao = None
           # Cálculo da distância entre o ponto de interseção e a fonte luminosa
         temLuzComPonto = False
@@ -56,6 +56,26 @@ class Cena:
                     break
             if(raioS.t > 0.001 and  raioS.t < tam_pf_pi):
                 temSombra = True
+        if nCalcS == True:
+            temSombra = False
+            for luz in self.luzes:
+               
+                r = luz.computaLuz( normal,P, material, raio).r
+                g = luz.computaLuz( normal,P, material, raio).g
+                b = luz.computaLuz( normal,P, material, raio).b
+
+                    
+                if(contribuicao != None):
+                    contribuicao = Cor( contribuicao.r + r, 
+                                        contribuicao.g + g,
+                                        contribuicao.b + b)
+                else:
+                    contribuicao = Cor(r, g, b)
+            if(contribuicao.r > 1): contribuicao.r = 1
+            if(contribuicao.g > 1): contribuicao.g = 1
+            if(contribuicao.b > 1): contribuicao.b = 1
+            return Cor(round(contribuicao.r*255), round(contribuicao.g*255), round(contribuicao.b*255))
+
         if (temSombra and temLuzComPonto): 
             for luz in self.luzes:
                 if(luz.tipo == 'ambiente'):
