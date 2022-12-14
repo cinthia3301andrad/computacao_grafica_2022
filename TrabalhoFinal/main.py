@@ -488,19 +488,19 @@ def main():
 
 
 
-    tam_aresta = 40
-    posicaoCentro = Ponto(250, -110, -580)
-   
+    tam_aresta = 60
+    posicaoCentro = Ponto(200, -110, -500)
+    #posicaoCentro = Ponto(50, -110, -250)
     normal_cubo = Vetor(1, 1, 1)
     materialCuboBase= Material(Cor(255, 0, 0), Vetor(1, 0.75, 0.05), Vetor(1, 0.75, 0.05), Vetor(1, 0.75, 0.05), m_esfera)
     materialCuboPorta= Material(Cor(255, 0, 0), Vetor(0.94, 0.48, 0.36), Vetor(0.94, 0.48, 0.36), Vetor(0.94, 0.48, 0.36), m_esfera)
     materialCuboTelha= Material(Cor(255, 0, 0), Vetor(0.51, 0.17,0.090), Vetor(0.51, 0.17,0.090), Vetor(0.51, 0.17,0.090), m_esfera)
     objeto_cubo_telha_esq = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboTelha )
     objeto_cubo_telha_dir = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboTelha )
-    objeto_cubo_telha_base = Cubo(posicaoCentro, 40, normal_cubo, materialCuboTelha )
-    objeto_cubo_base = Cubo(posicaoCentro, 40, normal_cubo, materialCuboBase )
-    objeto_cubo_porta = Cubo(posicaoCentro, 40, normal_cubo, materialCuboPorta )
-    objeto_cubo_janela = Cubo(posicaoCentro, 40, normal_cubo, materialCuboPorta )
+    objeto_cubo_telha_base = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboTelha )
+    objeto_cubo_base = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboBase )
+    objeto_cubo_porta = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboPorta )
+    objeto_cubo_janela = Cubo(posicaoCentro, tam_aresta, normal_cubo, materialCuboPorta )
     vetor_translacao = Vetor(4, 4, -5)
 
     axis_z_cone = Vetor(0, 0, 1)
@@ -509,22 +509,22 @@ def main():
    # objeto_cubo_telha_esq.translacao(vetor_translacao)
     #objeto_cone.rotacao(axis_z_cone, 2)
     objeto_cubo_porta.escala(Vetor(1.5, 3, 0.1))
-    objeto_cubo_porta.translacao(Vetor(25, 0, 1))
+    objeto_cubo_porta.translacao(Vetor(tam_aresta, 0, 1))
 
     objeto_cubo_janela.escala(Vetor(1.5, 1.5, 0.1))
-    objeto_cubo_janela.translacao(Vetor(100, 65, 1))
+    objeto_cubo_janela.translacao(Vetor((tam_aresta*3), (tam_aresta*1.5), 1))
 
     objeto_cubo_telha_base.escala(Vetor(5, 0.1, 3))
-    objeto_cubo_telha_base.translacao(Vetor(0, 165, 0))
+    objeto_cubo_telha_base.translacao(Vetor(0, (tam_aresta*4+5), 0))
 
-    objeto_cubo_telha_esq.escala(Vetor(5, 0.3, 3))
-    objeto_cubo_telha_esq.translacao(Vetor(-100, 0 , 0))
-    objeto_cubo_telha_dir.escala(Vetor(5, 0.3, 3))
+    objeto_cubo_telha_esq.escala(Vetor(4, 0.3, 3))
+    objeto_cubo_telha_esq.translacao(Vetor(-100, (tam_aresta*2) , 0))
+    objeto_cubo_telha_dir.escala(Vetor(4, 0.3, 3))
     objeto_cubo_base.escala(Vetor(5, 4, 3))
     
     objeto_cubo_telha_esq.cisalhamento(Vetor(0, 0, 1), Vetor(0, 1, 0), 0.78)
     objeto_cubo_telha_dir.cisalhamento(Vetor(0, 0, 1), Vetor(0, 1, 0),  -0.78)
-    objeto_cubo_telha_dir.translacao(Vetor(100, 450 , 0))
+    objeto_cubo_telha_dir.translacao(Vetor(140, (tam_aresta*8.5)  , 10))
     P_F = Ponto(0, 0, 0)
     intensidade_pf = Vetor(0.7, 0.7, 0.7)
     intensidade_ambiente = Vetor(0.5, 0.5, 0.5)   # Ambiente
@@ -551,10 +551,15 @@ def main():
     Arvore = [cone_arvore, cilindro_arvore]
     poste = [cilindro_poste, cilindro_poste2, cilindro_poste3, cilindro_poste4, esfera_poste]
     ceu = [ plano_chao, plano_fundo]
-    casa = [objeto_cubo_telha_esq, objeto_cubo_base, objeto_cubo_telha_dir, objeto_cubo_telha_base, objeto_cubo_porta, objeto_cubo_janela]
-
-    luzes = [luz_ambiente,luz_pontual, luz_spot , luz_direcional] 
-    objetos = [poste, [plano_chao]] 
+ 
+    casa = [objeto_cubo_telha_esq, objeto_cubo_base, objeto_cubo_telha_dir, objeto_cubo_telha_base, objeto_cubo_janela, objeto_cubo_porta]
+    #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
+    luzes = [luz_ambiente,luz_pontual ] #
+    cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
+    objetos = [ceu, cercado, caixa_dagua, silo, casa] # ,cercado,caixa_dagua,silo,Arvore, poste
+    #objetos = [casa] 
+    #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
+    #luzes = [luz_ambiente, luz_spot]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)

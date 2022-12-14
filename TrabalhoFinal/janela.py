@@ -44,13 +44,16 @@ class Janela:
         
         for x in range(self.cena.largura):
             for y in range(self.cena.altura):
+                #Projeção perspectiva
                 D = self.canvasParaJanela(x, y)
             
                 raio = Raio(eye, D)
+                #Projeção orthográfica
+               # raio = Raio(D, Vetor(0, 0, -1))
                 infoIntersecao = IntercesaoInfo(raio)
                 
                 self.calculaIntersecao(raio, infoIntersecao)
-                
+
                 color = self.calculaCor(raio, infoIntersecao)
         
            
