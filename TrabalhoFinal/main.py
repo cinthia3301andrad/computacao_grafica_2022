@@ -570,8 +570,8 @@ def main():
     # at = Vetor(0, 20, -160)
     # up = Vetor(0, 40, -160)
 
-    posicao_c = Vetor(0, 300, 0) 
-    at = Vetor(0, 300, -400)
+    posicao_c = Vetor(0, 100, 0) 
+    at = Vetor(0, 100, -400)
     up = Vetor(0, 300, -400)
     camera1 = Camera(posicao_c, at, up)
     matriz = camera1.matriz()

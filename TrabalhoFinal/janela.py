@@ -49,7 +49,7 @@ class Janela:
             
                 raio = Raio(eye, D)
                 #Projeção orthográfica
-                #raio = Raio(D, Vetor(0, 0, -1))
+               # raio = Raio(D, Vetor(0, 0, -1))
                 infoIntersecao = IntercesaoInfo(raio)
                 
                 self.calculaIntersecao(raio, infoIntersecao)
