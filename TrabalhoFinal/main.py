@@ -406,7 +406,7 @@ def main():
     cilindro_apoio4 = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
 
     #ARVORE
-    centro_cone   = Ponto(350, -60, -400) # 350, 150, 
+    centro_cone   = Ponto(350, -60, -300) # 350, 150, 
     rCone         = 90
     hCone         = 150
     d_cone        = Vetor(0, 1 , 0)
@@ -421,10 +421,9 @@ def main():
     basePlano_cone = PlanoCircular(centro_cone, n_Base,rCone, materialCone)
     cone_arvore  = Cone(centro_cone,rCone, hCone, d_cone, v_cone,material_cone, basePlano_cone)
 
-    rCilindro  = 20
-    m_cilindro = 10
+    rCilindro  = 10
     h_cilindro = 90
-    centro_cilindro = Ponto(350, -150, -400)
+    centro_cilindro = Ponto(350, -150, -300)
     d_cil = Vetor(0, 1, 0)
     K_d_cilindro= Vetor(0.824, 0.706, 0.549)
     K_a_cilindro= Vetor(0.824, 0.706, 0.549)
@@ -433,6 +432,7 @@ def main():
     topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
     n_Base = d_cil
     baseC= PlanoCircular(centro_cilindro, n_Base,rCilindro, material_cilindro)
+    material_cilindro = Material(Cor(255, 0, 0),K_e_cilindro, K_d_cilindro, K_a_cilindro, m_cilindro)
     cilindro_arvore = Cilindro(centro_cilindro,rCilindro, d_cil,  h_cilindro, material_cilindro, topoPlano, baseC)
 
     #POSTE
@@ -556,7 +556,7 @@ def main():
     casa = [objeto_cubo_telha_esq, objeto_cubo_base, objeto_cubo_telha_dir, objeto_cubo_telha_base, objeto_cubo_porta, objeto_cubo_janela]
 
     luzes = [luz_ambiente,luz_pontual, luz_spot ] 
-    objetos = [caixa_dagua,cercado, ceu,silo, poste] 
+    objetos = [cercado, caixa_dagua, Arvore, silo, poste, ceu, casa] 
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
