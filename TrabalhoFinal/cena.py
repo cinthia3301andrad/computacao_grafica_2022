@@ -86,7 +86,14 @@ class Cena:
                         return Cor(round(contribuicao.r*255), round(contribuicao.g*255), round(contribuicao.b*255))
                     else:
                         return Cor(round(r*255), round(g*255), round(b*255))
-
+                else:
+                    r = 0
+                    g = 0
+                    b = 0
+                    if(contribuicao != None):
+                        return Cor(round(contribuicao.r*255), round(contribuicao.g*255), round(contribuicao.b*255))
+                    else:
+                        return Cor(round(r*255), round(g*255), round(b*255))
         else: 
             temSombra = False
             for luz in self.luzes:

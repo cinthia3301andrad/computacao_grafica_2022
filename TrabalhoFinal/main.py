@@ -109,8 +109,6 @@ def main():
     # materialPlanoTeto = Material(Cor(0, 255, 255), K_d_teto, K_e_teto, K_a_teto, m_plano_teto)
     # plano_teto   = Plano(P_pi, n_bar ,materialPlanoTeto)
 
-    folhas = Image.open("folha.jpg")
-    folhas_load = folhas.load()
     rCone         = 90
     hCone         = 150
     d_cone        = Vetor(0., 1., 0.)
@@ -425,9 +423,9 @@ def main():
     h_cilindro = 90
     centro_cilindro = Ponto(350, -150, -300)
     d_cil = Vetor(0, 1, 0)
-    K_d_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_a_cilindro= Vetor(0.824, 0.706, 0.549)
-    K_e_cilindro= Vetor(0.824, 0.706, 0.549)
+    K_d_cilindro= Vetor(0.58, 0.29, 0)
+    K_a_cilindro= Vetor(0.58,  0.29, 0)
+    K_e_cilindro= Vetor(0.58,0.29, 0)
     centroTopo = Soma_vetores(centro_cilindro, Vetor_escalar(d_cil, h_cilindro))
     topoPlano = PlanoCircular(centroTopo, d_cil, rCilindro, material_cilindro)
     n_Base = d_cil
@@ -555,8 +553,8 @@ def main():
     ceu = [ plano_chao, plano_fundo]
     casa = [objeto_cubo_telha_esq, objeto_cubo_base, objeto_cubo_telha_dir, objeto_cubo_telha_base, objeto_cubo_porta, objeto_cubo_janela]
 
-    luzes = [luz_ambiente,luz_pontual, luz_spot ] 
-    objetos = [cercado, caixa_dagua, Arvore, silo, poste, ceu, casa] 
+    luzes = [luz_ambiente,luz_pontual, luz_spot , luz_direcional] 
+    objetos = [poste, [plano_chao]] 
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)

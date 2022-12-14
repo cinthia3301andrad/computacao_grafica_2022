@@ -121,15 +121,59 @@ class Janela:
                     if event.type == pygame.QUIT:
                         pygame.quit()
                      
+
+                    
                     if event.type == pygame.KEYDOWN:
-                      
+                        print(event.key)
                         if event.key == pygame.K_z or event.key == 122:
                             print("ENTROU NA Translação")
                             vetor_translacao = Vetor(40, 0,0)
 
                             self.cena.objetos[0][0].translacao(vetor_translacao) 
                             self.desenha() 
-                            print("recalculando a cena...")               
+                            print("recalculando a cena...")
+                        if event.key == pygame.K_s:  #115
+                            print("ENTROU NA luz")
+                            i = 0
+                            luzes = []
+                            
+                            while(len(self.cena.luzes)>i):
+                                print(len(self.cena.luzes))
+                                print(self.cena.luzes[i].tipo)
+                        
+                                if self.cena.luzes[i].tipo != "spot":
+                                    luzes.append(self.cena.luzes[i])
+                        
+                                i = i +1
+                            self.cena.luzes = luzes
+                            print("Tirando a luz spot....")
+                            self.desenha()
+                            print("Luz retirada!")
+                        if event.key == pygame.K_a: #97
+                            i = 0
+                            luzes = []
+                            
+                            while(len(self.cena.luzes)>i):
+                                if self.cena.luzes[i].tipo != "ambiente":
+                                    luzes.append(self.cena.luzes[i])
+                                i = i +1
+                            self.cena.luzes = luzes
+                            print("Tirando a luz ambiente....")
+                            self.desenha()
+                            print("Luz retirada!")
+                        if event.key == pygame.K_d:  
+                            i = 0
+                            luzes = []
+                            
+                            while(len(self.cena.luzes)>i):
+                                if self.cena.luzes[i].tipo != "direcional":
+                                    luzes.append(self.cena.luzes[i])
+                                i = i +1
+                            print(luzes)
+                            self.cena.luzes = luzes
+                            print("Tirando a luz direcional....")
+                            self.desenha()
+                            print("Luz retirada!")
                 pygame.display.flip()
                 
                 
