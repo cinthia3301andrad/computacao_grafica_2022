@@ -556,36 +556,36 @@ def main():
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     luzes = [luz_ambiente,luz_pontual ] #
     cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
-    objetos = [ceu, cercado, caixa_dagua, silo, casa] # ,cercado,caixa_dagua,silo,Arvore, poste
-    #objetos = [casa] 
+    #objetos = [ceu, cercado, caixa_dagua, silo, casa, [plano_chao]] # ,cercado,caixa_dagua,silo,Arvore, poste
+    objetos = [cercado, [plano_chao]] 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     #luzes = [luz_ambiente, luz_spot]
 
 
-    # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
-    # at = Vetor(0, 0, -100)
-    # up = Vetor(0, 10, -100)
+    #posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
+   # at = Vetor(0, 0, -100)
+   # up = Vetor(0, 10, -100)
 
     # posicao_c = Vetor(0, 10, 0) #Vetor(0, -5, 1)
     # at = Vetor(0, 20, -160)
     # up = Vetor(0, 40, -160)
 
-   # posicao_c = Vetor(0, 100, 0) 
-    #at = Vetor(0, 0, 0)
-   # up = Vetor(80, 0, 0)
-    # camera1 = Camera(posicao_c, at, up)
-    # matriz = camera1.matriz()
+    posicao_c = Vetor(0, 300, 0) 
+    at = Vetor(0, 300, -400)
+    up = Vetor(0, 300, -400)
+    camera1 = Camera(posicao_c, at, up)
+    matriz = camera1.matriz()
 
  
  
    
 
-  #  for objetoComplexo in objetos:
-  #      for objeto in objetoComplexo:
-       #     objeto.mundoParaCamera(matriz)
-  #  for luz in luzes:
-   #     if(luz.tipo != 'ambiente'):
- #           luz.mundoParaCamera(matriz) 
+    for objetoComplexo in objetos:
+        for objeto in objetoComplexo:
+            objeto.mundoParaCamera(matriz)
+    for luz in luzes:
+        if(luz.tipo != 'ambiente'):
+            luz.mundoParaCamera(matriz) 
     
 
     cena = Cena(largura, altura, objetos, luzes)
