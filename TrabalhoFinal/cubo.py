@@ -80,11 +80,15 @@ class Cubo(Objeto):
 
 def intersecao(self, raio, infoIntersecao, posicaoCentro, tam_aresta, normal, faces, obj):
 
-    [t, nova_normal] = IntersecaoTodasFaces(faces, raio, obj)
+   # [t, nova_normal] = IntersecaoTodasFaces(faces, raio, obj)
     #print("ATUALIZOU?", nova_normal.x, nova_normal.y, nova_normal.z)
-    self.normal = nova_normal
+   # self.normal = nova_normal
 
-    infoIntersecao.atualizaIntersecao(t, obj)
+   # infoIntersecao.atualizaIntersecao(t, obj)
+   for face in self.faces:
+        face.intersecao(raio, infoIntersecao, obj)
+        
+
 
 
 
@@ -94,42 +98,41 @@ def verifica_face(p_i, face):
                                 Subtracao_vetores(face.p3, face.p1)), face.normal)
    
 
-    if(area_total < 1):
-        return False
+ 
     c1 = Produto_escalar(produto_vetorial(Subtracao_vetores(face.p1, p_i), Subtracao_vetores(face.p2, p_i)), face.normal) / area_total
     c2 = Produto_escalar(produto_vetorial(Subtracao_vetores(face.p3, p_i), Subtracao_vetores(face.p1, p_i)), face.normal) / area_total
    
-    c3 =  Produto_escalar(produto_vetorial(Subtracao_vetores(face.p2, p_i), Subtracao_vetores(face.p3, p_i)), face.normal) / area_total
-    #c3 = 1 - c1 - c2
+  #  c3 =  Produto_escalar(produto_vetorial(Subtracao_vetores(face.p2, p_i), Subtracao_vetores(face.p3, p_i)), face.normal) / area_total
+    c3 = 1 - c1 - c2
 
-    return c1 > 0.0 and c2 > 0.0 and c3 > 0.0
+    return c1 > 0.0-0.0000001 and c2 > 0.0-0.0000001 and c3 > 0.0-0.0000001
 
 
-def IntersecaoFace(face, raio, infoIntersecao, obj):
+def IntersecaoFace(face, raio, obj):
     plano = PlanoFace(face.p1, face.normal, obj.material) 
     
    # raiocopy = Raio(raio.origem, raio.direcao)
 
-    plano.intersecao(raio, infoIntersecao, obj)
-    p_i = Soma_vetores(raio.origem, Vetor_escalar(raio.direcao, raio.t))
+    t1 =  plano.intersecao(raio)
+    p_i = Soma_vetores(raio.origem, Vetor_escalar(raio.direcao, t1))
     
     
     if(verifica_face(p_i, face)):
-     #   raio = raiocopy
-        return infoIntersecao.t_mais_proximo
+    
+        return t1
     return math.inf
 
 def IntersecaoTodasFaces(faces, raio, obj):
     t = math.inf
     t_aux = 0
     normal_aux = Vetor(0, 0, 0)
-    infoIntersecao = IntercesaoInfo(raio)
-    raioS = Raio(raio.origem, raio.direcao)
+    #infoIntersecao = IntercesaoInfo(raio)
+  #  raioS = Raio(raio.origem, raio.direcao)
     
     for face in faces:
      
-        if(Produto_escalar(face.normal, raio.direcao) < 0):
-            t_aux = IntersecaoFace(face, raioS, infoIntersecao, obj)
+        if(Produto_escalar(face.normal, raio.direcao) < 0.0):
+            t_aux = IntersecaoFace(face, raio, obj)
             if(t_aux < t):
                 t = t_aux
                 normal_aux = face.normal

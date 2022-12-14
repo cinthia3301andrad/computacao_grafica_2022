@@ -155,7 +155,7 @@ def main():
     cilindro = Cilindro(centro_cilindro, 
                           rCilindro, d_cil, h_cilindro, materialCilindro, basePlano,topoPlano)
 
-    posicaoCentro = Ponto(0, 0, -160)
+    posicaoCentro = Ponto(0, -150, -160)
     tam_aresta = 40
     normal_cubo = Vetor(1, 1, 1)
   
@@ -531,6 +531,7 @@ def main():
     cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
     objetos = [ceu, cercado, caixa_dagua, silo] # ,cercado,caixa_dagua,silo,Arvore, poste
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
+    luzes = [luz_ambiente, luz_spot]
 
 
     # posicao_c = Vetor(0, 4, 1) #Vetor(0, -5, 1)
@@ -549,10 +550,10 @@ def main():
 
     vetor_translacao = Vetor(20, 0,0)
 
-    axis_z_cone = Vetor(0, 1, 0)
+    axis_z_cone = Vetor(1, 0, 0)
     
     #objeto_cone.translacao(vetor_translacao)
-    # objeto_cubo.rotacao(axis_z_cone, 0.45) #45 graus em
+    objeto_cubo.rotacao(axis_z_cone, 0.60) #45 graus em
     #objeto_cone.rotacao(axis_z_cone, 2)
 
 
@@ -563,12 +564,12 @@ def main():
     # objeto_cone.escala(vetor_escala, vetor_ancora)   
    
 
-    # for objetoComplexo in objetos:
-    #     for objeto in objetoComplexo:
-    #         objeto.mundoParaCamera(matriz)
-    # for luz in luzes:
-    #     if(luz.tipo != 'ambiente'):
-    #         luz.mundoParaCamera(matriz) 
+  #  for objetoComplexo in objetos:
+  #      for objeto in objetoComplexo:
+       #     objeto.mundoParaCamera(matriz)
+  #  for luz in luzes:
+   #     if(luz.tipo != 'ambiente'):
+ #           luz.mundoParaCamera(matriz) 
     
 
     cena = Cena(largura, altura, objetos, luzes)

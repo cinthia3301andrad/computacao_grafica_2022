@@ -12,7 +12,7 @@ class IntercesaoInfo:
         # self.rayTrace(Raio(np.array([0., 0., 0.]), np.array([1., 0., 0.])))
 
     def atualizaIntersecao(self, novo_t, obj):
-         if (novo_t < self.t_mais_proximo) :
+         if (novo_t > 0. and novo_t < self.t_mais_proximo) :
                 self.t_mais_proximo = novo_t
                 self.valido = True
                 self.hitObjeto = obj
