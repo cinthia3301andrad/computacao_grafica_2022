@@ -542,7 +542,7 @@ def main():
     spot_posicao =  Ponto(70,-100, -220) #Ponto(-100, -150, -220)
     spot_intensidade = Vetor(0.7, 0.7, 0.7)
     spot_direcao = Ponto(0, -1, 0)
-    spot_teta = 3.14/3
+    spot_teta = 3.14/6
     luz_spot = LuzSpot(spot_posicao, spot_intensidade, spot_direcao,spot_teta )
 
     cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
@@ -550,14 +550,14 @@ def main():
     caixa_dagua = [cone_caixadagua, cilindro_caixadagua, cilindro_apoio1, cilindro_apoio2, cilindro_apoio3, cilindro_apoio4] 
     Arvore = [cone_arvore, cilindro_arvore]
     poste = [cilindro_poste, cilindro_poste2, cilindro_poste3, cilindro_poste4, esfera_poste]
-    ceu = [ plano_chao, plano_fundo]
+    ceu = [ plano_chao]
  
     casa = [objeto_cubo_telha_esq, objeto_cubo_base, objeto_cubo_telha_dir, objeto_cubo_telha_base, objeto_cubo_janela, objeto_cubo_porta]
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
-    luzes = [luz_ambiente,luz_pontual ] #
+    luzes = [luz_ambiente,luz_pontual, luz_spot ] #
     cercado = [cilindro_cercado15, cilindro_cercado16, cilindro_cercado13, cilindro_cercado14, cilindro_cercado12, cilindro_cercado11, cilindro_cercado10,cilindro_cercado9,cilindro_cercado8, cilindro_cercado7,cilindro_cercado6, cilindro_cercado5, cilindro_cercado, cilindro_cercado3,cilindro_cercado2, cilindro_cercado4] 
-    #objetos = [ceu, cercado, caixa_dagua, silo, casa, [plano_chao]] # ,cercado,caixa_dagua,silo,Arvore, poste
-    objetos = [cercado, [plano_chao]] 
+    objetos = [ceu, cercado, caixa_dagua, silo, casa,poste,Arvore] # ,cercado,caixa_dagua,silo,Arvore, poste
+    #objetos = [ceu] 
     #print(objetos[0].material.K_e.x, objetos[0].material.K_e.y)
     #luzes = [luz_ambiente, luz_spot]
 
@@ -570,9 +570,9 @@ def main():
     # at = Vetor(0, 20, -160)
     # up = Vetor(0, 40, -160)
 
-    posicao_c = Vetor(0, 100, 0) 
-    at = Vetor(0, 100, -400)
-    up = Vetor(0, 300, -400)
+    posicao_c = Vetor(70, 500, -220) 
+    at = Vetor(70, -100, -220)
+    up = Vetor(70, 500, -300)
     camera1 = Camera(posicao_c, at, up)
     matriz = camera1.matriz()
 

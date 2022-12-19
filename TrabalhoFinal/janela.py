@@ -112,7 +112,7 @@ class Janela:
                 return Cor(cor.r, cor.g, cor.b)
             #return Cor(0, 255, 255)
         else:
-            cor = Cor(26, 155, 65)
+            cor = Cor(173,216,230)
             return cor
   
     def loopEventos(self):

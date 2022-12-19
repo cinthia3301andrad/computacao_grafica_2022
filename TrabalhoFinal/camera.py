@@ -11,7 +11,7 @@ class Camera:
 
     def matriz(self):
         K = normalizaVetor(Subtracao_vetores(self.posicao, self.at))
-        viewUp = normalizaVetor(Subtracao_vetores(self.posicao, self.up))
+        viewUp = normalizaVetor(Subtracao_vetores(self.up, self.posicao))
         I = normalizaVetor(produto_vetorial(viewUp, K))
         J = normalizaVetor(produto_vetorial(K, I))
 
